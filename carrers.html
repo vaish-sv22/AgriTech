@@ -519,12 +519,15 @@
             document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
             
             // If you have a theme toggle button, you can add this:
-             document.getElementById('themeToggle').addEventListener('click', function() {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
-               localStorage.setItem('theme', newTheme);
-             });
+          const themeToggle = document.getElementById('themeToggle');
+          if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme', newTheme);
+              localStorage.setItem('theme', newTheme);
+            });
+          }
         });
     </script>
     <script src="auth.js"></script>
