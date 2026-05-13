@@ -1,9 +1,22 @@
 import os
 
+from dotenv import load_dotenv
+
+
+load_dotenv(
+    dotenv_path=os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', '..', '.env')
+    )
+)
+
+
+def _env_bool(name, default=False):
+    return os.environ.get(name, str(default)).strip().lower() in {'1', 'true', 'yes', 'on'}
+
 class Config:
     """Base Configuration"""
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')
-    DEBUG = False
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DEBUG = _env_bool('DEBUG', False)
     TESTING = False
     
     # Database
@@ -58,13 +71,13 @@ class Config:
 
 class DevelopmentConfig(Config):
     """Development Configuration"""
-    DEBUG = True
+    DEBUG = _env_bool('DEBUG', True)
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL', 'sqlite:///agritech_dev.db')
     SQLALCHEMY_ECHO = False  # Log SQL queries in development
 
 class ProductionConfig(Config):
     """Production Configuration"""
-    DEBUG = False
+    DEBUG = _env_bool('DEBUG', False)
     @classmethod
     def init_app(cls, app):
         if not os.environ.get('GEMINI_API_KEY'):
