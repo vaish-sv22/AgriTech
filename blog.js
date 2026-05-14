@@ -328,6 +328,18 @@ const defaultBlogPosts = [
 let userPosts = JSON.parse(localStorage.getItem('agritech_user_posts')) || [];
 let blogPosts = [...defaultBlogPosts, ...userPosts];
 
+// Default fallback image (inline SVG data URL) for missing or broken images
+const DEFAULT_BLOG_IMAGE = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+        <rect width="100%" height="100%" fill="#e6f4ea"/>
+        <g fill="#2e7d32">
+            <circle cx="150" cy="150" r="80" />
+            <rect x="250" y="110" width="520" height="80" rx="8"/>
+        </g>
+        <text x="50%" y="85%" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#2e7d32" text-anchor="middle">AgriTech — Image unavailable</text>
+    </svg>
+`);
+
 // Global variables
 let currentPage = 0;
 const postsPerPage = 6;
@@ -482,7 +494,7 @@ function displayPosts() {
         const postElement = document.createElement('div');
         postElement.className = 'blog-card';
         postElement.innerHTML = `
-            <img src="${post.image}" alt="${post.title}">
+            <img src="${post.image || DEFAULT_BLOG_IMAGE}" alt="${post.title}" onerror="this.onerror=null;this.src='${DEFAULT_BLOG_IMAGE}';">
             <button
                 class="${favoriteClass}"
                 data-blog-id="${post.id}"
@@ -590,8 +602,17 @@ function openModal(postId) {
     currentModalPostId = postId;
     document.getElementById('modalTitle').textContent = post.title;
     document.getElementById('modalCategory').textContent = post.category.replace('-', ' ');
-    document.getElementById('modalImage').src = post.image;
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = post.image || DEFAULT_BLOG_IMAGE;
+    modalImg.onerror = function () { this.onerror = null; this.src = DEFAULT_BLOG_IMAGE; };
+
     document.getElementById('modalContent').innerHTML = post.content;
+
+    // Populate author and date if available
+    const authorEl = document.getElementById('modal-Author');
+    const dateEl = document.getElementById('modal-Date');
+    if (authorEl) authorEl.textContent = (post.author ? 'By ' + post.author : '');
+    if (dateEl) dateEl.textContent = (post.date ? post.date : '');
 
     updateModalFavoriteButton();
     document.getElementById('blogModal').style.display = 'block';

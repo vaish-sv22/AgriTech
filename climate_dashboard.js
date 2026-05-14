@@ -2,6 +2,40 @@ let activeZoneId = null;
 let telemetryChart = null;
 let syncInterval = null;
 
+// Lightweight overlay loader helper (non-destructive)
+function ensureOverlayStyles() {
+    if (document.getElementById('agri-overlay-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'agri-overlay-styles';
+    s.textContent = `
+    .agri-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.6);z-index:500}
+    .agri-overlay .agri-spinner{width:40px;height:40px;border-radius:50%;border:4px solid rgba(0,0,0,0.08);border-top-color:#0ea5e9;animation:agri-spin 0.8s linear infinite}
+    @keyframes agri-spin{to{transform:rotate(360deg)}}
+    `;
+    document.head.appendChild(s);
+}
+
+function showOverlayLoader(containerId) {
+    ensureOverlayStyles();
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const prevPos = window.getComputedStyle(container).position;
+    if (prevPos === 'static') container.style.position = 'relative';
+    if (container.querySelector('[data-agri-overlay]')) return;
+    const overlay = document.createElement('div');
+    overlay.className = 'agri-overlay';
+    overlay.setAttribute('data-agri-overlay','true');
+    overlay.innerHTML = '<div class="agri-spinner" aria-hidden="true"></div>';
+    container.appendChild(overlay);
+}
+
+function hideOverlayLoader(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const overlay = container.querySelector('[data-agri-overlay]');
+    if (overlay) overlay.remove();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchZones();
 });
@@ -10,6 +44,7 @@ async function fetchZones() {
     // Demo Farm ID 1
     const farmId = 1;
     try {
+        showOverlayLoader('zone-list');
         const response = await fetch(`/api/v1/climate/zones/${farmId}`);
         const data = await response.json();
 
@@ -26,7 +61,8 @@ async function fetchZones() {
                 selectZone(data.data[0].id, data.data[0].name);
             }
         }
-    } catch (e) { console.error("API sync failed"); }
+        hideOverlayLoader('zone-list');
+    } catch (e) { console.error("API sync failed"); hideOverlayLoader('zone-list'); }
 }
 
 async function selectZone(id, name) {
@@ -45,6 +81,7 @@ async function fetchAnalytics() {
     if (!activeZoneId) return;
 
     try {
+        showOverlayLoader('telemetryChart');
         const response = await fetch(`/api/v1/climate/analytics/${activeZoneId}`);
         const data = await response.json();
 
@@ -53,8 +90,9 @@ async function fetchAnalytics() {
             updateGauges(analytical);
             updateChart(analytical.history);
             updateScientificBlock(analytical);
+            hideOverlayLoader('telemetryChart');
         }
-    } catch (e) { }
+    } catch (e) { hideOverlayLoader('telemetryChart'); }
 }
 
 function updateGauges(data) {

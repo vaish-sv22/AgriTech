@@ -101,6 +101,7 @@
     /* THEME TOGGLE STYLE */
     .theme-toggle {
       background: rgba(255, 255, 255, 0.2);
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
@@ -235,6 +236,56 @@
       padding: 3rem 1.5rem;
     }
 
+    .eligibility-status {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .eligibility-status.info {
+      display: block;
+      background: rgba(25, 118, 210, 0.12);
+      color: #1565c0;
+    }
+
+    .eligibility-status.success {
+      display: block;
+      background: rgba(46, 125, 50, 0.12);
+      color: #2e7d32;
+    }
+
+    .eligibility-status.warning {
+      display: block;
+      background: rgba(211, 47, 47, 0.12);
+      color: #c62828;
+    }
+
+    .results-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 18px 0 8px;
+    }
+
+    .results-toolbar h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+    }
+
+    .results-count {
+      font-weight: 700;
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    .results-toolbar.hidden {
+      display: none;
+    }
+
     .scheme {
       background: var(--card);
       border-left: 8px solid var(--primary);
@@ -290,6 +341,34 @@
 .eligible{color:var(--success);font-weight:900;font-size:20px}
 .not-eligible{color:var(--danger);font-weight:900;font-size:20px}
 .deadline{color:#b71c1c;font-weight:800}
+
+    .results-empty {
+      display: none;
+      background: var(--card);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .results-empty.show {
+      display: block;
+    }
+
+    .results-empty-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .results-empty-title {
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .results-empty-copy {
+      margin-bottom: 18px;
+    }
 [data-theme="dark"] .deadline { color: #ff5252; }
 
 .hero::before {
@@ -497,7 +576,7 @@
       State
     </label>
 
-    <select id="state">
+    <select id="state" aria-label="State">
       <option data-i18n data-i18n-en="India" data-i18n-hi="भारत">India</option>
       <option>Karnataka</option>
       <option>Maharashtra</option>
@@ -528,6 +607,7 @@
       data-i18n-placeholder-hi="उदाहरण: 2.5">
 
     <button 
+      type="button"
       onclick="checkEligibility()"
       data-i18n
       data-i18n-en="Find Eligible Schemes"
@@ -535,10 +615,27 @@
       Find Eligible Schemes
     </button>
 
+    <div id="eligibilityStatus" class="eligibility-status" aria-live="polite"></div>
+
   </div>
 </section>
 
 <div class="container" id="schemeList"></div>
+
+<div class="container">
+  <div class="results-toolbar hidden" id="resultsToolbar">
+    <h3 id="resultsHeading">Eligible Schemes</h3>
+    <div class="results-count" id="resultsCount"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="noResultsState" class="results-empty">
+    <div class="results-empty-icon">🔍</div>
+    <h3 class="results-empty-title">No eligible schemes found</h3>
+    <p class="results-empty-copy">Try changing the state or land holding to see matching schemes.</p>
+  </div>
+</div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
@@ -789,18 +886,70 @@ function initLanguageSystem() {
 
 // --- SCHEME RENDER & ELIGIBILITY ---
 function checkEligibility() {
-  const state = document.getElementById("state")?.value || "";
-  const land = parseFloat(document.getElementById("land")?.value || 0);
+  const state = document.getElementById("state")?.value?.trim() || "";
+  const landInput = document.getElementById("land")?.value;
+  const land = parseFloat(landInput);
   const list = document.getElementById("schemeList");
+  const status = document.getElementById('eligibilityStatus');
+  const toolbar = document.getElementById('resultsToolbar');
+  const resultsCount = document.getElementById('resultsCount');
+  const noResultsState = document.getElementById('noResultsState');
   if (!list) return;
-  list.innerHTML = "";
+  if (status) {
+    status.className = 'eligibility-status';
+  }
 
-  schemes.forEach(s => {
-    const eligible = land <= s.max && (s.states.includes(state) || s.states.includes("India"));
+  if (!state) {
+    list.innerHTML = '';
+    if (toolbar) toolbar.style.display = 'none';
+    if (noResultsState) noResultsState.classList.remove('show');
+    if (status) {
+      status.textContent = currentLang === 'hi' ? 'कृपया एक राज्य चुनें.' : 'Please select a state.';
+      status.classList.add('warning');
+    }
+    return;
+  }
+
+  if (!Number.isFinite(land) || land <= 0) {
+    list.innerHTML = '';
+    if (toolbar) toolbar.style.display = 'none';
+    if (noResultsState) noResultsState.classList.remove('show');
+    if (status) {
+      status.textContent = currentLang === 'hi' ? 'कृपया मान्य भूमि धारणा दर्ज करें.' : 'Please enter a valid land holding value.';
+      status.classList.add('warning');
+    }
+    return;
+  }
+
+  const eligibleSchemes = schemes.filter(s => {
+    const stateMatches = s.states.includes('India') || s.states.includes(state);
+    return land <= s.max && stateMatches;
+  });
+
+  list.innerHTML = '';
+
+  if (toolbar) toolbar.style.display = 'flex';
+  if (resultsCount) {
+    resultsCount.textContent = `${eligibleSchemes.length} ${currentLang === 'hi' ? 'योजनाएं मिलीं' : 'schemes found'}`;
+  }
+
+  if (eligibleSchemes.length === 0) {
+    if (noResultsState) noResultsState.classList.add('show');
+    if (status) {
+      status.textContent = currentLang === 'hi' ? 'कोई पात्र योजना नहीं मिली।' : 'No eligible schemes matched your inputs.';
+      status.classList.add('info');
+    }
+  } else {
+    if (noResultsState) noResultsState.classList.remove('show');
+    if (status) {
+      status.textContent = currentLang === 'hi' ? 'पात्र योजनाएं नीचे दिखाई गई हैं।' : 'Eligible schemes are shown below.';
+      status.classList.add('success');
+    }
+  }
+
+  eligibleSchemes.forEach(s => {
     const name = s.name[currentLang] || s.name.en;
     const desc = s.desc[currentLang] || s.desc.en;
-    const eligibleText = currentLang==="hi"?"✔ पात्र":"✔ Eligible";
-    const notEligibleText = currentLang==="hi"?"✖ अपात्र":"✖ Not Eligible";
     const deadlineText = currentLang==="hi"?"अंतिम तिथि":"Deadline";
     const applyText = currentLang==="hi"?"📝 आवेदन करें":"📝 Apply Now";
     const docsText = currentLang==="hi"?"📄 दस्तावेज़":"📄 Documents";
@@ -810,16 +959,18 @@ function checkEligibility() {
       <div class="scheme">
         <h3>${name}</h3>
         <p>${desc}</p>
-        <p class="${eligible?'eligible':'not-eligible'}">${eligible?eligibleText:notEligibleText}</p>
+        <p class="eligible">${currentLang==="hi"?"✔ पात्र":"✔ Eligible"}</p>
         <p class="deadline">${deadlineText}: ${s.deadline}</p>
         <div class="actions">
-          <a href="${eligible?s.link:'#'}" target="_blank" class="apply ${eligible?'':'disabled'}">${applyText}</a>
+          <a href="${s.link}" target="_blank" rel="noopener noreferrer" class="apply">${applyText}</a>
           <button class="docs" onclick="showDocs('${s.key}')">${docsText}</button>
           <button class="reminder" onclick="showMsg('${name}')">${reminderText}</button>
         </div>
       </div>
     `;
   });
+
+  list.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function showDocs(key){
@@ -832,6 +983,12 @@ function showDocs(key){
   document.getElementById("modal").style.display = "flex";
 }
 function closeModal(){ document.getElementById("modal").style.display="none"; }
+
+function showMsg(name) {
+  alert(currentLang === 'hi'
+    ? `${name} के लिए रिमाइंडर सेट किया गया।`
+    : `Reminder set for ${name}.`);
+}
 
 // --- SEARCH FUNCTION ---
 function initSearch() {
@@ -860,7 +1017,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 
-</script>
 <!-- ===== Universal Back To Top Button (All Pages) ===== -->
 <style>
   #globalBackToTop {
