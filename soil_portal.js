@@ -1,6 +1,33 @@
 let activeFarmId = null;
 let nutrientChart = null;
 
+// Loader helpers
+function ensureLoaderStyles() {
+    if (document.getElementById('agri-loader-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'agri-loader-styles';
+    style.textContent = `
+    .agri-loader{display:flex;align-items:center;justify-content:center;padding:24px}
+    .agri-spinner{width:36px;height:36px;border-radius:50%;border:4px solid rgba(0,0,0,0.08);border-top-color:var(--primary,#16a34a);animation:agri-spin 0.9s linear infinite}
+    @keyframes agri-spin{to{transform:rotate(360deg)}}
+    `;
+    document.head.appendChild(style);
+}
+
+function showLoader(containerId, message) {
+    ensureLoaderStyles();
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.__orig = el.innerHTML;
+    el.innerHTML = `<div class="agri-loader"><div style="text-align:center"><div class="agri-spinner" aria-hidden="true"></div>${message ? `<div style=\"margin-top:8px;color:#64748b;font-size:0.95rem\">${message}</div>` : ''}</div></div>`;
+}
+
+function hideLoader(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    if (el.__orig !== undefined) el.innerHTML = el.__orig;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchFarms();
 });
@@ -30,16 +57,21 @@ async function selectFarm(id, name) {
 
 async function fetchHistory(id) {
     try {
+        showLoader('nutrientChart', 'Loading soil history...');
         const response = await fetch(`/api/v1/soil/history/${id}`);
         const data = await response.json();
         if (data.status === 'success' && data.data.length > 0) {
             const latest = data.data[0];
             updateStats(latest);
             updateChart(data.data);
+            hideLoader('nutrientChart');
             fetchRecommendations(latest.id);
+        } else {
+            hideLoader('nutrientChart');
         }
     } catch (e) {
         console.error("Failed to sync soil history");
+        hideLoader('nutrientChart');
     }
 }
 
@@ -83,6 +115,7 @@ function updateChart(history) {
 
 async function fetchRecommendations(testId) {
     try {
+        showLoader('rec-container', 'Fetching recommendations...');
         const response = await fetch(`/api/v1/soil/recommendations/${testId}`);
         const data = await response.json();
         if (data.status === 'success') {
@@ -96,6 +129,9 @@ async function fetchRecommendations(testId) {
                     </div>
                 </div>
             `).join('');
+            hideLoader('rec-container');
+        } else {
+            hideLoader('rec-container');
         }
     } catch (e) { }
 }

@@ -1,5 +1,32 @@
 const API_BASE = '/api/v1/crop-advisory';
 
+// Lightweight loader helper
+function ensureLoaderStyles() {
+    if (document.getElementById('agri-loader-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'agri-loader-styles';
+    style.textContent = `
+    .agri-loader{display:flex;align-items:center;justify-content:center;padding:24px}
+    .agri-spinner{width:36px;height:36px;border-radius:50%;border:4px solid rgba(0,0,0,0.08);border-top-color:var(--primary,#16a34a);animation:agri-spin 0.9s linear infinite}
+    @keyframes agri-spin{to{transform:rotate(360deg)}}
+    `;
+    document.head.appendChild(style);
+}
+
+function showLoader(containerId, message) {
+    ensureLoaderStyles();
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.__orig = el.innerHTML;
+    el.innerHTML = `<div class="agri-loader"><div style="text-align:center"><div class="agri-spinner" aria-hidden="true"></div>${message ? `<div style=\"margin-top:8px;color:#64748b;font-size:0.95rem\">${message}</div>` : ''}</div></div>`;
+}
+
+function hideLoader(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    if (el.__orig !== undefined) el.innerHTML = el.__orig;
+}
+
 async function getRecommendations() {
     const location = document.getElementById('location').value;
     const soilType = document.getElementById('soilType').value;
@@ -20,6 +47,7 @@ async function getRecommendations() {
         document.getElementById('alertsCard').classList.add('hidden');
         document.getElementById('climateCard').classList.add('hidden');
         document.getElementById('weatherStats').classList.add('hidden');
+        showLoader('recommendationsContainer', 'Loading recommendations...');
         
         const response = await fetch(`${API_BASE}/recommendations?location=${encodeURIComponent(location)}&soil_type=${soilType || ''}`, {
             headers: {
@@ -30,6 +58,7 @@ async function getRecommendations() {
         if (response.ok) {
             const data = await response.json();
             renderRecommendations(data.data);
+            hideLoader('recommendationsContainer');
             
             document.getElementById('statTemp').textContent = `${data.data.current_weather.temperature}C`;
             document.getElementById('statHumidity').textContent = `${data.data.current_weather.humidity}%`;
@@ -40,10 +69,12 @@ async function getRecommendations() {
             loadClimateAnalysis(location);
         } else {
             const errorData = await response.json();
+            hideLoader('recommendationsContainer');
             alert(`Error: ${errorData.message}`);
         }
     } catch (error) {
         console.error('Error fetching recommendations:', error);
+        hideLoader('recommendationsContainer');
         alert('Error fetching recommendations. Please try again.');
     }
 }
@@ -108,6 +139,7 @@ async function loadAlerts() {
     if (!token) return;
     
     try {
+        showLoader('alertsContainer', 'Loading alerts...');
         const response = await fetch(`${API_BASE}/alerts`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -117,9 +149,11 @@ async function loadAlerts() {
         if (response.ok) {
             const data = await response.json();
             renderAlerts(data.data);
+            hideLoader('alertsContainer');
         }
     } catch (error) {
         console.error('Error loading alerts:', error);
+        hideLoader('alertsContainer');
     }
 }
 
@@ -158,6 +192,7 @@ async function loadClimateAnalysis(location) {
     if (!token) return;
     
     try {
+        showLoader('climateContainer', 'Analyzing climate...');
         const response = await fetch(`${API_BASE}/climate-analysis?location=${encodeURIComponent(location)}&days=30`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -167,9 +202,11 @@ async function loadClimateAnalysis(location) {
         if (response.ok) {
             const data = await response.json();
             renderClimateAnalysis(data.data);
+            hideLoader('climateContainer');
         }
     } catch (error) {
         console.error('Error loading climate analysis:', error);
+        hideLoader('climateContainer');
     }
 }
 
