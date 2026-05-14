@@ -2,6 +2,26 @@ const API_BASE = '/api/v1/ai-disease';
 
 let selectedImage = null;
 
+function setStatusMessage(message, type = 'info') {
+    const existing = document.getElementById('statusMessage');
+    if (existing) existing.remove();
+
+    const card = document.querySelector('.card');
+    if (!card) return;
+
+    const status = document.createElement('div');
+    status.id = 'statusMessage';
+    status.style.cssText = `
+        margin-bottom: 1rem;
+        padding: 0.9rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        background: ${type === 'error' ? '#fee2e2' : type === 'success' ? '#d1fae5' : '#e0f2fe'};
+        color: ${type === 'error' ? '#991b1b' : type === 'success' ? '#065f46' : '#075985'};
+    `;
+    status.textContent = message;
+    card.insertBefore(status, card.children[1]);
+}
 function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -25,6 +45,7 @@ function handleImageUpload(event) {
 async function analyzeImage() {
     const cropType = document.getElementById('cropType').value;
     
+    const location = document.getElementById('location').value.trim();
     if (!cropType) {
         alert('Please select a crop type');
         return;
@@ -57,20 +78,22 @@ async function analyzeImage() {
             body: JSON.stringify({
                 image: imageBase64,
                 crop_type: cropType
-            })
+                crop_type: cropType,
+                location: location || null
         });
 
         if (response.ok) {
             const data = await response.json();
             renderResult(data.diagnosis, data.incident_id);
         } else {
+            setStatusMessage('Analysis completed successfully.', 'success');
             const errorData = await response.json();
             alert(`Error: ${errorData.message}`);
-        }
+            setStatusMessage(errorData.message || 'Unable to analyze image.', 'error');
     } catch (error) {
         console.error('Error analyzing image:', error);
         alert('Error analyzing image. Please try again.');
-    } finally {
+        setStatusMessage('Error analyzing image. Please try again.', 'error');
         document.getElementById('loadingCard').classList.add('hidden');
         document.getElementById('analyzeBtn').disabled = false;
     }
@@ -82,7 +105,12 @@ function renderResult(diagnosis, incidentId) {
     
     const resultClass = isHealthy ? 'result-healthy' : 'result-disease';
     const severityClass = `severity-${diagnosis.get('severity', 'LOW').toLowerCase()}`;
-    
+    const severityValue = (diagnosis.severity || 'LOW').toString().toLowerCase();
+    const severityClass = `severity-${severityValue}`;
+    const weatherRisk = diagnosis.weather_risk || 'Weather data unavailable';
+    const weatherSummary = diagnosis.weather_summary || 'No local weather data supplied';
+    const preventiveMeasures = Array.isArray(diagnosis.preventive_measures) ? diagnosis.preventive_measures : [];
+    const fertilizers = Array.isArray(diagnosis.suggested_fertilizers) ? diagnosis.suggested_fertilizers : [];
     container.innerHTML = `
         <div class="result-card ${resultClass}">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -139,6 +167,25 @@ function renderResult(diagnosis, incidentId) {
                 </div>
             ` : ''}
         </div>
+
+            <div class="advisory-grid">
+                <div class="advisory-item">
+                    <h4>Organic Solution</h4>
+                    <p>${diagnosis.organic_solution || 'Use crop-safe organic management practices.'}</p>
+                </div>
+                <div class="advisory-item">
+                    <h4>Chemical Solution</h4>
+                    <p>${diagnosis.chemical_solution || diagnosis.treatment || 'Consult an agronomist before spraying.'}</p>
+                </div>
+                <div class="advisory-item">
+                    <h4>Preventive Measures</h4>
+                    <p>${preventiveMeasures.length ? preventiveMeasures.join(', ') : (diagnosis.recommendation || 'Monitor the crop regularly.')}</p>
+                </div>
+                <div class="advisory-item">
+                    <h4>Suggested Fertilizers</h4>
+                    <p>${fertilizers.length ? fertilizers.join(', ') : 'Balanced NPK fertilizer'}</p>
+                </div>
+            </div>
     `;
     
     document.getElementById('resultCard').classList.remove('hidden');
