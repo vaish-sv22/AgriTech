@@ -18,13 +18,17 @@ def analyze_image(current_user):
         ), 400
 
     diagnosis = AIDiseaseDetectionService.analyze_crop_image(
-        data["image"], data["crop_type"]
+        data["image"], data["crop_type"], data.get("location")
     )
 
     if "error" in diagnosis:
         return jsonify({"status": "error", "message": diagnosis["error"]}), 500
 
-    location = {"latitude": data.get("latitude"), "longitude": data.get("longitude")}
+    location = {
+        "latitude": data.get("latitude"),
+        "longitude": data.get("longitude"),
+        "label": data.get("location"),
+    }
 
     incident = AIDiseaseDetectionService.save_diagnosis(
         user_id=current_user.id,
