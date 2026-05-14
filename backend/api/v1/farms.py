@@ -71,6 +71,9 @@ def get_farm_analytics(current_user, farm_id):
 def add_asset(current_user, farm_id):
     """Add equipment/assets to a farm's inventory"""
     data = request.get_json()
+    if not data or 'name' not in data or 'category' not in data:
+        return jsonify({'status': 'error', 'message': 'Name and category required'}), 400
+
     asset, error = FarmService.add_asset(
         farm_id=farm_id,
         name=data['name'],
