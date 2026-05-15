@@ -419,8 +419,17 @@ function setupEventListeners() {
     const createPostBtn = document.getElementById('createPostBtn');
     if (createPostBtn) {
         createPostBtn.addEventListener('click', () => {
-            document.getElementById('createPostModal').style.display = 'block';
+            const modal = document.getElementById('createPostModal');
+            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            createPostBtn.setAttribute('aria-expanded', 'true');
+
+            setTimeout(() => {
+                const firstField = document.getElementById('postTitle');
+                if (firstField) {
+                    firstField.focus();
+                }
+            }, 50);
         });
     }
 
@@ -429,6 +438,10 @@ function setupEventListeners() {
         closeCreateModal.addEventListener('click', () => {
             document.getElementById('createPostModal').style.display = 'none';
             document.body.style.overflow = 'auto';
+            if (createPostBtn) {
+                createPostBtn.setAttribute('aria-expanded', 'false');
+                createPostBtn.focus();
+            }
         });
     }
 
@@ -443,6 +456,23 @@ function setupEventListeners() {
         if (event.target === document.getElementById('createPostModal')) {
             document.getElementById('createPostModal').style.display = 'none';
             document.body.style.overflow = 'auto';
+            if (createPostBtn) {
+                createPostBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            const modal = document.getElementById('createPostModal');
+            if (modal && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                if (createPostBtn) {
+                    createPostBtn.setAttribute('aria-expanded', 'false');
+                    createPostBtn.focus();
+                }
+            }
         }
     });
 }
