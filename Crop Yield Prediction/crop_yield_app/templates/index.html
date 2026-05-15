@@ -329,97 +329,18 @@ p {
   }
 }
     </style>
-    </head>
-  <body>
-   <header class="sticky-header">
-  <div class="container header-content navbar">
-
-    <!-- Left: Logo -->
-    <a href="/" class="logo">
-      <img src="/images/logo.png" alt="AgriTech Logo">
-      <span class="logo-text">AgriTech</span>
-    </a>
-
-    <!-- Center: Navigation -->
-    <nav class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/blog.html">Blog</a>
-      <a href="/community_forum.html">Community Forum</a>
-      <a href="/faq.html">FAQ</a>
-      <a href="/news.html">News</a>
-    </nav>
-
-    <!-- Animated Sun/Moon Toggle -->
-    <button class="theme-toggle" type="button" id="themeToggle" title="Switch to dark mode"
-      aria-label="Switch to dark mode">
-      <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round">
-        <mask id="moon-mask">
-          <rect x="0" y="0" width="100%" height="100%" fill="white" />
-          <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
-        </mask>
-        <circle class="sun-core" cx="12" cy="12" r="7" fill="currentColor" mask="url(#moon-mask)" />
-        <g class="sun-rays" stroke="currentColor">
-          <line x1="12" y1="1" x2="12" y2="3" />
-          <line x1="12" y1="21" x2="12" y2="23" />
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-          <line x1="1" y1="12" x2="3" y2="12" />
-          <line x1="21" y1="12" x2="23" y2="12" />
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-        </g>
-      </svg>
-    </button>
-
-  </div>
-</header>
-
-
-    <main class="main-layout container">
-      <div class="content-left">
-        
-        <div class="header">
-          <h1>Optimal Crop yield prediction 🎯</h1>
-          <p>
-            Based on your provided soil and climate data, the following crop is
-            highly recommended for maximum yield and sustainability.
-          </p>
-        </div>
-
-html::-webkit-scrollbar-thumb:hover {
-  background: #94ffab;
-}
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 1024px) {
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .result-value {
-        font-size: 1.8rem;
-      }
-
-      .action-buttons-group {
-        flex-direction: column;
-      }
-
-      .nav-links {
-        display: none;
-      }
-    }
-  </style>
 </head>
 
-<body>
+<body
+  data-crop="{{ crop|default('') }}"
+  data-n="{{ params.N|default('') }}"
+  data-p="{{ params.P|default('') }}"
+  data-k="{{ params.K|default('') }}"
+  data-temperature="{{ params.temperature|default('') }}"
+  data-rainfall="{{ params.rainfall|default('') }}"
+  data-humidity="{{ params.humidity|default('') }}"
+  data-ph="{{ params.ph|default('') }}"
+>
   <header class="sticky-header">
     <div class="container header-content navbar">
 
@@ -506,11 +427,7 @@ html::-webkit-scrollbar-thumb:hover {
       </div>
 
       <div class="action-buttons-group">
-        <form method="post" action="/download_report">
-
-          <input type="hidden" name="{{ key }}" value="{{ value }}" />
-
-          <input type="hidden" name="crop" value="{{ crop }}" />
+        <form method="post" action="/download_report" id="downloadReportForm">
 
           <button type="submit" class="btn btn-primary"
             onclick="this.classList.add('loading'); this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Generating PDF...';">
@@ -710,42 +627,124 @@ for (let i = 0; i < circleCount; i++) {
     animateCursor();
   </script>
   <script>
-    /*
-    Frontend-only replacement for Jinja placeholders
-    Reads values from URL query params
-    Example URL:
-    result.html?crop=Wheat&temperature=25&humidity=60&rainfall=120&ph=6.5&N=90&P=40&K=50
-    */
+    (function () {
+      function isTemplateToken(value) {
+        return typeof value === "string" && value.includes("{{") && value.includes("}}");
+      }
 
-    function getParam(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
+      function cleanValue(value) {
+        if (value === null || value === undefined) return "";
+        const text = String(value).trim();
+        return isTemplateToken(text) ? "" : text;
+      }
 
-    // Set dynamic values
-    document.getElementById("predictedCrop").textContent =
-      (getParam("crop") || "Recommended Crop").toUpperCase();
+      function getParamInsensitive(name) {
+        const params = new URLSearchParams(window.location.search);
+        const target = String(name).toLowerCase();
+        for (const [key, value] of params.entries()) {
+          if (String(key).toLowerCase() === target) {
+            return cleanValue(value);
+          }
+        }
+        return "";
+      }
 
-    document.getElementById("temperatureValue").textContent =
-      getParam("temperature") || "--";
+      function getBodyData(name) {
+        const value = document.body && document.body.dataset ? document.body.dataset[name] : "";
+        return cleanValue(value);
+      }
 
-    document.getElementById("humidityValue").textContent =
-      getParam("humidity") || "--";
+      function resolveValue(options) {
+        const keys = options.queryKeys || [];
+        for (const key of keys) {
+          const queryValue = getParamInsensitive(key);
+          if (queryValue) return queryValue;
+        }
 
-    document.getElementById("rainfallValue").textContent =
-      getParam("rainfall") || "--";
+        if (options.bodyKey) {
+          const bodyValue = getBodyData(options.bodyKey);
+          if (bodyValue) return bodyValue;
+        }
 
-    document.getElementById("phValue").textContent =
-      getParam("ph") || "--";
+        return options.fallback || "--";
+      }
 
-    document.getElementById("nValue").textContent =
-      getParam("N") || "--";
+      function toTitleCase(text) {
+        return String(text || "")
+          .toLowerCase()
+          .replace(/\b\w/g, function (match) { return match.toUpperCase(); });
+      }
 
-    document.getElementById("pValue").textContent =
-      getParam("P") || "--";
+      const resolved = {
+        crop: resolveValue({ queryKeys: ["crop", "Crop"], bodyKey: "crop", fallback: "Recommended Crop" }),
+        temperature: resolveValue({ queryKeys: ["temperature", "temp"], bodyKey: "temperature" }),
+        humidity: resolveValue({ queryKeys: ["humidity"], bodyKey: "humidity" }),
+        rainfall: resolveValue({ queryKeys: ["rainfall"], bodyKey: "rainfall" }),
+        ph: resolveValue({ queryKeys: ["ph", "pH"], bodyKey: "ph" }),
+        N: resolveValue({ queryKeys: ["N", "n"], bodyKey: "n" }),
+        P: resolveValue({ queryKeys: ["P", "p"], bodyKey: "p" }),
+        K: resolveValue({ queryKeys: ["K", "k"], bodyKey: "k" })
+      };
 
-    document.getElementById("kValue").textContent =
-      getParam("K") || "--";
+      document.getElementById("predictedCrop").textContent = toTitleCase(resolved.crop);
+      document.getElementById("temperatureValue").textContent = resolved.temperature;
+      document.getElementById("humidityValue").textContent = resolved.humidity;
+      document.getElementById("rainfallValue").textContent = resolved.rainfall;
+      document.getElementById("phValue").textContent = resolved.ph;
+      document.getElementById("nValue").textContent = resolved.N;
+      document.getElementById("pValue").textContent = resolved.P;
+      document.getElementById("kValue").textContent = resolved.K;
+
+      const placeholderValueMap = {
+        Crop: toTitleCase(resolved.crop),
+        "params.N": resolved.N,
+        "params.P": resolved.P,
+        "params.K": resolved.K,
+        "params.temperature": resolved.temperature,
+        "params.rainfall": resolved.rainfall,
+        "params.humidity": resolved.humidity,
+        "params.ph": resolved.ph
+      };
+
+      function replaceTemplateTokens(text) {
+        if (!text || text.indexOf("{{") === -1) return text;
+
+        return text
+          .replace(/\{\{\s*Crop\s*\|\s*capitalize\s*\}\}/gi, placeholderValueMap.Crop)
+          .replace(/\{\{\s*params\.(N|P|K|temperature|rainfall|humidity|ph)\s*\}\}/g, function (_, key) {
+            return placeholderValueMap["params." + key] || "--";
+          });
+      }
+
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      let textNode = walker.nextNode();
+      while (textNode) {
+        textNode.nodeValue = replaceTemplateTokens(textNode.nodeValue);
+        textNode = walker.nextNode();
+      }
+
+      document.querySelectorAll("[value], [title], [placeholder]").forEach(function (element) {
+        ["value", "title", "placeholder"].forEach(function (attr) {
+          const existing = element.getAttribute(attr);
+          if (existing && existing.indexOf("{{") !== -1) {
+            element.setAttribute(attr, replaceTemplateTokens(existing));
+          }
+        });
+      });
+
+      const downloadForm = document.getElementById("downloadReportForm");
+      if (downloadForm) {
+        ["crop", "temperature", "humidity", "rainfall", "ph", "N", "P", "K"].forEach(function (key) {
+          const value = resolved[key];
+          if (!value || value === "--") return;
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = value;
+          downloadForm.appendChild(input);
+        });
+      }
+    })();
   </script>
 
 </body>

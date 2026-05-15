@@ -12,7 +12,13 @@
     {
       "query": "who is your developer",
       "response": "I was created by AgriTech, but this project also has amazing contributors like Aman Singh. 🌟 Aman is an Open Source Contributor and currently contributing in programs like GSSoC'25. You can connect with him on LinkedIn: https://www.linkedin.com/in/aman-singh-dyhardx"
-    },
+  ],
+  "fallback_responses": [
+    "I can still help even if I do not have an exact match. Try asking about crop recommendation, irrigation, soil health, or plant diseases.",
+    "I could not find a precise answer yet. You can ask me about weather impact, pest control, fertilizers, or seasonal crop planning.",
+    "Let us refine your question. Mention your crop, region, and problem so I can give more useful guidance."
+  ]
+}
     {
       "query": "good morning",
       "response": "Good morning! ☀️ It's a great day for farming! How can I help you grow your agricultural knowledge today?"
