@@ -436,6 +436,11 @@ class FavoritesPage {
                             <p class="card-description">${blog.description}</p>
 
                             <div class="favorite-item-actions">
+                                <a href="blog.html?id=${encodeURIComponent(blog.id)}"
+                                   class="read-more-btn"
+                                   aria-label="Read more about ${blog.title}">
+                                    Read More
+                                </a>
                                 <button class="remove-btn"
                                         onclick="removeFavorite('${blog.id}')"
                                         aria-label="Remove ${blog.title} from favorites">
