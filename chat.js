@@ -13,6 +13,15 @@ const RULE_BASED_FALLBACKS = {
 const DEFAULT_FALLBACK_MESSAGE =
   "I’m currently running in offline mode. Here’s some general advice: focus on soil health, proper irrigation, and timely crop care.";
 
+const FALLBACK_MESSAGES = [
+  "I did not fully catch that, but I can still help. Try asking about crop diseases, irrigation planning, or soil health.",
+  "I could not find an exact answer yet. Ask me about crop recommendation, weather impact, pest control, or fertilizers.",
+  "Let us try a more specific question. You can ask: best crops for your state, disease prevention, or water-saving techniques."
+];
+
+const MIN_TYPING_DELAY_MS = 700;
+const MAX_TYPING_DELAY_MS = 2200;
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- BUG FIX: DYNAMIC COPYRIGHT YEAR ---
   const yearElement = document.getElementById('current-year');
@@ -77,6 +86,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const getRandomFallbackMessage = () => {
+    const randomIndex = Math.floor(Math.random() * FALLBACK_MESSAGES.length);
+    return FALLBACK_MESSAGES[randomIndex] || DEFAULT_FALLBACK_MESSAGE;
+  };
+
+  const getRuleBasedFallback = (input) => {
+    const lowerInput = (input || '').toLowerCase();
+    for (const keyword in RULE_BASED_FALLBACKS) {
+      if (lowerInput.includes(keyword)) {
+        return RULE_BASED_FALLBACKS[keyword];
+      }
+    }
+    return getRandomFallbackMessage();
+  };
+
+  const sanitizeReply = (reply) => {
+    const normalized = String(reply || '').trim();
+    if (!normalized) return '';
+
+    const weakReplies = [
+      'i do not know',
+      'cannot help',
+      'unable to process',
+      'something went wrong',
+      'try again'
+    ];
+
+    const normalizedLower = normalized.toLowerCase();
+    const isWeak = weakReplies.some((item) => normalizedLower.includes(item));
+    return isWeak ? '' : normalized;
+  };
+
+  const computeTypingDelay = (userInput, botReply, hasImage) => {
+    const inputLength = (userInput || '').length;
+    const replyLength = (botReply || '').length;
+    const base = hasImage ? 1000 : 750;
+    const dynamic = Math.min(900, Math.floor((inputLength + replyLength) * 2.2));
+    return Math.max(MIN_TYPING_DELAY_MS, Math.min(MAX_TYPING_DELAY_MS, base + dynamic));
+  };
+
+  const resolveLocalResponse = async (input) => {
+    try {
+      const details = await jsonChatbot.getResponseDetails(input);
+      if (details && details.response) {
+        return details.response;
+      }
+    } catch (error) {
+      console.warn('Local response matching failed:', error);
+    }
+    return getRuleBasedFallback(input);
+  };
+
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const input = chatInput.value.trim();
@@ -92,13 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
     chatInput.value = '';
     chatInput.style.height = 'auto';
 
-    const typing = showTyping();
+    const typing = showTyping(window.selectedImageBase64 ? 'AgriBot is analyzing your image' : 'AgriBot is typing');
     toggleInput(true);
+    const startedAt = Date.now();
 
     try {
       let reply = "";
 
       if (USE_AI_FALLBACK && (window.selectedImageBase64 || input)) {
+        setTypingText(typing, window.selectedImageBase64 ? 'Checking crop and disease patterns...' : 'Understanding your question...');
+
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -110,57 +176,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok) {
           const data = await res.json();
-          reply = data.reply || DEFAULT_FALLBACK_MESSAGE;
-        } else {
-          // Rule-based fallback on API failure
-          const lowerInput = input.toLowerCase();
-          reply = DEFAULT_FALLBACK_MESSAGE;
-
-          for (const keyword in RULE_BASED_FALLBACKS) {
-            if (lowerInput.includes(keyword)) {
-              reply = RULE_BASED_FALLBACKS[keyword];
-              break;
-            }
+          reply = sanitizeReply(data.reply);
+          if (!reply) {
+            reply = await resolveLocalResponse(input);
           }
+        } else {
+          reply = await resolveLocalResponse(input);
         }
       } else {
-        reply = await jsonChatbot.getResponse(input);
+        reply = await resolveLocalResponse(input);
       }
 
-      setTimeout(() => {
-        displayMessage(reply, 'bot');
-        if (typeof clearImage === "function") clearImage();
-      }, 600);
+      setTypingText(typing, 'Finalizing answer...');
+      const typingDelay = computeTypingDelay(input, reply, Boolean(window.selectedImageBase64));
+      const elapsed = Date.now() - startedAt;
+      if (elapsed < typingDelay) {
+        await delay(typingDelay - elapsed);
+      }
+
+      displayMessage(reply || DEFAULT_FALLBACK_MESSAGE, 'bot');
+      if (typeof clearImage === "function") clearImage();
 
     } catch (error) {
       console.error('Chatbot Error:', error);
-
-      const lowerInput = input.toLowerCase();
-      let fallbackReply = DEFAULT_FALLBACK_MESSAGE;
-
-      for (const keyword in RULE_BASED_FALLBACKS) {
-        if (lowerInput.includes(keyword)) {
-          fallbackReply = RULE_BASED_FALLBACKS[keyword];
-          break;
-        }
-      }
-
+      const fallbackReply = await resolveLocalResponse(input);
       displayMessage(fallbackReply, 'bot');
     } finally {
-      setTimeout(() => {
-        typing.remove();
-        toggleInput(false);
-      }, 800);
+      typing.remove();
+      toggleInput(false);
     }
   });
 
-  const showTyping = () => {
+  const showTyping = (labelText) => {
     const typing = document.createElement('div');
     typing.className = 'typing-indicator';
-    typing.innerHTML = `<div>AgriBot is typing</div><span></span><span></span><span></span>`;
+    typing.innerHTML = `<div class="typing-text">${escapeHtml(labelText || 'AgriBot is typing')}</div><span></span><span></span><span></span>`;
     chatWindow.appendChild(typing);
     chatWindow.scrollTop = chatWindow.scrollHeight;
     return typing;
+  };
+
+  const setTypingText = (typingElement, text) => {
+    if (!typingElement) return;
+    const textElement = typingElement.querySelector('.typing-text');
+    if (textElement) {
+      textElement.textContent = text;
+    }
   };
 
   const toggleInput = (disable) => {
