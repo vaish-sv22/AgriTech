@@ -126,7 +126,7 @@ body {
   white-space: nowrap;
 }
 
-.nav-page-title h1 {
+.nav-page-title-text {
   color: var(--text-dark);
   font-size: clamp(0.95rem, 1.6vw, 1.15rem);
   font-weight: 700;
@@ -1025,7 +1025,7 @@ body {
     display: none;
   }
 
-  .nav-page-title h1 {
+  .nav-page-title-text {
     white-space: normal;
     font-size: 0.9rem;
     line-height: 1.25;
@@ -1101,7 +1101,7 @@ body {
     display: none;
   }
 
-  .nav-page-title h1 {
+  .nav-page-title-text {
     font-size: 0.82rem;
     max-width: 145px;
   }
