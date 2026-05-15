@@ -60,40 +60,47 @@
     </div>
   </div>
 
-  <!-- Enhanced Navbar -->
+  <!-- Compact Navbar -->
   <header class="navbar">
     <div class="nav-container">
-      <a href="main.html" class="logo">
-        <img src="images/logo.png" alt="AgriTech">
-        <span>AgriTech</span>
-      </a>
+      <div class="nav-brand">
+        <a href="main.html" class="logo" aria-label="Go to AgriTech dashboard">
+          <img src="images/logo.png" alt="AgriTech">
+          <span>AgriTech</span>
+        </a>
+        <div class="nav-page-title">
+          <span class="nav-page-kicker">Plant Health AI</span>
+          <h1>Plant Disease Detection</h1>
+        </div>
+      </div>
 
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="main.html">Dashboard</a>
-        <a href="feed-back.html">Feedback</a>
-      </nav>
+      <div class="nav-actions">
+        <a href="main.html" class="back-btn" aria-label="Back to Main dashboard">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          <span>Back to Main</span>
+        </a>
 
-      <button class="theme-toggle" type="button" id="themeToggle" title="Switch theme" aria-label="Switch theme">
-        <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <mask id="moon-mask">
-            <rect x="0" y="0" width="100%" height="100%" fill="white" />
-            <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
-          </mask>
-          <circle class="sun-core" cx="12" cy="12" r="7" fill="currentColor" mask="url(#moon-mask)" />
-          <g class="sun-rays" stroke="currentColor">
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </g>
-        </svg>
-      </button>
+        <button class="theme-toggle" type="button" id="themeToggle" title="Switch theme" aria-label="Switch theme">
+          <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <mask id="moon-mask">
+              <rect x="0" y="0" width="100%" height="100%" fill="white" />
+              <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
+            </mask>
+            <circle class="sun-core" cx="12" cy="12" r="7" fill="currentColor" mask="url(#moon-mask)" />
+            <g class="sun-rays" stroke="currentColor">
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
