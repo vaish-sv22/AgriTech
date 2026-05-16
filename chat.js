@@ -1,4 +1,5 @@
 const USE_AI_FALLBACK = true;
+const CHAT_HISTORY_STORAGE_KEY = 'agritech_chat_history';
 
 // Rule-based fallback responses (offline mode)
 const RULE_BASED_FALLBACKS = {
@@ -33,9 +34,85 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const sendBtn = document.getElementById('send-button');
+  const clearChatBtn = document.getElementById('clear-chat-btn');
 
   // Initialize JSON-based chatbot
   const jsonChatbot = new JSONChatbot();
+  let chatHistory = [];
+
+  const persistChatHistory = () => {
+    try {
+      localStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(chatHistory));
+    } catch (error) {
+      console.warn('Unable to persist chat history:', error);
+    }
+  };
+
+  const loadChatHistory = () => {
+    try {
+      const rawHistory = localStorage.getItem(CHAT_HISTORY_STORAGE_KEY);
+      const parsedHistory = rawHistory ? JSON.parse(rawHistory) : [];
+      return Array.isArray(parsedHistory)
+        ? parsedHistory.filter((entry) => entry && typeof entry.messageContent === 'string' && (entry.sender === 'user' || entry.sender === 'bot'))
+        : [];
+    } catch (error) {
+      console.warn('Unable to load chat history:', error);
+      return [];
+    }
+  };
+
+  const saveMessageToHistory = (messageContent, sender, time) => {
+    chatHistory.push({
+      messageContent,
+      sender,
+      time: time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    persistChatHistory();
+  };
+
+  const renderSavedHistory = () => {
+    if (!chatHistory.length) return false;
+
+    const welcomeMessage = chatWindow.querySelector('.welcome-message');
+    if (welcomeMessage) {
+      welcomeMessage.remove();
+    }
+
+    chatHistory.forEach(({ messageContent, sender, time }) => {
+      displayMessage(messageContent, sender, time);
+    });
+
+    return true;
+  };
+
+  const clearChatHistory = () => {
+    chatHistory = [];
+    persistChatHistory();
+    chatWindow.innerHTML = `
+      <div class="welcome-message">
+        <h3><i class="fas fa-leaf"></i> Welcome to AgriTech Assistant!</h3>
+        <p>
+          I'm powered by Google Gemini AI to help with all your farming
+          questions and guide you through AgriTech platform features.
+        </p>
+
+        <div class="suggestions">
+          <div class="suggestion">What can I do on AgriTech?</div>
+          <div class="suggestion">How to use crop recommendation?</div>
+          <div class="suggestion">Best crops for this season?</div>
+          <div class="suggestion">Organic pest control methods</div>
+          <div class="suggestion">Water conservation techniques</div>
+          <div class="suggestion">Soil health improvement</div>
+          <div class="suggestion">How to use crop disease detection?</div>
+          <div class="suggestion">How does labour scheduling work?</div>
+          <div class="suggestion">How to access farmer forum?</div>
+          <div class="suggestion">How to check weather updates?</div>
+          <div class="suggestion">Government schemes for farmers</div>
+          <div class="suggestion">Fertilizer recommendations</div>
+        </div>
+      </div>
+    `;
+  };
 
   // HTML escaping function to prevent XSS
   function escapeHtml(text) {
@@ -48,11 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Secure message rendering
-  function displayMessage(messageContent, sender) {
+  function displayMessage(messageContent, sender, timeOverride, shouldPersist = true) {
     const messageElement = document.createElement('div');
     messageElement.className = `message ${sender}`;
 
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const time = timeOverride || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const name = sender === 'user' ? 'You' : 'AgriBot';
 
     const headerDiv = document.createElement('div');
@@ -77,6 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chatWindow.appendChild(messageElement);
     chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    if (shouldPersist && !timeOverride) {
+      saveMessageToHistory(messageContent, sender, time);
+    }
   }
 
   document.addEventListener('click', (e) => {
@@ -237,13 +318,23 @@ document.addEventListener('DOMContentLoaded', () => {
        .replace(/`(.*?)`/g, '<code>$1</code>');
 
   setTimeout(() => {
-    displayMessage(
-      "Hello! 🌱 I'm AgriBot, your AI assistant for AgriTech platform and farming guidance. I can help you navigate our tools, answer agriculture questions, recommend crops based on your region and season, and provide farming advice. How can I assist you today?",
-      'bot'
-    );
+    if (!renderSavedHistory()) {
+      displayMessage(
+        "Hello! 🌱 I'm AgriBot, your AI assistant for AgriTech platform and farming guidance. I can help you navigate our tools, answer agriculture questions, recommend crops based on your region and season, and provide farming advice. How can I assist you today?",
+        'bot',
+        undefined,
+        false
+      );
+    }
   }, 500);
 
+  if (clearChatBtn) {
+    clearChatBtn.addEventListener('click', clearChatHistory);
+  }
+
   chatInput.focus();
+
+  chatHistory = loadChatHistory();
 });
 
 // 🌙 GLOBAL DARK/LIGHT MODE FIX (Mobile + Desktop Toggle)

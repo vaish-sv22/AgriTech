@@ -359,8 +359,21 @@ document.addEventListener('DOMContentLoaded', function () {
         displayPosts();
         setupEventListeners();
         updateFavoriteCounter();
+        openBlogFromQuery();
     }, 50);
 });
+
+function openBlogFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const blogId = params.get('id');
+
+    if (!blogId) return;
+
+    const post = blogPosts.find((item) => item.id === blogId);
+    if (!post) return;
+
+    openModal(blogId);
+}
 
 
 
