@@ -1585,6 +1585,48 @@
             </div>
         </div>
 
+        <!-- Why This Crop Explanation Cards -->
+        <section class="why-crop-section" style="margin-top:2rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                <h2 style="color:var(--text-primary);margin:0;">Why This Crop?</h2>
+                <div style="margin-left:auto;">
+                    <select id="whyCropFilter" aria-label="Filter crop explanations" style="padding:8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);">
+                        <option value="all">Show all crops</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="maize">Maize</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="features-grid" id="whyCropCards" style="margin-top:1rem;">
+                <div class="feature-card" data-crop="wheat">
+                    <div class="feature-icon"><i class="fas fa-seedling"></i></div>
+                    <h3>Wheat</h3>
+                    <p>Wheat performs well in well-drained loamy soils; requires moderate rainfall. Recommended for cooler seasons and rotational cropping with legumes to improve soil nitrogen.</p>
+                </div>
+
+                <div class="feature-card" data-crop="rice">
+                    <div class="feature-icon"><i class="fas fa-water"></i></div>
+                    <h3>Rice</h3>
+                    <p>Rice thrives in flooded or saturated conditions; needs high water availability and warm temperatures. Suitable for paddy fields and irrigated plains.</p>
+                </div>
+
+                <div class="feature-card" data-crop="maize">
+                    <div class="feature-icon"><i class="fas fa-fire-alt"></i></div>
+                    <h3>Maize</h3>
+                    <p>Maize prefers fertile, well-drained soils and a warm growing season. It is water-responsive and benefits from balanced N-P-K fertilization.</p>
+                </div>
+
+                <div class="feature-card" data-crop="soybean">
+                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Soybean</h3>
+                    <p>Soybean fixes atmospheric nitrogen and is an excellent rotational crop. Prefers warm conditions and moderately fertile soils.</p>
+                </div>
+            </div>
+        </section>
+
         <div class="dashboard-controls">
             <button class="control-btn active" data-view="overview" onclick="switchView('overview')">
                 <i class="fas fa-tachometer-alt"></i> Overview
@@ -2436,6 +2478,7 @@
         }
         animateCursor();
     </script>
+    <script src="/static/js/why-crop.js"></script>
     <script src="theme.js"></script>
     <script src="auth.js"></script>
 
