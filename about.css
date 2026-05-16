@@ -590,7 +590,6 @@ html[data-theme="dark"] .footer {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
-    min-width: -webkit-fill-available;
 
   .theme-label {
     min-width: 35px;
