@@ -299,11 +299,11 @@
       display: none;
     }
 
-    /* Scroll To Top Button */
-    .scroll-top-btn {
+    /* Back To Top Button */
+    .back-to-top-btn {
         position: fixed;
-        bottom: 25px;
-        right: 25px;
+      bottom: 30px;
+      right: 30px;
         width: 52px;
         height: 52px;
         border-radius: 50%;
@@ -323,13 +323,13 @@
         z-index: 9999;
     }
 
-    .scroll-top-btn.show {
+      .back-to-top-btn.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
 
-    .scroll-top-btn:hover {
+      .back-to-top-btn:hover {
         background: #27ae60;
         transform: scale(1.1);
     }
@@ -508,27 +508,27 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("current-year").textContent =
     new Date().getFullYear();
 </script>
-<button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+<button id="backToTopBtn" class="back-to-top-btn" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
 </button>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const backToTopBtn = document.getElementById("backToTopBtn");
 
-    if (!scrollTopBtn) return;
+  if (!backToTopBtn) return;
 
     // Monitor Scroll Position
     window.addEventListener("scroll", function () {
         // Show button after scrolling down 300px
         if (window.pageYOffset > 300) {
-            scrollTopBtn.classList.add("show");
+      backToTopBtn.classList.add("show");
         } else {
-            scrollTopBtn.classList.remove("show");
+      backToTopBtn.classList.remove("show");
         }
     });
 
     // Scroll to top on click
-    scrollTopBtn.addEventListener("click", function () {
+  backToTopBtn.addEventListener("click", function () {
         window.scrollTo({
             top: 0,
             behavior: "smooth"
