@@ -37,6 +37,7 @@ from backend.utils.i18n import t
 from routes.irrigation_routes import irrigation_bp
 
 from server.Routes.rotation_routes import rotation_bp
+from agri_utils import recommend_fertilizer
 
 
 # Set up logging
@@ -206,6 +207,27 @@ def predict_crop_async():
             'task_id': task.id,
             'message': 'Task submitted successfully. Poll /api/task/<task_id> for results.'
         }), 202
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/api/recommend/fertilizer', methods=['POST'])
+@token_required
+@roles_required('farmer', 'admin', 'expert')
+def recommend_fertilizer_endpoint():
+    """Return fertilizer recommendation based on soil pH, crop and optional weather."""
+    try:
+        data = request.get_json(force=True)
+        soil_ph = data.get('soil_ph')
+        crop_type = data.get('crop_type')
+        growth_stage = data.get('growth_stage')
+        recent_weather = data.get('recent_weather')
+
+        if soil_ph is None or not crop_type:
+            return jsonify({'status': 'error', 'message': 'soil_ph and crop_type are required'}), 400
+
+        rec = recommend_fertilizer(float(soil_ph), crop_type, growth_stage, recent_weather)
+        return jsonify({'status': 'success', 'recommendation': rec}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 

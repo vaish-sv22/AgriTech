@@ -5,6 +5,7 @@ Provides crop data, calculations, and helper functions
 """
 
 import math
+import os
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple, Union
 import json
@@ -395,6 +396,99 @@ def categorize_rainfall(rainfall: float) -> str:
         return "heavy"
     else:
         return "very_heavy"
+
+
+def recommend_fertilizer(soil_ph: float, crop_type: str, growth_stage: str = None, recent_weather: dict = None) -> dict:
+    """
+    Recommend a fertilizer based on simple rule-based heuristics and optional ML model if available.
+
+    Args:
+        soil_ph: soil pH value
+        crop_type: crop key from CROP_DATABASE
+        growth_stage: optional growth stage (e.g., 'vegetative', 'flowering')
+        recent_weather: optional dict with keys like 'rainfall' and 'temperature'
+
+    Returns:
+        dict: {fertilizer_name, NPK_ratio, application_rate_kg_per_ha (range), notes, confidence}
+    """
+    # Normalize inputs
+    crop_key = crop_type.lower() if isinstance(crop_type, str) else None
+
+    # Default recommendation
+    default = {
+        "fertilizer_name": "balanced NPK",
+        "NPK_ratio": "10-26-26",
+        "application_rate_kg_per_hectare": FERTILIZER_DATABASE.get('npk_complex', {}).get('application_rate_kg_per_hectare', (100, 150)),
+        "notes": ["Soil test recommended", "Split applications where appropriate"],
+        "confidence": 0.4
+    }
+
+    # If we have crop specific guidance
+    crop = CROP_DATABASE.get(crop_key)
+    if not crop:
+        return default
+
+    # Start with crop nutrient profile
+    nutrients = crop.get('nutrients_required', {})
+
+    # Simple rule-based mapping
+    if nutrients.get('nitrogen') == 'high':
+        base = FERTILIZER_DATABASE.get('urea')
+    elif nutrients.get('phosphorus') == 'high':
+        base = FERTILIZER_DATABASE.get('dap')
+    elif nutrients.get('potassium') == 'high':
+        base = FERTILIZER_DATABASE.get('mop')
+    else:
+        base = FERTILIZER_DATABASE.get('npk_complex')
+
+    notes = []
+
+    # pH adjustments
+    if soil_ph < 5.5:
+        notes.append('Acidic soil: consider liming before heavy P applications')
+    elif soil_ph > 8.0:
+        notes.append('Alkaline soil: monitor micronutrients (Fe, Zn)')
+
+    # Weather-based adjustments
+    if recent_weather:
+        rainfall = recent_weather.get('rainfall', 0)
+        if rainfall and rainfall > 100:
+            notes.append('Heavy recent rainfall: delay application to avoid leaching')
+
+    recommendation = {
+        "fertilizer_name": base.get('name'),
+        "NPK_ratio": ",".join(str(v) for v in base.get('nutrient_content', {}).values()),
+        "application_rate_kg_per_hectare": base.get('application_rate_kg_per_hectare'),
+        "notes": notes or base.get('precautions', []),
+        "confidence": 0.65
+    }
+
+    # Placeholder: try to load ML model for refined recommendation
+    model_path = os.path.join(os.getcwd(), 'models', 'fertilizer_model.pkl') if 'os' in globals() else None
+    try:
+        if model_path and os.path.exists(model_path):
+            import pickle
+            with open(model_path, 'rb') as f:
+                model = pickle.load(f)
+            features = [soil_ph]
+            # extend features with simple encodings
+            features.append(1 if nutrients.get('nitrogen') == 'high' else 0)
+            pred = model.predict([features])
+            # Expect model to return index into FERTILIZER_DATABASE keys
+            key = pred[0]
+            if key in FERTILIZER_DATABASE:
+                chosen = FERTILIZER_DATABASE[key]
+                recommendation.update({
+                    "fertilizer_name": chosen.get('name'),
+                    "NPK_ratio": ",".join(str(v) for v in chosen.get('nutrient_content', {}).values()),
+                    "application_rate_kg_per_hectare": chosen.get('application_rate_kg_per_hectare'),
+                    "confidence": 0.9
+                })
+    except Exception:
+        # If any failure with ML model, silently fall back to rule-based recommendation
+        pass
+
+    return recommendation
 
 
 # ============================================================
