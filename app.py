@@ -553,10 +553,18 @@ if __name__ == '__main__':
 @app.errorhandler(404)
 def not_found(error):
     logger.warning("404 Error: %s", request.path)
-    return jsonify({
-        "status" : "error",
-        "message" : t('error_user_not_found') # Using User Not Found as generic for 404 in this context
-    }),404
+    wants_json = (
+        request.path.startswith('/api')
+        or request.accept_mimetypes.best_match(['text/html', 'application/json']) == 'application/json'
+    )
+
+    if wants_json:
+        return jsonify({
+            "status": "error",
+            "message": t('error_user_not_found')
+        }), 404
+
+    return render_template('404.html', requested_path=request.path), 404
 
 @app.errorhandler(500)
 def internal_error(error):
