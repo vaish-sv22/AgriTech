@@ -50,6 +50,55 @@
         bottom: 100px !important; /* Avoid overlap with FAB */
     }
 }
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-toggle {
+  background: var(--light-green);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+}
+
+/* Theme Toggle Icons */
+.sun-icon,
+.moon-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 </style>
   </head>
 <body>
@@ -327,14 +376,55 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     if (!themeToggle) return;
 
+    const themeLabel = themeToggle.querySelector('.theme-label');
+    const themeIcon = themeToggle.querySelector('i');
+
+    function updateThemeUI(theme) {
+
+        if (themeLabel) {
+            themeLabel.textContent =
+                theme === 'dark' ? 'Dark' : 'Light';
+        }
+
+        if (themeIcon) {
+            themeIcon.className =
+                theme === 'dark'
+                ? 'fas fa-sun'
+                : 'fas fa-moon';
+        }
+    }
+
+    const savedTheme =
+        localStorage.getItem('agritech-theme') || 'light';
+
+    document.documentElement.setAttribute(
+        'data-theme',
+        savedTheme
+    );
+
+    updateThemeUI(savedTheme);
+
     themeToggle.addEventListener('click', () => {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', next);
-        const themeLabel = document.querySelector('.theme-label');
-        if (themeLabel) themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
-        localStorage.setItem('agritech-theme', next);
+
+        const currentTheme =
+            document.documentElement.getAttribute('data-theme');
+
+        const newTheme =
+            currentTheme === 'dark'
+            ? 'light'
+            : 'dark';
+
+        document.documentElement.setAttribute(
+            'data-theme',
+            newTheme
+        );
+
+        localStorage.setItem(
+            'agritech-theme',
+            newTheme
+        );
+
+        updateThemeUI(newTheme);
     });
 }
 
