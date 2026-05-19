@@ -81,8 +81,8 @@
         </div>
     </section>
 
-    <div id="blogModal" class="modal">
-        <div class="modal-content">
+    <div id="blogModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalContent">
+      <div class="modal-content" tabindex="-1">
             <div class="modal-header">
               <div class="modal-header-top">
                 <h2 class="modal-title" id="modalTitle"></h2>
@@ -92,6 +92,7 @@
                       class="modal-favorite-btn"
                       id="modalFavoriteBtn"
                       aria-label="Add blog to favorites"
+                      aria-pressed="false"
                     >
                         <i class="far fa-heart" aria-hidden="true"></i>
                     </button>
