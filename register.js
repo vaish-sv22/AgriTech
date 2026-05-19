@@ -127,6 +127,44 @@ async function handleRegister(event) {
     password: document.getElementById("password").value,
   };
 
+  // Client-side validation before calling authManager
+  // Clear previous inline errors
+  document.getElementById('emailError').textContent = '';
+  document.getElementById('passwordError').textContent = '';
+  document.getElementById('confirmPasswordError').textContent = '';
+
+  const pwd = formData.password;
+  const confirmPwd = document.getElementById('confirmPassword').value;
+
+  // Basic email validity via DOM API
+  const emailInput = document.getElementById('email');
+  if (!emailInput.checkValidity()) {
+    document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+    emailInput.classList.add('error');
+    registerBtn.classList.remove('loading');
+    registerText.textContent = 'Create Account';
+    registerBtn.disabled = false;
+    return;
+  }
+
+  if (!pwd || pwd.length < 8) {
+    document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long.';
+    document.getElementById('password').classList.add('error');
+    registerBtn.classList.remove('loading');
+    registerText.textContent = 'Create Account';
+    registerBtn.disabled = false;
+    return;
+  }
+
+  if (pwd !== confirmPwd) {
+    document.getElementById('confirmPasswordError').textContent = "Passwords don't match.";
+    document.getElementById('confirmPassword').classList.add('error');
+    registerBtn.classList.remove('loading');
+    registerText.textContent = 'Create Account';
+    registerBtn.disabled = false;
+    return;
+  }
+
   const result = await window.authManager.register(formData);
 
   if (result.success) {
