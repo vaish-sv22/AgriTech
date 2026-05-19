@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-  const savedTheme = localStorage.getItem("agritech-theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About AgriTech</title>
@@ -307,34 +303,6 @@
         background: #27ae60;
         transform: scale(1.1);
     }
-
-    /* ===== DARK MODE FIX ===== */
-
-[data-theme="dark"] body {
-  background: #0f172a;
-  color: #f8fafc;
-}
-
-[data-theme="dark"] .card {
-  background: #1e293b;
-  color: #f8fafc;
-}
-
-[data-theme="dark"] .hero-section h1,
-[data-theme="dark"] .card h2 {
-  color: #4ade80;
-}
-
-[data-theme="dark"] .hero-subtitle,
-[data-theme="dark"] .card p,
-[data-theme="dark"] li {
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .link {
-  color: #4ade80;
-}
-
 </style>
 <!-- Cursor Trail -->
 <div class="circle-container" id="cursorTrail"></div>
@@ -455,55 +423,18 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     if (!themeToggle) return;
 
-    const themeLabel = themeToggle.querySelector('.theme-label');
-    const themeIcon = themeToggle.querySelector('i');
-
-    function updateThemeUI(theme) {
-
-        if (themeLabel) {
-            themeLabel.textContent =
-                theme === 'dark' ? 'Dark' : 'Light';
-        }
-
-        if (themeIcon) {
-            themeIcon.className =
-                theme === 'dark'
-                ? 'fas fa-sun'
-                : 'fas fa-moon';
-        }
-    }
-
-    const savedTheme =
-        localStorage.getItem('agritech-theme') || 'light';
-
-    document.documentElement.setAttribute(
-        'data-theme',
-        savedTheme
-    );
-
-    updateThemeUI(savedTheme);
-
     themeToggle.addEventListener('click', () => {
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme') || 'dark';
+        const next = current === 'light' ? 'dark' : 'light';
 
-        const currentTheme =
-            document.documentElement.getAttribute('data-theme');
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('agritech-theme', next);
 
-        const newTheme =
-            currentTheme === 'dark'
-            ? 'light'
-            : 'dark';
-
-        document.documentElement.setAttribute(
-            'data-theme',
-            newTheme
-        );
-
-        localStorage.setItem(
-            'agritech-theme',
-            newTheme
-        );
-
-        updateThemeUI(newTheme);
+        const themeLabel = document.querySelector('.theme-label');
+        if (themeLabel) {
+            themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
+        }
     });
 }
 
@@ -531,6 +462,8 @@ function initHamburgerMenu() {
 // Run after DOM loads
 document.addEventListener('DOMContentLoaded', () => {
     // Apply saved theme
+    const savedTheme = localStorage.getItem('agritech-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
 
     // Include navbar and initialize all parts
     includeHTML(() => {
