@@ -706,6 +706,7 @@
             border-left: 4px solid var(--accent-success);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
 
             /* NEW: smooth entrance + hover feel */
             opacity: 0;
@@ -715,6 +716,7 @@
             transition: transform 0.32s cubic-bezier(0.2, 1.6, 0.3, 1),
                 box-shadow 0.3s ease,
                 border-color 0.3s ease;
+            will-change: transform, box-shadow;
 
 
         }
@@ -791,11 +793,10 @@
             background: radial-gradient(circle, var(--accent-danger) 0%, transparent 70%);
         }
 
-        /* Subtle hover lift (as requested in issue #1529) */
-        /* Enhanced soft bounce hover (more noticeable) */
+        /* Stronger hover lift for sensor cards */
         .sensor-item:hover {
-            transform: translateY(-12px) scale(1.025);
-            box-shadow: 0 18px 35px var(--shadow-medium);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.18);
 
             transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1),
                 box-shadow 0.25s ease;
@@ -867,15 +868,15 @@
         }
 
         .sensor-item:not(.warning):not(.critical):hover {
-            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15);
+            box-shadow: 0 18px 35px rgba(34, 197, 94, 0.18);
         }
 
         .sensor-item.warning:hover {
-            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 18px 35px rgba(245, 158, 11, 0.22);
         }
 
         .sensor-item.critical:hover {
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 18px 35px rgba(239, 68, 68, 0.22);
         }
 
 
@@ -1583,6 +1584,48 @@
                 </p>
             </div>
         </div>
+
+        <!-- Why This Crop Explanation Cards -->
+        <section class="why-crop-section" style="margin-top:2rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                <h2 style="color:var(--text-primary);margin:0;">Why This Crop?</h2>
+                <div style="margin-left:auto;">
+                    <select id="whyCropFilter" aria-label="Filter crop explanations" style="padding:8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);">
+                        <option value="all">Show all crops</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="maize">Maize</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="features-grid" id="whyCropCards" style="margin-top:1rem;">
+                <div class="feature-card" data-crop="wheat">
+                    <div class="feature-icon"><i class="fas fa-seedling"></i></div>
+                    <h3>Wheat</h3>
+                    <p>Wheat performs well in well-drained loamy soils; requires moderate rainfall. Recommended for cooler seasons and rotational cropping with legumes to improve soil nitrogen.</p>
+                </div>
+
+                <div class="feature-card" data-crop="rice">
+                    <div class="feature-icon"><i class="fas fa-water"></i></div>
+                    <h3>Rice</h3>
+                    <p>Rice thrives in flooded or saturated conditions; needs high water availability and warm temperatures. Suitable for paddy fields and irrigated plains.</p>
+                </div>
+
+                <div class="feature-card" data-crop="maize">
+                    <div class="feature-icon"><i class="fas fa-fire-alt"></i></div>
+                    <h3>Maize</h3>
+                    <p>Maize prefers fertile, well-drained soils and a warm growing season. It is water-responsive and benefits from balanced N-P-K fertilization.</p>
+                </div>
+
+                <div class="feature-card" data-crop="soybean">
+                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Soybean</h3>
+                    <p>Soybean fixes atmospheric nitrogen and is an excellent rotational crop. Prefers warm conditions and moderately fertile soils.</p>
+                </div>
+            </div>
+        </section>
 
         <div class="dashboard-controls">
             <button class="control-btn active" data-view="overview" onclick="switchView('overview')">
@@ -2435,6 +2478,7 @@
         }
         animateCursor();
     </script>
+    <script src="/static/js/why-crop.js"></script>
     <script src="theme.js"></script>
     <script src="auth.js"></script>
 
