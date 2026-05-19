@@ -48,6 +48,18 @@ async function handleLogin(event) {
     return;
   }
 
+  // Basic client-side password length validation
+  const pwdInput = document.getElementById('password');
+  const pwdErr = document.getElementById('loginPasswordError');
+  if (password.length < 8) {
+    pwdErr.textContent = 'Password must be at least 8 characters long.';
+    pwdInput.classList.add('error');
+    return;
+  } else {
+    if (pwdErr) pwdErr.textContent = '';
+    pwdInput.classList.remove('error');
+  }
+
   // Loading state
   const originalText = loginBtn.innerText;
   loginBtn.innerText  = "Logging in...";
