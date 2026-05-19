@@ -32,7 +32,7 @@ function handleImageUpload(event) {
     }
 
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         selectedImage = e.target.result;
         const preview = document.getElementById('preview');
         preview.src = selectedImage;
@@ -44,7 +44,7 @@ function handleImageUpload(event) {
 
 async function analyzeImage() {
     const cropType = document.getElementById('cropType').value;
-    
+
     const location = document.getElementById('location').value.trim();
     if (!cropType) {
         alert('Please select a crop type');
@@ -68,7 +68,7 @@ async function analyzeImage() {
 
     try {
         const imageBase64 = selectedImage.split(',')[1];
-        
+
         const response = await fetch(`${API_BASE}/analyze`, {
             method: 'POST',
             headers: {
@@ -77,24 +77,44 @@ async function analyzeImage() {
             },
             body: JSON.stringify({
                 image: imageBase64,
-                crop_type: cropType
                 crop_type: cropType,
                 location: location || null
+            })
         });
 
         if (response.ok) {
             const data = await response.json();
-            renderResult(data.diagnosis, data.incident_id);
-        } else {
+
             setStatusMessage('Analysis completed successfully.', 'success');
+
+            renderResult(data.diagnosis, data.incident_id);
+
+        } else {
             const errorData = await response.json();
+
             alert(`Error: ${errorData.message}`);
-            setStatusMessage(errorData.message || 'Unable to analyze image.', 'error');
+
+            setStatusMessage(
+                errorData.message || 'Unable to analyze image.',
+                'error'
+            );
+        }
+
     } catch (error) {
+
         console.error('Error analyzing image:', error);
+
         alert('Error analyzing image. Please try again.');
-        setStatusMessage('Error analyzing image. Please try again.', 'error');
+
+        setStatusMessage(
+            'Error analyzing image. Please try again.',
+            'error'
+        );
+
+    } finally {
+
         document.getElementById('loadingCard').classList.add('hidden');
+
         document.getElementById('analyzeBtn').disabled = false;
     }
 }
@@ -102,11 +122,12 @@ async function analyzeImage() {
 function renderResult(diagnosis, incidentId) {
     const container = document.getElementById('resultContent');
     const isHealthy = diagnosis.is_healthy || false;
-    
+
     const resultClass = isHealthy ? 'result-healthy' : 'result-disease';
-    const severityClass = `severity-${diagnosis.get('severity', 'LOW').toLowerCase()}`;
-    const severityValue = (diagnosis.severity || 'LOW').toString().toLowerCase();
-    const severityClass = `severity-${severityValue}`;
+    const severityValue = (diagnosis.severity || 'low')
+        .toString()
+        .toLowerCase();
+
     const weatherRisk = diagnosis.weather_risk || 'Weather data unavailable';
     const weatherSummary = diagnosis.weather_summary || 'No local weather data supplied';
     const preventiveMeasures = Array.isArray(diagnosis.preventive_measures) ? diagnosis.preventive_measures : [];
@@ -118,10 +139,17 @@ function renderResult(diagnosis, incidentId) {
                     ${isHealthy ? '<i class="fas fa-check-circle"></i> Healthy Plant' : `<i class="fas fa-exclamation-triangle"></i> ${diagnosis.disease_name || 'Unknown Disease'}`}
                 </h3>
                 <div style="text-align: right;">
-                    <div>Confidence: ${diagnosis.confidence || 0}%</div>
-                    ${!isHealthy ? `<div class="${severityClass}">${diagnosis.severity || 'UNKNOWN'}</div>` : ''}
-                </div>
-            </div>
+    <div>Confidence: ${diagnosis.confidence || 0}%</div>
+
+    ${!isHealthy ? `
+    <div class="status-pill ${severityValue}">
+        <i class="fas fa-exclamation-circle"></i>
+        ${diagnosis.severity || 'UNKNOWN'} Severity
+    </div>
+    ` : ''}
+</div>
+</div>
+
             
             ${!isHealthy ? `
                 <div style="margin-bottom: 1rem;">
@@ -185,9 +213,22 @@ function renderResult(diagnosis, incidentId) {
                     <h4>Suggested Fertilizers</h4>
                     <p>${fertilizers.length ? fertilizers.join(', ') : 'Balanced NPK fertilizer'}</p>
                 </div>
+                <div class="advisory-item">
+    <h4>✅ Do</h4>
+    <p>
+        Regularly monitor crop health and remove infected leaves early.
+    </p>
+</div>
+
+<div class="advisory-item">
+    <h4>❌ Don't</h4>
+    <p>
+        Avoid overwatering and spreading infected plant material nearby.
+    </p>
+</div>
             </div>
     `;
-    
+
     document.getElementById('resultCard').classList.remove('hidden');
 }
 
@@ -207,7 +248,7 @@ document.getElementById('uploadArea').addEventListener('drop', (e) => {
     e.preventDefault();
     e.currentTarget.style.borderColor = '#d1d5db';
     e.currentTarget.style.background = 'transparent';
-    
+
     const file = e.dataTransfer.files[0];
     if (file) {
         document.getElementById('imageInput').files = e.dataTransfer.files;
