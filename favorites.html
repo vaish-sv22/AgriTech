@@ -388,8 +388,45 @@ p, span, li {
         title="Back to top">
     <i class="fas fa-arrow-up" aria-hidden="true"></i>
 </button>
-<script src="favorite.js"></script>
+<!-- <script src="favorite.js"></script> -->
 <script>
+    class FavoritesManager {
+  constructor() {
+    this.storageKey = 'agritech_favorite_blogs';
+    this.favorites = JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    window.favoritesManager = this;
+  }
+
+  isFavorite(blogId) {
+    return this.favorites.some(blog => blog.id === blogId);
+  }
+
+  addToFavorites(blogData) {
+    if (this.isFavorite(blogData.id)) return false;
+    this.favorites.push(blogData);
+    this.save();
+    return true;
+  }
+
+  removeFromFavorites(blogId) {
+    this.favorites = this.favorites.filter(blog => blog.id !== blogId);
+    this.save();
+    return true;
+  }
+
+  getFavorites() {
+    return this.favorites;
+  }
+
+  save() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.favorites));
+  }
+}
+
+if (!window.favoritesManager) {
+  new FavoritesManager();
+}
+
 class FavoritesPage {
     constructor(favorites = []) {
         this.favorites = favorites;
@@ -474,16 +511,13 @@ function removeFavorite(id) {
 
 
 function clearAllFavorites() {
-    if (confirm('Are you sure you want to clear all favorites?')) {
-        window.favoritesManager.favorites = [];
-        window.favoritesManager.saveFavorites();
-        document.dispatchEvent(
-            new CustomEvent('favoritesLoaded', {
-                detail: { favorites: [] }
-            })
-        );
-    }
+  if (confirm('Are you sure you want to clear all favorites?')) {
+    window.favoritesManager.favorites = [];
+    window.favoritesManager.save();
+    location.reload(); // refresh the page to show 0
+  }
 }
+
 
 
 function exportFavorites() {
@@ -508,14 +542,11 @@ function exportFavorites() {
     URL.revokeObjectURL(url);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('agritech_theme');
-
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        updateThemeIcon(true);
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  const favorites = window.favoritesManager.getFavorites();
+  new FavoritesPage(favorites);
 });
+
 
 
 
@@ -617,6 +648,21 @@ backToTopBtn.addEventListener('click', () => {
       });
     });
   })();
+
+//   document.addEventListener("DOMContentLoaded", () => {
+//   if (!window.favoritesManager) {
+//     window.favoritesManager = new FavoritesManager();
+//   }
+
+//   const favorites = window.favoritesManager.getFavorites();
+//   new FavoritesPage(favorites);
+
+//   // Optional: listen for updates
+//   document.addEventListener("favoritesLoaded", (e) => {
+//     new FavoritesPage(e.detail.favorites);
+//   });
+// });
+
 </script>
 <!-- ===== End Back To Top Button ===== -->
 
