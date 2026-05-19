@@ -347,6 +347,7 @@ let filteredPosts = [...blogPosts];
 let currentCategory = 'all';
 let searchQuery = '';
 let currentModalPostId = null;
+let _lastFocusedElement = null;
 
 // Wait for DOM and FavoritesManager to be ready
 document.addEventListener('DOMContentLoaded', function () {
@@ -414,6 +415,42 @@ function setupEventListeners() {
 
     // Modal favorite button
     document.getElementById('modalFavoriteBtn').addEventListener('click', toggleModalFavorite);
+
+    // Keyboard handling for blog modal: ESC close and focus trap
+    document.addEventListener('keydown', function (event) {
+        const blogModal = document.getElementById('blogModal');
+        if (!blogModal) return;
+
+        const isOpen = blogModal.style.display === 'block';
+
+        if (!isOpen) return;
+
+        if (event.key === 'Escape') {
+            closeModalHandler();
+        }
+
+        if (event.key === 'Tab') {
+            // Focus trap within modal
+            const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+            const focusable = Array.from(blogModal.querySelectorAll(focusableSelectors)).filter(el => el.offsetParent !== null);
+            if (focusable.length === 0) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey) {
+                if (document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+    });
 
     // Event delegation for favorite buttons
     document.addEventListener('click', function (e) {
@@ -658,15 +695,38 @@ function openModal(postId) {
     if (dateEl) dateEl.textContent = (post.date ? post.date : '');
 
     updateModalFavoriteButton();
-    document.getElementById('blogModal').style.display = 'block';
+    const blogModal = document.getElementById('blogModal');
+    // save last focused element to restore later
+    _lastFocusedElement = document.activeElement;
+
+    blogModal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+
+    // set focus to close button for accessibility
+    setTimeout(() => {
+        const closeBtn = document.getElementById('closeBlogModal');
+        if (closeBtn) closeBtn.focus();
+        // ensure modal-content is focusable for screen readers
+        const modalContent = blogModal.querySelector('.modal-content');
+        if (modalContent) modalContent.focus();
+    }, 50);
 }
 
 // Close modal
 function closeModalHandler() {
-    document.getElementById('blogModal').style.display = 'none';
+    const blogModal = document.getElementById('blogModal');
+    if (blogModal) blogModal.style.display = 'none';
     document.body.style.overflow = 'auto';
     currentModalPostId = null;
+
+    // restore focus to the previously focused element
+    try {
+        if (_lastFocusedElement && typeof _lastFocusedElement.focus === 'function') {
+            _lastFocusedElement.focus();
+        }
+    } catch (e) {
+        // ignore
+    }
 }
 
 // Update modal favorite button
