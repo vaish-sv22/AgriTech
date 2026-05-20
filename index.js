@@ -1031,3 +1031,186 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 });
  main
+
+// ================================
+// Live Search Suggestions (debounced + fuzzy)
+// ================================
+(function initLiveSearch(){
+  const input = document.getElementById('globalSearchInput');
+  const listEl = document.getElementById('liveSuggestList');
+  const btn = document.getElementById('globalSearchButton');
+  if (!input || !listEl) return;
+
+  const sitePages = [
+    { name: 'Marketplace', url: 'marketplace.html', keywords: ['market','mkt','buy','sell'] },
+    { name: 'Crop Calendar', url: 'cropCalendar.html', keywords: ['calendar','schedule','crop plan','planting'] },
+    { name: 'Crop Advisory', url: 'crop_advisory.html', keywords: ['advice','advisory','advisor','agronomy'] },
+    { name: 'AI Disease Detection', url: 'ai_disease.html', keywords: ['disease','diagnose','ai','pest'] },
+    { name: 'Equipment Supply', url: 'equipments.html', keywords: ['equipment','tractor','rental','tools'] },
+    { name: 'Loan Dashboard', url: 'loan_dashboard.html', keywords: ['loan','finance','credit'] },
+    { name: 'Insurance Portal', url: 'insurance_portal.html', keywords: ['insurance','cover','claims'] },
+    { name: 'Knowledge Hub', url: 'knowledge_hub.html', keywords: ['learn','knowledge','howto','guides'] },
+    { name: 'Farm Dashboard', url: 'farm_dashboard.html', keywords: ['dashboard','farm','overview'] },
+    { name: 'News', url: 'news.html', keywords: ['news','updates','market news'] },
+    { name: 'Careers', url: 'careers.html', keywords: ['jobs','career','hiring'] },
+    { name: 'Blog', url: 'blog.html', keywords: ['blog','articles','stories'] },
+    { name: 'Forum', url: 'community_forum.html', keywords: ['forum','community','discuss'] },
+    { name: 'Contact', url: 'contact.html', keywords: ['contact','support','help'] },
+    { name: 'Login', url: 'login.html', keywords: ['login','sign in','signin'] }
+  ];
+
+  // Debounce utility
+  function debounce(fn, wait){
+    let t = null;
+    return function(...args){
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  // Sequence-based fuzzy match: returns true if `query` characters appear in order in `text`
+  function fuzzySequenceMatch(query, text){
+    if (!query) return true;
+    let i = 0, j = 0;
+    while(i < query.length && j < text.length){
+      if (query[i] === text[j]) i++;
+      j++;
+    }
+    return i === query.length;
+  }
+
+  function normalize(s){
+    return (s || '').toLowerCase().trim();
+  }
+
+  function getSuggestions(q){
+    const norm = normalize(q);
+    if (!norm) return [];
+
+    const results = sitePages.map(page => {
+      const name = normalize(page.name);
+      const kw = normalize((page.keywords || []).join(' '));
+
+      // direct substring match (strong)
+      if (name.includes(norm) || kw.includes(norm)) return {page, score: 3};
+
+      // subsequence match on name or keywords (weaker)
+      if (fuzzySequenceMatch(norm, name)) return {page, score: 2};
+      if (fuzzySequenceMatch(norm, kw)) return {page, score: 1};
+
+      return null;
+    }).filter(Boolean)
+      .sort((a,b) => b.score - a.score)
+      .map(r => r.page)
+      .slice(0,6);
+
+    return results;
+  }
+
+  let activeIndex = -1;
+  let currentSuggestions = [];
+
+  function render(list){
+    currentSuggestions = list;
+    activeIndex = -1;
+    if (!list || list.length === 0){
+      listEl.innerHTML = '';
+      listEl.hidden = true;
+      input.setAttribute('aria-expanded','false');
+      return;
+    }
+
+    listEl.hidden = false;
+    input.setAttribute('aria-expanded','true');
+    listEl.innerHTML = list.map((p, idx) => {
+      return `<div role="option" data-idx="${idx}" class="live-suggest-item" tabindex="-1">
+                <div class="title">${p.name}</div>
+                <div class="meta">${p.keywords ? p.keywords.slice(0,2).join(', ') : ''}</div>
+              </div>`;
+    }).join('');
+  }
+
+  function clear(){
+    render([]);
+  }
+
+  function highlight(index){
+    const children = listEl.querySelectorAll('.live-suggest-item');
+    children.forEach((ch, i) => {
+      ch.classList.toggle('active', i === index);
+    });
+    activeIndex = index;
+  }
+
+  function navigateToSuggestion(index){
+    const page = currentSuggestions[index];
+    if (page && page.url) {
+      window.location.assign(page.url);
+    }
+  }
+
+  // Input handler (debounced)
+  const onInput = debounce(function(e){
+    const q = e.target.value || '';
+    const suggestions = getSuggestions(q);
+    render(suggestions);
+  }, 300);
+
+  input.addEventListener('input', onInput);
+
+  // Keyboard navigation
+  input.addEventListener('keydown', (e) => {
+    if (listEl.hidden) return;
+    const items = listEl.querySelectorAll('.live-suggest-item');
+    if (!items || items.length === 0) return;
+
+    if (e.key === 'ArrowDown'){
+      e.preventDefault();
+      const next = Math.min(activeIndex + 1, items.length - 1);
+      highlight(next);
+      items[next].scrollIntoView({block:'nearest'});
+    } else if (e.key === 'ArrowUp'){
+      e.preventDefault();
+      const prev = Math.max(activeIndex - 1, 0);
+      highlight(prev);
+      items[prev].scrollIntoView({block:'nearest'});
+    } else if (e.key === 'Enter'){
+      // If suggestions exist, go to active or first
+      if (items.length > 0){
+        e.preventDefault();
+        const idx = activeIndex >= 0 ? activeIndex : 0;
+        navigateToSuggestion(idx);
+      }
+    } else if (e.key === 'Escape'){
+      clear();
+    }
+  });
+
+  // Click interactions
+  listEl.addEventListener('click', (e) => {
+    const item = e.target.closest('.live-suggest-item');
+    if (!item) return;
+    const idx = Number(item.getAttribute('data-idx'));
+    navigateToSuggestion(idx);
+  });
+
+  // Hide when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !listEl.contains(e.target)) {
+      clear();
+    }
+  });
+
+  // Optional: click search button acts like choosing first suggestion
+  if (btn) btn.addEventListener('click', (e) => {
+    const suggestions = currentSuggestions;
+    if (suggestions && suggestions.length > 0){
+      navigateToSuggestion(0);
+    } else if (input.value && input.value.trim()){
+      // fallback behavior: try to go to a best-match or no-op
+      const s = getSuggestions(input.value.trim());
+      if (s.length) navigateToSuggestion(0);
+    }
+  });
+
+})();
