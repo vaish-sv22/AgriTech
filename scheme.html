@@ -841,15 +841,111 @@
 
     /* ===== FIX HEADING UNDER NAVBAR ===== */
 
-.hero {
-  padding-top: 120px !important;
-}
+    .hero {
+      padding-top: 120px !important;
+    }
 
-@media (max-width: 768px) {
-  .hero {
-    padding-top: 140px !important;
-  }
-}
+    @media (max-width: 768px) {
+      .hero {
+        padding-top: 140px !important;
+      }
+    }
+
+    /* ===== Back Home Button ===== */
+
+    .top-nav-btn {
+      max-width: 1200px;
+      margin: 20px auto 10px;
+      padding: 0 20px;
+
+      position: relative;
+      z-index: 20;
+    }
+
+    .top-nav-btn a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
+      color: white;
+
+      text-decoration: none;
+      font-weight: 700;
+
+      padding: 12px 22px;
+      border-radius: 40px;
+
+      transition: all 0.3s ease;
+    }
+
+    .top-nav-btn a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+
+      .top-nav-btn {
+        margin-top: 130px;
+      }
+
+      .top-nav-btn a {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ================================
+   Sparkle Cursor Effect (Green Theme)
+================================ */
+
+    .sparkle-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999999;
+    }
+
+    /* main trailing sparkles */
+    .sparkle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #22c55e, #16a34a, transparent);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      opacity: 0.9;
+      filter: blur(0.2px);
+    }
+
+    /* burst particles */
+    .sparkle-burst {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #bbf7d0, #22c55e, transparent);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+      pointer-events: none;
+      animation: burstAnim 0.6s ease-out forwards;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes burstAnim {
+      0% {
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(3) translate(-50%, -50%);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
@@ -938,6 +1034,11 @@
 
   <!-- Cursor Trail -->
   <div class="circle-container" id="cursorTrail"></div>
+  <div class="top-nav-btn">
+    <a href="index.html">
+      <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
 
   <script>
     let currentLang = localStorage.getItem("site-lang") || "en";
@@ -1366,6 +1467,75 @@
     })();
   </script>
   <!-- ===== End Back To Top Button ===== -->
+
+  <!-- Sparkle Cursor Effect -->
+  <div class="sparkle-container" id="sparkleContainer"></div>
+
+  <script>
+    const container = document.getElementById("sparkleContainer");
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const sparkles = [];
+    const maxSparkles = 18;
+
+    // create sparkle elements
+    for (let i = 0; i < maxSparkles; i++) {
+      const s = document.createElement("div");
+      s.className = "sparkle";
+      container.appendChild(s);
+
+      sparkles.push({
+        el: s,
+        x: 0,
+        y: 0,
+        delay: i * 0.08
+      });
+    }
+
+    // track mouse
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // spawn tiny burst on move
+      createBurst(e.clientX, e.clientY);
+    });
+
+    // sparkle burst effect
+    function createBurst(x, y) {
+      const burst = document.createElement("div");
+      burst.className = "sparkle-burst";
+      burst.style.left = x + "px";
+      burst.style.top = y + "px";
+
+      container.appendChild(burst);
+
+      setTimeout(() => burst.remove(), 600);
+    }
+
+    // animate trailing sparkles
+    function animate() {
+      let x = mouseX;
+      let y = mouseY;
+
+      sparkles.forEach((s) => {
+        s.x += (x - s.x) * 0.22;
+        s.y += (y - s.y) * 0.22;
+
+        s.el.style.left = s.x + "px";
+        s.el.style.top = s.y + "px";
+
+        x = s.x;
+        y = s.y;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
 
 </body>
 
