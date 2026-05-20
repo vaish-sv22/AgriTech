@@ -6,31 +6,19 @@ from backend.extensions import db
 from backend.models import User
 from .jwt_utils import jwt_manager
 from .decorators import token_required
-import re
+from backend.utils.validation import (
+    sanitize_input,
+    validate_email,
+    validate_full_name,
+    validate_input,
+    validate_password_strength,
+    validate_role,
+    validate_username,
+)
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
-
-def validate_email(email):
-    """Validate email format and restrict to @gmail.com."""
-    pattern = r'^[a-zA-Z0-9._%+-]+@gmail\.com$'
-    return re.match(pattern, email) is not None
-
-
-def validate_password(password):
-    """
-    Validate password strength.
-    Requirements: At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-    """
-    if len(password) < 8:
-        return False, "Password must be at least 8 characters"
-    if not re.search(r'[A-Z]', password):
-        return False, "Password must contain at least one uppercase letter"
-    if not re.search(r'[a-z]', password):
-        return False, "Password must contain at least one lowercase letter"
-    if not re.search(r'[0-9]', password):
-        return False, "Password must contain at least one number"
-    return True, "Valid"
+ALLOWED_ROLES = {'farmer', 'buyer', 'equipment', 'grocery', 'expert', 'admin', 'shopkeeper'}
 
 
 @auth_bp.route('/register', methods=['POST'])
@@ -55,53 +43,41 @@ def register():
         409: User already exists
     """
     try:
-        data = request.get_json()
-        
-        # Validate required fields
-        required = ['username', 'email', 'password', 'full_name', 'role']
-        for field in required:
-            if field not in data or not data[field]:
-                return jsonify({
-                    'status': 'error',
-                    'message': f'Missing required field: {field}'
-                }), 400
-        
-        username = data['username'].strip()
-        email = data['email'].strip().lower()
-        password = data['password']
-        full_name = data['full_name'].strip()
-        role = data['role'].strip().lower()
-        phone = data.get('phone', '').strip()
-        location = data.get('location', '').strip()
-        
-        # Validate email domain
-        if not validate_email(email):
-            return jsonify({
-                'status': 'error',
-                'message': 'Please use a @gmail.com address'
-            }), 400
-        
-        # Validate full name pattern (letters and spaces only)
-        if not re.match(r'^[A-Za-z\s]+$', full_name):
-            return jsonify({
-                'status': 'error',
-                'message': 'Full Name should only contain letters and spaces'
-            }), 400
+        data = request.get_json(silent=True)
 
-        # Validate password
-        is_valid, message = validate_password(password)
+        is_valid, message = validate_input(data, ['username', 'email', 'password', 'full_name', 'role'])
         if not is_valid:
-            return jsonify({
-                'status': 'error',
-                'message': message
-            }), 400
-        
-        # Validate role
-        if role not in ['farmer', 'shopkeeper', 'admin']:
-            return jsonify({
-                'status': 'error',
-                'message': 'Invalid role. Must be farmer, shopkeeper, or admin'
-            }), 400
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        username = sanitize_input(data['username'], 30)
+        email = sanitize_input(data['email'], 254).lower()
+        password = data['password'] if isinstance(data['password'], str) else ''
+        full_name = sanitize_input(data['full_name'], 100)
+        role = sanitize_input(data['role'], 30).lower()
+        phone = sanitize_input(data.get('phone', ''), 20)
+        location = sanitize_input(data.get('location', ''), 100)
+
+        is_valid, message = validate_username(username)
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        is_valid, message = validate_email(email, gmail_only=True)
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        is_valid, message = validate_full_name(full_name)
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        is_valid, message = validate_password_strength(password, min_length=8, require_special=False)
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        is_valid, normalized_role = validate_role(role, ALLOWED_ROLES)
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': 'Invalid role selected'}), 400
+
+        role = normalized_role
         
         # Check if user exists
         existing = User.query.filter(
@@ -164,16 +140,25 @@ def login():
         401: Invalid credentials
     """
     try:
-        data = request.get_json()
-        
-        if not data or not data.get('username') or not data.get('password'):
+        data = request.get_json(silent=True)
+
+        is_valid, message = validate_input(data, ['username', 'password'])
+        if not is_valid:
+            return jsonify({'status': 'error', 'message': message}), 400
+
+        username_or_email = sanitize_input(data['username'], 254)
+        password = data['password'] if isinstance(data['password'], str) else ''
+
+        if not username_or_email or not password:
             return jsonify({
                 'status': 'error',
                 'message': 'Username/email and password required'
             }), 400
-        
-        username_or_email = data['username'].strip()
-        password = data['password']
+
+        if '@' in username_or_email:
+            is_valid, message = validate_email(username_or_email, gmail_only=False)
+            if not is_valid:
+                return jsonify({'status': 'error', 'message': message}), 400
         
         # Find user
         user = User.query.filter(

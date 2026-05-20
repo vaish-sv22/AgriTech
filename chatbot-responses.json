@@ -2,322 +2,128 @@
   "responses": [
     {
       "query": "hello",
-      "response": "Hi! 🌱 Welcome to AgriTech Assistant! I'm here to help you with all your agricultural needs. How can I assist you today?"
+      "response": "Hi! 🌱 Welcome to AgriTech Assistant! I'm here to help with your farming questions."
     },
     {
       "query": "hi",
-      "response": "Hello there! 👋 I'm your AgriBot assistant. Whether you need help with crops, weather, or farming techniques, I'm here to help!"
+      "response": "Hello there! 👋 I'm your AgriBot assistant. Ask me about crops, weather, soil, or AgriTech features."
     },
-
     {
       "query": "who is your developer",
-      "response": "I was created by AgriTech, but this project also has amazing contributors like Aman Singh. 🌟 Aman is an Open Source Contributor and currently contributing in programs like GSSoC'25. You can connect with him on LinkedIn: https://www.linkedin.com/in/aman-singh-dyhardx"
+      "response": "I was created by AgriTech, with contributions from the community."
     },
     {
       "query": "good morning",
-      "response": "Good morning! ☀️ It's a great day for farming! How can I help you grow your agricultural knowledge today?"
+      "response": "Good morning! ☀️ How can I help you with farming today?"
     },
     {
       "query": "good afternoon",
-      "response": "Good afternoon! 🌤️ I hope your day is going well. What agricultural questions can I help you with today?"
+      "response": "Good afternoon! 🌤️ What agricultural questions can I help with?"
     },
     {
       "query": "good evening",
-      "response": "Good evening! 🌙 Even after sunset, I'm here to help with your farming questions. What would you like to know?"
-    },
-    {
-      "query": "how are you",
-      "response": "I'm doing great, thank you for asking! 😊 I'm ready to help you with all your agricultural needs. How can I assist you today?"
+      "response": "Good evening! 🌙 I’m here to help with your farming questions."
     },
     {
       "query": "what can you do",
-      "response": "I can help you with: 🌾 Crop recommendations, 🌧️ Weather impact on farming, 🦗 Pest control methods, 🌱 Soil health tips, 📈 Yield optimization, 🌿 Organic farming practices, and much more! What interests you most?"
+      "response": "I can help with crop recommendations, weather impact, pest control, soil health, irrigation, and AgriTech platform guidance."
     },
     {
       "query": "crop recommendation",
-      "response": "Great! For crop recommendations, I need to know: 📍 Your location/region, 🌤️ Current season, 🌱 Soil type, 💧 Water availability, and 🎯 Your farming goals. You can also use our advanced Crop Recommendation tool for personalized suggestions!"
+      "response": "For crop recommendations, share your region, season, soil type, water availability, and goals."
     },
     {
       "query": "best crops for winter",
-      "response": "Excellent winter crops include: ❄️ Wheat, barley, and rye (cool-season grains), 🥬 Leafy greens like spinach, lettuce, kale, 🥕 Root vegetables: carrots, radishes, turnips, 🧄 Garlic and onions, 🥦 Broccoli and cauliflower. These thrive in cooler temperatures!"
+      "response": "Excellent winter crops include wheat, barley, peas, garlic, onions, broccoli, and leafy greens."
     },
     {
       "query": "best crops for summer",
-      "response": "Perfect summer crops include: ☀️ Tomatoes, peppers, and eggplants, 🌽 Corn and sunflowers, 🥒 Cucumbers and squash, 🫘 Beans and peas, 🌶️ Hot peppers, 🍉 Melons and watermelons. These love warm weather and sunshine!"
+      "response": "Perfect summer crops include tomatoes, peppers, cucumbers, beans, corn, and watermelons."
     },
     {
       "query": "organic farming",
-      "response": "Organic farming focuses on: 🌿 Natural fertilizers (compost, manure), 🦗 Biological pest control, 🔄 Crop rotation for soil health, 🚫 No synthetic chemicals, 🌱 Sustainable practices, 💧 Water conservation. It's great for environment and health!"
+      "response": "Organic farming focuses on compost, manure, biological pest control, crop rotation, and avoiding synthetic chemicals."
     },
     {
       "query": "pest control",
-      "response": "Effective pest control methods: 🐞 Beneficial insects (ladybugs, lacewings), 🌿 Companion planting, 🧴 Neem oil and organic sprays, 🪤 Traps and barriers, 🔄 Crop rotation, 🧹 Good garden hygiene. Prevention is always better than treatment!"
+      "response": "Use beneficial insects, neem oil, traps, crop rotation, and good garden hygiene for effective pest control."
     },
     {
       "query": "soil health",
-      "response": "Healthy soil needs: 🧪 Proper pH balance (6.0-7.0 for most crops), 🌿 Organic matter and compost, 💧 Good drainage, 🦠 Beneficial microorganisms, 🌱 Cover crops, 🚫 Minimal tillage. Healthy soil = healthy plants!"
+      "response": "Healthy soil needs balanced pH, organic matter, good drainage, beneficial microbes, and minimal tillage."
     },
     {
       "query": "water conservation",
-      "response": "Smart water conservation: 💧 Drip irrigation systems, 🌾 Mulching to retain moisture, 🌧️ Rainwater harvesting, ⏰ Optimal watering times (early morning), 🌱 Drought-resistant crop varieties, 📊 Soil moisture monitoring. Every drop counts!"
+      "response": "Smart water conservation includes drip irrigation, mulching, rainwater harvesting, and early-morning watering."
     },
     {
       "query": "fertilizer",
-      "response": "Fertilizer basics: 🔢 NPK ratios (Nitrogen-Phosphorus-Potassium), 🌿 Organic options: compost, manure, bone meal, 🧪 Soil testing before application, ⏰ Proper timing and amounts, 🌱 Slow-release vs quick-release types. Feed your soil, not just plants!"
+      "response": "Fertilizer use should be based on soil testing, with the right NPK balance and careful timing."
     },
     {
       "query": "plant diseases",
-      "response": "Common plant diseases: 🍄 Fungal infections (blight, mildew), 🦠 Bacterial problems, 🦠 Viral diseases, 🔍 Early detection is key, 🌿 Organic treatments available, 💨 Good air circulation helps, 🚫 Avoid overhead watering. Use our Disease Detection tool for help!"
+      "response": "Common plant diseases include fungal, bacterial, and viral issues. Early detection is the key to control."
     },
     {
       "query": "weather impact",
-      "response": "Weather affects farming: 🌧️ Too much rain = fungal diseases, ☀️ Heat stress in plants, ❄️ Frost damage prevention, 💨 Wind protection needed, 🌡️ Temperature monitoring important, 📊 Plan based on weather forecasts. Adaptation is key!"
+      "response": "Weather affects crop growth, irrigation needs, pest pressure, and harvest timing."
     },
     {
       "query": "crop rotation",
-      "response": "Crop rotation benefits: 🔄 Breaks pest and disease cycles, 🌱 Improves soil fertility, 🌿 Reduces soil depletion, 📈 Increases yields, 🌾 Different crops add different nutrients, 🎯 Plan 3-4 year rotations. Smart farming practice!"
+      "response": "Crop rotation helps break pest cycles, improve soil fertility, and reduce soil depletion."
     },
     {
       "query": "greenhouse farming",
-      "response": "Greenhouse advantages: 🏠 Controlled environment, 🌡️ Temperature control, 💧 Water management, 🌱 Year-round growing, 🚫 Pest protection, 📈 Higher yields, 🌿 Organic growing easier. Great for intensive farming!"
-    },
-    {
-      "query": "thank you",
-      "response": "You're very welcome! 😊 I'm always here to help with your agricultural questions. Happy farming! 🌱"
-    },
-    {
-      "query": "thanks",
-      "response": "My pleasure! 🌾 Feel free to ask me anything about farming anytime. Good luck with your crops! 🌱"
-    },
-    {
-      "query": "bye",
-      "response": "Goodbye! 👋 Remember, I'm always here when you need agricultural advice. Have a great day and happy farming! 🌻"
-    },
-    {
-      "query": "goodbye",
-      "response": "Farewell! 🌅 May your crops grow strong and your harvests be bountiful. Come back anytime for farming help! 🌾"
-    },
-    {
-      "query": "help",
-      "response": "I'm here to help! 🤝 You can ask me about: 🌱 Crop selection, 🌧️ Weather and farming, 🦗 Pest management, 🌿 Organic methods, 💧 Irrigation, 🌾 Soil improvement, and much more. What specific topic interests you?"
+      "response": "Greenhouse farming supports controlled growing conditions, better water management, and year-round production."
     },
     {
       "query": "irrigation",
-      "response": "Irrigation essentials: 💧 Drip systems for efficiency, 🌊 Sprinkler systems for large areas, ⏰ Water in early morning, 📊 Monitor soil moisture, 🌱 Match water to crop needs, 💰 Consider water costs. Right amount at right time!"
+      "response": "Efficient irrigation options include drip systems, sprinkler systems, and moisture-based scheduling."
     },
     {
       "query": "seeds",
-      "response": "Seed selection tips: 🌱 Choose varieties suited to your climate, 🏆 High-quality, certified seeds, 📅 Check expiration dates, 🌿 Consider disease resistance, 📈 Yield potential, 🌡️ Temperature requirements. Good seeds = good harvest!"
+      "response": "Choose certified seeds suited to your climate, soil, disease pressure, and yield goals."
     },
     {
       "query": "harvest",
-      "response": "Harvest timing: 🕐 Pick at optimal ripeness, 🌅 Early morning harvest best, 🧤 Use proper tools, 📦 Handle gently, ❄️ Store properly, 📊 Track harvest data, 🚚 Plan for transportation. Timing is everything!"
-    },
-    {
-      "query": "storage",
-      "response": "Proper storage: 🌡️ Control temperature, 💧 Manage humidity, 🌬️ Ensure ventilation, 🦠 Prevent contamination, 📦 Use appropriate containers, 🔍 Regular monitoring, 🚫 Keep pests out. Preserve your hard work!"
-    },
-    {
-      "query": "climate change",
-      "response": "Climate change impacts: 🌡️ Rising temperatures, 🌧️ Irregular rainfall patterns, 💨 Extreme weather events, 🌱 Adapt with drought-resistant crops, 💧 Efficient water use, 🌿 Carbon farming practices. Resilience is key!"
-    },
-    {
-      "query": "smart farming",
-      "response": "Smart farming technologies: 📱 IoT sensors for monitoring, 🛯0 GPS-guided tractors, 📊 Data analytics for decisions, 🤖 Automated irrigation, 🌍 Satellite imagery, 💰 Precision agriculture saves costs and increases yields!"
-    },
-    {
-      "query": "composting",
-      "response": "Composting guide: 🍂 Brown materials (leaves, paper), 🥗 Green materials (kitchen scraps), 💧 Keep moist, 🌬️ Turn regularly for air, 🌡️ Monitor temperature, ⏰ 2-6 months for finished compost. Free fertilizer!"
-    },
-    {
-      "query": "hydroponics",
-      "response": "Hydroponic farming: 💧 Soilless growing in nutrient solution, 🌱 Faster growth, 💧 90% less water usage, 🌿 No pesticides needed, 🏠 Great for urban farming, 🥗 Fresh vegetables year-round!"
-    },
-    {
-      "query": "companion planting",
-      "response": "Companion planting benefits: 🍅 Tomatoes + basil, 🌽 Corn + beans + squash (Three Sisters), 🥕 Carrots + onions, 🌻 Marigolds repel pests, 🌿 Natural pest control, 🌱 Better soil health!"
-    },
-    {
-      "query": "seed starting",
-      "response": "Starting seeds indoors: 🌱 Use seed starting mix, 🌡️ Maintain 65-75°F, 💡 Provide adequate light, 💧 Keep soil moist not soggy, 🌱 Transplant after last frost. Get a head start on growing season!"
-    },
-    {
-      "query": "mulching",
-      "response": "Mulching benefits: 💧 Retains soil moisture, 🌡️ Regulates soil temperature, 🌿 Suppresses weeds, 🍂 Organic mulches improve soil, 🕰️ Apply 2-4 inches thick. Natural plant protection!"
-    },
-    {
-      "query": "pruning",
-      "response": "Pruning tips: ✂️ Use clean, sharp tools, 🍂 Prune during dormant season, 🌳 Remove dead/diseased branches first, 🌱 Make clean cuts at 45° angle, 🌿 Don't over-prune. Healthy plants produce better!"
-    },
-    {
-      "query": "soil testing",
-      "response": "Soil testing importance: 🧪 Test pH levels (6.0-7.0 ideal), 📊 Check nutrient levels (N-P-K), 🌱 Test every 2-3 years, 📍 Send samples to extension office, 🌿 Adjust based on results. Know your soil!"
-    },
-    {
-      "query": "crop insurance",
-      "response": "Crop insurance benefits: 🛡️ Protection against weather disasters, 💰 Financial security for farmers, 🌧️ Covers drought, flood, hail damage, 📄 Government subsidized programs available. Protect your investment!"
-    },
-    {
-      "query": "sustainable agriculture",
-      "response": "Sustainable farming practices: 🌍 Environmental stewardship, 💰 Economic viability, 👥 Social responsibility, 🌱 Soil conservation, 💧 Water efficiency, 🔄 Renewable resources. Farm for the future!"
-    },
-    {
-      "query": "farm equipment",
-      "response": "Essential farm equipment: 🚜 Tractors for power, 🌾 Plows for soil prep, 🌱 Planters for seeding, ⚙️ Cultivators for weeding, 🚚 Harvesters for crops, 💧 Irrigation systems. Right tools make farming easier!"
-    },
-    {
-      "query": "market prices",
-      "response": "Track market prices: 📊 Monitor commodity markets, 📅 Check seasonal trends, 💰 Plan selling timing, 📦 Consider storage costs, 📝 Keep production records. Maximize your profits!"
-    },
-    {
-      "query": "crop diseases",
-      "response": "Preventing crop diseases: 🌱 Use disease-resistant varieties, 🔄 Practice crop rotation, 🌬️ Ensure good air circulation, 💧 Avoid overhead watering, 🧼 Keep tools clean, 🔍 Regular scouting. Prevention is better than cure!"
+      "response": "Harvest at the right maturity stage, handle produce carefully, and store it under the right conditions."
     },
     {
       "query": "what can I do on this platform",
-      "response": "AgriTech offers comprehensive farming solutions! 🌾 You can: 1️⃣ Get AI-powered crop recommendations, 2️⃣ Predict yields with ML analytics, 3️⃣ Detect plant diseases early, 4️⃣ Access organic farming guides, 5️⃣ Check real-time weather, 6️⃣ Connect with farmers, 7️⃣ Find local shopkeepers, 8️⃣ Use our AI chatbot for instant advice, 9️⃣ Get plantation guidance, 🔟 Plan crops strategically, 1️⃣1️⃣ Schedule labor & get alerts, 1️⃣2️⃣ Access marketplace, 1️⃣3️⃣ Get financial support, 1️⃣4️⃣ Use crop calendar, 1️⃣5️⃣ Share feedback. What interests you most?"
+      "response": "AgriTech supports crop recommendations, disease detection, weather, shopkeeper listings, marketplace, finance, crop planning, labour alerts, and more."
     },
     {
       "query": "platform features",
-      "response": "Our AgriTech platform includes: 🌱 Crop Recommendation (AI-powered suggestions), 📊 Yield Prediction (ML analytics), 🔍 Disease Detection (early warning), 🌿 Organic Farming Guide (sustainable practices), 🌤️ Weather Check (real-time updates), 👥 Farmer Connection (community), 🏪 Shopkeeper Listings (local network), 🤖 AI ChatBot (24/7 support), 🌳 Plantation Guidance (expert tips), 📅 Crop Planning (strategic planning), 👷 Labour Alerts (scheduling & updates), 🛒 Marketplace (buy/sell/trade), 💰 Financial Support (loans & insurance), 📆 Crop Calendar (seasonal planning), 💬 Feedback System (improvement). Which feature would you like to explore?"
-    },
-    {
-      "query": "how to use crop recommendation",
-      "response": "Using Crop Recommendation is easy! 🌱 1️⃣ Go to the Crop Recommendation tool from dashboard, 2️⃣ Enter your location/region, 3️⃣ Specify soil type (sandy/clay/loam), 4️⃣ Input current season, 5️⃣ Add water availability, 6️⃣ Mention your farming goals. Our AI analyzes thousands of data points to suggest the best crops for your conditions with expected yields and profitability. Try it now!"
-    },
-    {
-      "query": "what is disease prediction",
-      "response": "Disease Prediction helps protect your crops! 🔍 Upload a photo of your plant leaves/stems, and our AI analyzes for diseases like blight, mildew, rust, etc. Get instant diagnosis with treatment recommendations, preventive measures, and organic solutions. Early detection saves 70% of potential crop losses. Available in our Disease Detection tool!"
-    },
-    {
-      "query": "how does yield prediction work",
-      "response": "Yield Prediction uses advanced ML! 📊 Input your crop type, area, soil conditions, weather data, and farming practices. Our model analyzes historical data and current conditions to predict yields with 85%+ accuracy. Helps you plan harvesting, storage, and marketing. Access it from the Yield Prediction tool in your dashboard."
-    },
-    {
-      "query": "what is organic farming guide",
-      "response": "Our Organic Farming Guide covers everything sustainable! 🌿 Learn soil preparation, natural fertilizers (compost, manure), biological pest control, companion planting, crop rotation, and certification processes. Get region-specific organic practices, seasonal calendars, and market tips for organic produce. Perfect for chemical-free farming!"
-    },
-    {
-      "query": "how to check weather",
-      "response": "Weather Check gives you farming-focused forecasts! 🌤️ Get current conditions, hourly predictions, 7-day outlook, and farming advisories. See rainfall probability, temperature trends, humidity levels, and wind speeds that affect crops. Plan irrigation, spraying, and harvesting based on accurate weather data. Access from Weather Check tool."
-    },
-    {
-      "query": "what is farmer connection",
-      "response": "Farmer Connection builds community! 👥 Connect with farmers in your region, share experiences, exchange seeds/equipment, get advice on local challenges, participate in group farming, and access shared resources. Learn from successful farmers and contribute your knowledge. Building stronger farming communities together!"
-    },
-    {
-      "query": "how to find shopkeepers",
-      "response": "Shopkeeper Listings connects you locally! 🏪 Find verified agricultural suppliers, equipment dealers, seed stores, fertilizer shops, and machinery rentals in your area. Read reviews, compare prices, contact directly, and get recommendations. Support local businesses while getting quality products and services."
-    },
-    {
-      "query": "what is plantation guidance",
-      "response": "Plantation Guidance gives expert advice! 🌳 Learn optimal planting times, spacing, depth, and techniques for different crops. Get region-specific recommendations, soil preparation tips, irrigation setup, and post-planting care. Whether you're a beginner or expert, get personalized guidance for successful plantations."
-    },
-    {
-      "query": "how does crop planning work",
-      "response": "Crop Planning maximizes your profits! 📅 Plan entire seasons with crop rotation, succession planting, market timing, and resource optimization. Consider soil health, weather patterns, labor availability, and market prices. Our strategic planning helps you avoid losses and maximize yields. Access from Crop Planning tool."
-    },
-    {
-      "query": "what are labour alerts",
-      "response": "Labour Alerts keep you informed! 👷 Get real-time updates on weather impacts, government schemes, subsidy announcements, job opportunities, equipment rentals, and market prices. Never miss important farming updates. Schedule labor efficiently and stay ahead of opportunities. Check Labour Scheduling & Alerts section."
-    },
-    {
-      "query": "how to use marketplace",
-      "response": "Marketplace connects all stakeholders! 🛒 Farmers can list produce directly, buyers find fresh produce, equipment suppliers list machinery, grocery sellers source supplies. Set fair prices, arrange transportation, schedule deliveries, and build long-term relationships. Transparent pricing and quality assurance included."
-    },
-    {
-      "query": "what financial support available",
-      "response": "Financial Support for farmers! 💰 Access crop loans, insurance schemes, government subsidies, equipment financing, and investment opportunities. Get seasonal credit, weather-based insurance, and financial planning tools. Our platform connects you with verified lenders and keeps you updated on schemes. Visit Financial Support section."
-    },
-    {
-      "query": "how to use crop calendar",
-      "response": "Crop Calendar plans your year! 📆 See optimal sowing times, harvesting schedules, and maintenance activities for different crops in your region. Get reminders for important tasks, weather-based adjustments, and seasonal recommendations. Never miss critical farming activities. Access from Crop Calendar in navigation."
+      "response": "AgriTech includes Crop Recommendation, Disease Detection, Weather, Farmer Connection, Shopkeeper Listings, AI ChatBot, Marketplace, Financial Support, and Crop Calendar."
     },
     {
       "query": "how does chatbot work",
-      "response": "I'm AgriBot, your AI farming assistant! 🤖 I use advanced AI (Google Gemini) to answer questions about crops, weather, pests, soil, and farming practices. I can also analyze plant photos for disease detection. For platform guidance, I explain all AgriTech features. Ask me anything farming-related - I'm here 24/7!"
+      "response": "AgriBot can answer agriculture questions, explain AgriTech features, and use the AI backend when available."
     },
     {
-      "query": "best crops for maharashtra",
-      "response": "For Maharashtra, consider your region! 🌾 Western Maharashtra (rainfed): Cotton, sorghum, pigeon pea. Eastern (irrigated): Sugarcane, rice, wheat. Konkan coast: Rice, coconut, cashew. Vidarbhar: Cotton, soybean, oranges. Check soil and water before deciding. Use our Crop Recommendation tool for personalized suggestions!"
+      "query": "how to find shopkeepers",
+      "response": "Shopkeeper Listings helps you find agricultural suppliers, equipment dealers, seed stores, and fertilizer shops nearby."
     },
     {
       "query": "best crops for punjab",
-      "response": "Punjab excels in wheat and rice! 🌾 Best crops: Wheat (November-December), Rice (June-July), Cotton, Sugarcane, Maize. Rich alluvial soil and irrigation make it India's breadbasket. Consider market prices and MSP. Use Crop Recommendation for current season advice based on your specific location."
+      "response": "Punjab is strong for wheat, rice, cotton, sugarcane, and maize. Use crop recommendation for location-specific advice."
+    },
+    {
+      "query": "best crops for maharashtra",
+      "response": "Maharashtra options vary by region and water availability. Cotton, soybean, sugarcane, rice, and pulses are common choices."
     },
     {
       "query": "best crops for karnataka",
-      "response": "Karnataka offers diverse options! 🌾 Northern Karnataka: Jowar, maize, groundnut. Southern Karnataka: Rice, sugarcane, coconut. Coffee in Chikmagalur/Chikballapur. Ragi in dry areas. Bangalore rural: Vegetables, flowers. Use our tools to match crops with your microclimate and soil type."
-    },
-    {
-      "query": "winter crops india",
-      "response": "Winter (Rabi) crops thrive in cooler weather! ❄️ Wheat, barley, gram, peas, mustard, potato, onion, garlic, coriander, cumin. Plant October-November, harvest March-April. These crops need less water and give good returns. Check local frost dates and use protected cultivation if needed."
-    },
-    {
-      "query": "summer crops india",
-      "response": "Summer (Zaid) crops grow in hot weather! ☀️ Groundnut, sesame, mung bean, urad, moth bean, watermelon, muskmelon, cucumber, bitter gourd. Plant March-May, harvest June-August. These are quick-growing and drought-resistant. Good for supplementary income between main seasons."
-    },
-    {
-      "query": "monsoon crops india",
-      "response": "Monsoon (Kharif) crops love rainfall! 🌧️ Rice, maize, sorghum, pearl millet, finger millet, soybean, groundnut, cotton, sugarcane, turmeric. Plant June-July with first rains, harvest September-November. These are main food crops needing good drainage to prevent waterlogging."
-    },
-    {
-      "query": "drought resistant crops",
-      "response": "Drought-resistant crops survive low water! 🏜️ Pearl millet (bajra), cluster bean (guar), moth bean, horse gram, sorghum, castor, sesame, groundnut. These have deep roots, waxy leaves, and efficient water use. Perfect for arid regions. Consider drip irrigation and mulching for better yields."
-    },
-    {
-      "query": "high value crops",
-      "response": "High-value crops maximize profits! 💰 Vegetables: Tomato, potato, onion, cauliflower. Fruits: Banana, mango, grapes. Spices: Chili, turmeric, ginger. Flowers: Rose, jasmine, marigold. Medicinal: Aloe vera, stevia. Cash crops: Sugarcane, cotton. Choose based on market demand and your resources."
+      "response": "Karnataka options include jowar, maize, groundnut, rice, sugarcane, coconut, coffee, and ragi depending on the region."
     },
     {
       "query": "soil types india",
-      "response": "India has diverse soils! 🌱 Alluvial (North India - fertile, rice/wheat), Black cotton (Deccan - clayey, cotton), Red laterite (South - acidic, tea/coffee), Arid desert (Rajasthan - sandy, drought-resistant crops), Mountain (Himalayas - organic matter rich). Test your soil pH, nutrients, and texture for best crop selection."
-    },
-    {
-      "query": "fertilizer recommendations",
-      "response": "Fertilizer depends on crop and soil! 🌿 Get soil test first. General NPK: Rice (120:60:60), Wheat (120:60:60), Cotton (100:50:50). Use organic manure (5-10 tons/acre), compost, and bio-fertilizers. Apply in splits: basal + top dressing. Avoid excess nitrogen. Consider foliar feeding for micronutrients."
-    },
-    {
-      "query": "pest control methods",
-      "response": "Integrated Pest Management works best! 🦗 Cultural: Crop rotation, resistant varieties. Biological: Ladybugs, neem oil, trichoderma. Chemical: Use only when needed, follow label instructions. Mechanical: Hand picking, traps. Always start with prevention and monitoring. Use our Disease Detection for plant health."
-    },
-    {
-      "query": "irrigation techniques",
-      "response": "Choose efficient irrigation! 💧 Flood: Traditional but wasteful. Furrow: Good for row crops. Sprinkler: Uniform coverage. Drip: Most efficient (90% water savings), delivers water directly to roots. Sub-surface drip prevents evaporation. Use moisture sensors for precision. Check our Weather tool for scheduling."
-    },
-    {
-      "query": "organic pest control",
-      "response": "Natural pest control is effective! 🌿 Neem oil spray (5ml/liter), garlic-chili spray, soap solution, diatomaceous earth, beneficial insects (ladybugs), companion planting (marigolds repel nematodes), sticky traps, row covers. Regular monitoring and crop rotation prevent pest buildup. Safe for environment and health!"
-    },
-    {
-      "query": "crop rotation benefits",
-      "response": "Crop rotation improves everything! 🔄 Breaks pest/disease cycles, improves soil fertility (legumes fix nitrogen), reduces weed pressure, prevents soil depletion, increases yields (10-25%), improves soil structure, reduces need for chemicals. Plan: cereals → legumes → root crops → leafy vegetables. Essential for sustainable farming!"
-    },
-    {
-      "query": "climate change farming",
-      "response": "Adapt farming to climate change! 🌡️ Use drought-resistant varieties, improve water management, practice conservation agriculture, diversify crops, use weather forecasting, implement agroforestry, adopt precision farming. Build resilience through mixed farming, insurance, and community cooperation. Our tools help you adapt!"
-    },
-    {
-      "query": "precision farming",
-      "response": "Precision farming optimizes resources! 🎯 Use GPS-guided tractors, soil sensors, drone monitoring, variable rate technology, IoT devices for real-time data. Apply inputs (water, fertilizer, pesticides) only where needed. Reduces costs by 20-30%, increases yields by 10-15%. Perfect for modern, efficient agriculture."
-    },
-    {
-      "query": "vertical farming",
-      "response": "Vertical farming maximizes space! 🏢 Stack crops in controlled environments, use hydroponics/aeroponics, LED lighting, climate control. Grows 10x more per square foot, uses 95% less water, year-round production. Perfect for urban areas, high-value crops like leafy greens, herbs, strawberries. Initial investment high but returns excellent."
-    },
-    {
-      "query": "hydroponic farming",
-      "response": "Hydroponics grows without soil! 💧 Nutrients dissolved in water, delivered directly to roots. Faster growth (25-30%), higher yields, water saving (90%), no soil-borne diseases, controlled environment. Good for tomatoes, lettuce, herbs, strawberries. Requires electricity and technical knowledge. Great for urban farming!"
-    },
-    {
-      "query": "agricultural subsidies india",
-      "response": "Many government schemes help farmers! 🇮🇳 PM-KISAN (₹6000/year), Soil Health Card, PM Fasal Bima Yojana (crop insurance), KCC (credit cards), Rythu Bandhu (Telangana), Rythu Bharosa (Karnataka). Check local agriculture office for eligibility. Our Financial Support section keeps you updated on schemes in your area."
-    },
-    {
-      "query": "export oriented crops",
-      "response": "Export crops bring foreign exchange! 🌍 Basmati rice, spices (chili, turmeric, pepper), cotton, tea, coffee, cashews, mangoes, grapes, flowers. Meet international quality standards, use GAP certification, focus on organic produce. High demand in Middle East, Europe, USA. Check export procedures and subsidies."
-    },
-    {
-      "query": "food security crops",
-      "response": "Food security crops ensure nutrition! 🍛 Cereals (rice, wheat, maize), pulses (lentils, chickpeas), oilseeds (mustard, groundnut), vegetables, fruits, millets. Diversify production, improve storage, reduce post-harvest losses. Focus on nutrition-rich crops like millets, legumes, and vegetables for balanced diet."
+      "response": "India has alluvial, black cotton, red laterite, arid desert, and mountain soils, each suited to different crops."
     }
+  ],
+  "fallback_responses": [
+    "I can still help even if I do not have an exact match. Try asking about crop recommendation, irrigation, soil health, or plant diseases.",
+    "I could not find a precise answer yet. You can ask me about weather impact, pest control, fertilizers, or seasonal crop planning.",
+    "Let us refine your question. Mention your crop, region, and problem so I can give more useful guidance."
+  ]
+}

@@ -340,6 +340,77 @@ function resetAllFilters() {
   }
 }
 
+const directoryStatus = {
+  container: document.getElementById('directoryStatus'),
+  icon: document.getElementById('directoryStatusIcon'),
+  title: document.getElementById('directoryStatusTitle'),
+  message: document.getElementById('directoryStatusMessage'),
+  retry: document.getElementById('directoryStatusRetry'),
+};
+
+const shopkeeperDirectorySource = 'shopkeeper-data.json';
+
+function setDirectoryStatus(state, title, message) {
+  if (!directoryStatus.container) return;
+
+  directoryStatus.container.className = `directory-status is-visible is-${state}`;
+  directoryStatus.title.textContent = title;
+  directoryStatus.message.textContent = message;
+  directoryStatus.retry.hidden = state !== 'error';
+
+  if (state === 'loading') {
+    directoryStatus.icon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  } else if (state === 'error') {
+    directoryStatus.icon.innerHTML = '<i class="fas fa-triangle-exclamation"></i>';
+  } else {
+    directoryStatus.icon.innerHTML = '<i class="fas fa-circle-check"></i>';
+  }
+}
+
+function hideDirectoryStatus() {
+  if (!directoryStatus.container) return;
+
+  directoryStatus.container.className = 'directory-status';
+}
+
+async function refreshShopDirectory() {
+  if (!directoryStatus.container) return;
+
+  setDirectoryStatus('loading', 'Refreshing shop directory', 'Checking the latest dealer listings...');
+
+  try {
+    const response = await fetch(shopkeeperDirectorySource, { cache: 'no-store' });
+
+    if (!response.ok) {
+      throw new Error(`Shop directory request failed with status ${response.status}`);
+    }
+
+    const payload = await response.json();
+
+    if (!payload || !Array.isArray(payload.dealers)) {
+      throw new Error('Shop directory payload is missing a dealers array');
+    }
+
+    window.shopkeeperDirectoryCache = payload;
+    setDirectoryStatus(
+      'success',
+      'Shop directory refreshed',
+      `Loaded ${payload.dealers.length} dealer records from the latest source.`,
+    );
+
+    window.setTimeout(() => {
+      hideDirectoryStatus();
+    }, 1800);
+  } catch (error) {
+    console.error('Failed to refresh shop directory:', error);
+    setDirectoryStatus(
+      'error',
+      'Unable to refresh shop listings',
+      'Showing the locally rendered listings. Retry when the network or API is available again.',
+    );
+  }
+}
+
 // Simple particle system for background
 function createParticleSystem() {
   const canvas = document.getElementById("particles-js");
@@ -423,6 +494,12 @@ function initializeSearch() {
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize enhanced filter system
   window.dealerFilter = new DealerFilter();
+
+  if (directoryStatus.retry) {
+    directoryStatus.retry.addEventListener('click', refreshShopDirectory);
+  }
+
+  refreshShopDirectory();
   
   // Initialize particle system
   createParticleSystem();

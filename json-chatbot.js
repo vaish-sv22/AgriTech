@@ -8,6 +8,12 @@ class JSONChatbot {
     this.responses = [];
     this.fallbackResponses = [];
     this.isLoaded = false;
+    this.stopWords = new Set([
+      'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'how',
+      'i', 'in', 'is', 'it', 'of', 'on', 'or', 'that', 'the', 'to', 'was',
+      'what', 'when', 'where', 'which', 'who', 'why', 'with', 'can', 'you',
+      'me', 'my', 'we', 'our', 'about', 'please', 'tell'
+    ]);
     this.loadResponses();
   }
 
@@ -44,6 +50,29 @@ class JSONChatbot {
   }
 
   /**
+   * Normalize user text for matching
+   */
+  normalizeText(text) {
+    return String(text || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Tokenize text and remove low-signal words
+   */
+  tokenize(text) {
+    const normalized = this.normalizeText(text);
+    if (!normalized) return [];
+
+    return normalized
+      .split(' ')
+      .filter((word) => word.length > 1 && !this.stopWords.has(word));
+  }
+
+  /**
    * Calculate similarity between two strings using Levenshtein distance
    */
   calculateSimilarity(str1, str2) {
@@ -59,6 +88,24 @@ class JSONChatbot {
 
     const distance = this.levenshteinDistance(longer, shorter);
     return (longer.length - distance) / longer.length;
+  }
+
+  /**
+   * Token overlap score using Jaccard similarity
+   */
+  calculateTokenOverlap(str1, str2) {
+    const tokens1 = new Set(this.tokenize(str1));
+    const tokens2 = new Set(this.tokenize(str2));
+
+    if (tokens1.size === 0 || tokens2.size === 0) return 0;
+
+    let intersection = 0;
+    for (const token of tokens1) {
+      if (tokens2.has(token)) intersection++;
+    }
+
+    const union = tokens1.size + tokens2.size - intersection;
+    return union === 0 ? 0 : intersection / union;
   }
 
   /**
@@ -90,10 +137,10 @@ class JSONChatbot {
    * Check if input contains key phrases
    */
   containsKeyPhrases(input, query) {
-    const inputWords = input.toLowerCase().split(/\s+/);
-    const queryWords = query.toLowerCase().split(/\s+/);
+    const inputWords = this.tokenize(input);
+    const queryWords = this.tokenize(query);
 
-    if (input.toLowerCase().includes(query.toLowerCase())) {
+    if (this.normalizeText(input).includes(this.normalizeText(query))) {
       return 1.0;
     }
 
@@ -113,40 +160,113 @@ class JSONChatbot {
   }
 
   /**
+   * Build scored match details for one query
+   */
+  scoreQuery(input, query) {
+    const normalizedInput = this.normalizeText(input);
+    const normalizedQuery = this.normalizeText(query);
+
+    const exactMatch = normalizedInput === normalizedQuery ? 1.0 : 0;
+    const containsMatch =
+      normalizedInput.includes(normalizedQuery) || normalizedQuery.includes(normalizedInput)
+        ? 0.9
+        : 0;
+    const levenshteinSimilarity = this.calculateSimilarity(normalizedInput, normalizedQuery);
+    const keyPhraseMatch = this.containsKeyPhrases(normalizedInput, normalizedQuery);
+    const tokenOverlap = this.calculateTokenOverlap(normalizedInput, normalizedQuery);
+
+    return Math.max(
+      exactMatch,
+      containsMatch,
+      levenshteinSimilarity * 0.55 + tokenOverlap * 0.45,
+      keyPhraseMatch * 0.75,
+      tokenOverlap * 0.8
+    );
+  }
+
+  /**
+   * Normalize query field to array
+   */
+  getQueryVariants(responseObj) {
+    if (!responseObj || !responseObj.query) return [];
+    return Array.isArray(responseObj.query) ? responseObj.query : [responseObj.query];
+  }
+
+  /**
+   * Build useful fallback with suggestions
+   */
+  buildFallbackResponse(userInput, rankedMatches) {
+    const base = this.getRandomFallback();
+    const suggestions = rankedMatches
+      .filter((item) => item.score >= 0.2)
+      .slice(0, 3)
+      .map((item) => item.query)
+      .filter(Boolean);
+
+    if (suggestions.length === 0) {
+      return `${base}\n\nTry asking about: crop recommendation, irrigation, soil health, or plant diseases.`;
+    }
+
+    return `${base}\n\nYou can also ask: ${suggestions.join(' | ')}`;
+  }
+
+  /**
    * Find best matching response
    */
   findBestMatch(userInput) {
     if (!this.isLoaded || this.responses.length === 0) {
-      return this.getRandomFallback();
+      return {
+        response: this.getRandomFallback(),
+        matched: false,
+        confidence: 0,
+        matchedQuery: null
+      };
     }
 
-    const input = userInput.toLowerCase().trim();
+    const input = this.normalizeText(userInput);
     let bestMatch = null;
     let bestScore = 0;
-    const threshold = 0.4;
+    const threshold = 0.42;
+    const rankedMatches = [];
 
     for (const responseObj of this.responses) {
-      const query = responseObj.query.toLowerCase();
+      const queries = this.getQueryVariants(responseObj);
+      let itemBestScore = 0;
+      let itemBestQuery = '';
 
-      const exactMatch = input === query ? 1.0 : 0;
-      const containsMatch = input.includes(query) || query.includes(input) ? 0.8 : 0;
-      const levenshteinSimilarity = this.calculateSimilarity(input, query);
-      const keyPhraseMatch = this.containsKeyPhrases(input, query);
+      for (const query of queries) {
+        const score = this.scoreQuery(input, query);
+        if (score > itemBestScore) {
+          itemBestScore = score;
+          itemBestQuery = query;
+        }
+      }
 
-      const score = Math.max(
-        exactMatch,
-        containsMatch,
-        levenshteinSimilarity * 0.7,
-        keyPhraseMatch * 0.6
-      );
+      rankedMatches.push({ query: itemBestQuery, score: itemBestScore });
 
-      if (score > bestScore && score >= threshold) {
-        bestScore = score;
+      if (itemBestScore > bestScore && itemBestScore >= threshold) {
+        bestScore = itemBestScore;
         bestMatch = responseObj;
       }
     }
 
-    return bestMatch ? bestMatch.response : this.getRandomFallback();
+    rankedMatches.sort((a, b) => b.score - a.score);
+
+    if (bestMatch) {
+      return {
+        response: bestMatch.response,
+        matched: true,
+        confidence: bestScore,
+        matchedQuery: rankedMatches[0] ? rankedMatches[0].query : null
+      };
+    }
+
+    return {
+      response: this.buildFallbackResponse(input, rankedMatches),
+      matched: false,
+      confidence: rankedMatches[0] ? rankedMatches[0].score : 0,
+      matchedQuery: rankedMatches[0] ? rankedMatches[0].query : null
+    };
   }
 
   /**
@@ -164,6 +284,17 @@ class JSONChatbot {
    * Get response for user input
    */
   async getResponse(userInput) {
+    if (!this.isLoaded) {
+      await this.loadResponses();
+    }
+    const result = this.findBestMatch(userInput);
+    return result.response;
+  }
+
+  /**
+   * Get response with confidence details for advanced handling
+   */
+  async getResponseDetails(userInput) {
     if (!this.isLoaded) {
       await this.loadResponses();
     }
