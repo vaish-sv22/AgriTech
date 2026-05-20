@@ -53,6 +53,7 @@ body {
 .blog-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding-bottom: 7rem;
 }
 
 /* ====================================
@@ -386,6 +387,7 @@ body {
     font-size: 1.2rem;
     color: #ccc;
     transition: all 0.3s ease;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 10;
     box-shadow: 0 2px 10px var(--shadow-light);
@@ -446,6 +448,7 @@ body {
 .load-more-container {
     text-align: center;
     margin-top: 3rem;
+    margin-bottom: 2rem;
 }
 
 .load-more-btn {
@@ -488,6 +491,7 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     animation: fadeIn 0.3s ease;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
 }
 
@@ -779,25 +783,48 @@ body {
     position: fixed;
     bottom: 30px;
     left: 30px;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+    min-width: 132px;
+    height: 58px;
+    padding: 0 18px;
+    background: linear-gradient(135deg, #7fd89c 0%, var(--green-primary) 55%, var(--green-secondary) 100%);
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 999px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 12px 28px rgba(46, 125, 50, 0.28), 0 4px 10px rgba(0, 0, 0, 0.14);
     z-index: 999;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, background 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.22);
 }
 
 .fab-btn:hover {
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 16px 36px rgba(46, 125, 50, 0.34), 0 6px 16px rgba(0, 0, 0, 0.18);
+    filter: brightness(1.03);
+}
+
+.fab-btn:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.fab-btn:focus-visible {
+    outline: 3px solid rgba(127, 216, 156, 0.55);
+    outline-offset: 4px;
+}
+
+.fab-btn i {
+    font-size: 1.05rem;
+}
+
+.fab-label {
+    white-space: nowrap;
 }
 
 /* ====================================
@@ -814,6 +841,7 @@ body {
     z-index: 10000;
     animation: slideInRight 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
@@ -950,12 +978,12 @@ body {
     background-size: 30px 30px;
     opacity: 0.8;
     z-index: 1;
-    mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, #000 70%, transparent 100%);
     -webkit-mask-image: radial-gradient(
         ellipse 70% 50% at 50% 50%,
         #000 70%,
         transparent 100%
     );
+    mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, #000 70%, transparent 100%);
 }
 
 .footer-inner-content,
@@ -1217,6 +1245,7 @@ body {
 [data-theme="dark"] .search-filter-section {
     background: rgba(45, 55, 72, 0.95);
     border: 1px solid rgba(104, 211, 145, 0.15);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
@@ -1254,6 +1283,7 @@ body {
     background: linear-gradient(145deg, rgba(45, 55, 72, 0.95), rgba(26, 32, 44, 0.95));
     border: 1px solid rgba(104, 211, 145, 0.15);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
 }
 
@@ -1599,11 +1629,17 @@ body {
     }
 
     .fab-btn {
-        width: 50px;
+        min-width: 50px;
+        width: auto;
         height: 50px;
-        font-size: 20px;
+        padding: 0 14px;
+        font-size: 18px;
         bottom: 20px;
         left: 20px;
+    }
+
+    .fab-label {
+        display: none;
     }
 
     #scrollTopBtn {

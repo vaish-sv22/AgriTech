@@ -40,6 +40,36 @@
                 </p>
             </div>
 
+                <section class="card why-matters-card" aria-labelledby="why-it-matters-title">
+                  <div class="section-heading">
+                    <p class="section-eyebrow">Why It Matters</p>
+                    <h2 id="why-it-matters-title">Technology should be practical, clear, and trustworthy</h2>
+                    <p class="section-intro">
+                      Better farming decisions depend on information that is easy to read, easy to scan, and simple to act on.
+                    </p>
+                  </div>
+
+                  <div class="why-matters-grid">
+                    <article class="why-point">
+                      <span class="why-icon"><i class="fa-solid fa-eye"></i></span>
+                      <h3>Readable guidance</h3>
+                      <p>Clear contrast and consistent spacing help farmers quickly understand the most important information.</p>
+                    </article>
+
+                    <article class="why-point">
+                      <span class="why-icon"><i class="fa-solid fa-layer-group"></i></span>
+                      <h3>Better structure</h3>
+                      <p>Well-aligned sections make the page feel dependable and reduce the effort needed to find key details.</p>
+                    </article>
+
+                    <article class="why-point">
+                      <span class="why-icon"><i class="fa-solid fa-seedling"></i></span>
+                      <h3>More trust</h3>
+                      <p>A polished layout reinforces that the platform is carefully maintained and built for real-world use.</p>
+                    </article>
+                  </div>
+                </section>
+
             <div class="card">
                 <h2>✨ Key Features</h2>
                 <ul class="features-list">
@@ -75,7 +105,7 @@
                 </p>
                 <p>
                     You can also connect with us on GitHub at 
-                    <a href="https://github.com/omroy07/AgriTech" target="_blank" class="link">omroy07/AgriTech</a>
+                    <a href="https://github.com/omroy07/AgriTech" target="_blank" rel="noopener" class="link">omroy07/AgriTech</a>
                 </p>
             </div>
 
@@ -247,9 +277,11 @@
     .footer-section ul a {
       color: var(--text-muted);
       text-decoration: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      width: fit-content;
+      cursor: pointer;
       transition: color 0.25s ease;
     }
 
@@ -269,11 +301,11 @@
       display: none;
     }
 
-    /* Scroll To Top Button */
-    .scroll-top-btn {
+    /* Back To Top Button */
+    .back-to-top-btn {
         position: fixed;
-        bottom: 25px;
-        right: 25px;
+      bottom: 30px;
+      right: 30px;
         width: 52px;
         height: 52px;
         border-radius: 50%;
@@ -293,13 +325,13 @@
         z-index: 9999;
     }
 
-    .scroll-top-btn.show {
+      .back-to-top-btn.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
     }
 
-    .scroll-top-btn:hover {
+      .back-to-top-btn:hover {
         background: #27ae60;
         transform: scale(1.1);
     }
@@ -478,27 +510,27 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("current-year").textContent =
     new Date().getFullYear();
 </script>
-<button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+<button id="backToTopBtn" class="back-to-top-btn" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
 </button>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const backToTopBtn = document.getElementById("backToTopBtn");
 
-    if (!scrollTopBtn) return;
+  if (!backToTopBtn) return;
 
     // Monitor Scroll Position
     window.addEventListener("scroll", function () {
         // Show button after scrolling down 300px
         if (window.pageYOffset > 300) {
-            scrollTopBtn.classList.add("show");
+      backToTopBtn.classList.add("show");
         } else {
-            scrollTopBtn.classList.remove("show");
+      backToTopBtn.classList.remove("show");
         }
     });
 
     // Scroll to top on click
-    scrollTopBtn.addEventListener("click", function () {
+  backToTopBtn.addEventListener("click", function () {
         window.scrollTo({
             top: 0,
             behavior: "smooth"

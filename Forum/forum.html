@@ -4,18 +4,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Join the AgriTech Community Forum to share advice, ask questions, and discuss farming topics with other farmers." />
   <title>Community Forum - AgriTech</title>
-  
-  <link rel="icon" type="image/png" href="../images/logo.png" />
 
+  <link rel="icon" type="image/png" href="../images/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Libertinus+Serif:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
-  <link rel="stylesheet" href="../theme.css" />
+  <script>
+    (function () {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+    })();
+  </script>
+
   <style>
-    /* 1. LAYOUT & RESET */
+    :root {
+      --bg-main: #eef2f7;
+      --bg-accent: rgba(22, 163, 74, 0.12);
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-strong: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #5b6474;
+      --border: rgba(15, 23, 42, 0.08);
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+      --primary: #16a34a;
+      --primary-strong: #15803d;
+      --primary-soft: rgba(22, 163, 74, 0.12);
+      --ring: rgba(22, 163, 74, 0.22);
+      --card-radius: 24px;
+    }
+
+    html[data-theme='dark'] {
+      --bg-main: #0b1120;
+      --bg-accent: rgba(56, 189, 248, 0.12);
+      --surface: rgba(17, 24, 39, 0.92);
+      --surface-strong: #111827;
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.16);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+      --primary: #22c55e;
+      --primary-strong: #16a34a;
+      --primary-soft: rgba(34, 197, 94, 0.14);
+      --ring: rgba(34, 197, 94, 0.24);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -23,588 +62,470 @@
     }
 
     body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: var(--bg-secondary, #f8fafc);
-      color: var(--text-primary, #333);
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
       min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at top left, var(--bg-accent), transparent 28%),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.08), transparent 24%),
+        linear-gradient(180deg, var(--bg-main), var(--bg-main));
+      line-height: 1.6;
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
-    /* 2. HEADER (Matches Index/Blog) */
-    .navbar {
-      background: var(--bg-primary, #ffffff);
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--border-color, #e2e8f0);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Libertinus Serif', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary-green, #16a34a);
+    a {
+      color: inherit;
       text-decoration: none;
     }
 
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .forum-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .forum-topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .forum-branding {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
     .brand img {
-      height: 40px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+    }
+
+    .forum-title-block {
+      min-width: 0;
+    }
+
+    .forum-eyebrow,
+    .section-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .forum-title-block h1,
+    .section-heading h2 {
+      font-size: clamp(1.25rem, 2vw, 1.8rem);
+      line-height: 1.2;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
+      flex-shrink: 0;
     }
 
-    /* 3. BUTTONS */
     .btn {
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      min-height: 44px;
+      padding: 0.75rem 1.05rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      justify-content: center;
+      gap: 0.55rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
     }
 
     .btn-secondary {
-      background: transparent;
-      border-color: var(--border-color, #cbd5e1);
-      color: var(--text-primary, #333);
+      background: var(--surface);
+      color: var(--text-main);
+      border-color: var(--border);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
     .btn-secondary:hover {
-      background: var(--bg-secondary, #f1f5f9);
-      border-color: var(--primary-green, #16a34a);
+      border-color: var(--primary);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
     }
 
     .btn-primary {
-      background: var(--primary-green, #16a34a);
-      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #ffffff;
+      box-shadow: 0 16px 30px rgba(22, 163, 74, 0.24);
     }
 
     .btn-primary:hover {
-      background: #15803d;
+      box-shadow: 0 18px 34px rgba(22, 163, 74, 0.28);
     }
 
-    /* Theme Toggle */
     .theme-toggle {
-      background: transparent;
-      border: 1px solid var(--border-color, #cbd5e1);
-      color: var(--text-primary);
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      display: flex;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-main);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.2rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
-    /* 4. MAIN CONTAINER */
-    .forum-container {
-      max-width: 900px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-      flex: 1;
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: var(--primary);
     }
 
-    .forum-header {
-      text-align: center;
-      margin-bottom: 3rem;
+    .forum-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
     }
 
-    .forum-header h1 {
-      font-family: 'Libertinus Serif', serif;
-      font-size: 2.5rem;
-      color: var(--primary-green, #16a34a);
-      margin-bottom: 0.5rem;
+    .forum-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.25rem;
+      align-items: start;
     }
 
-    .forum-header p {
-      color: var(--text-secondary, #64748b);
-      font-size: 1.1rem;
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
-    /* 5. CREATE POST FORM */
-    .create-post-card {
-      background: var(--bg-primary, #ffffff);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      border: 1px solid var(--border-color, #e2e8f0);
-      margin-bottom: 3rem;
+    .create-post-card,
+    .posts-card {
+      padding: 1.5rem;
     }
 
-    .create-post-card h2 {
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.5rem;
-    }
-
-    .form-group {
+    .section-heading {
+      display: grid;
+      gap: 0.35rem;
       margin-bottom: 1.25rem;
     }
 
+    .section-heading p:last-child {
+      color: var(--text-muted);
+      max-width: 60ch;
+    }
+
+    .section-heading-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .composer-form {
+      display: grid;
+      gap: 1rem;
+    }
+
     .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
+      display: inline-block;
+      margin-bottom: 0.45rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      font-size: 0.9rem;
     }
 
     .form-control {
       width: 100%;
-      padding: 0.8rem 1rem;
-      border: 1px solid var(--border-color, #cbd5e1);
-      border-radius: 8px;
-      font-family: inherit;
-      background: var(--bg-secondary, #f8fafc);
-      color: var(--text-primary, #333);
-      transition: border 0.2s;
-    }
-
-    .form-control:focus {
+      min-height: 44px;
+      padding: 0.9rem 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      color: var(--text-main);
       outline: none;
-      border-color: var(--primary-green, #16a34a);
-      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     textarea.form-control {
+      min-height: 180px;
       resize: vertical;
-      min-height: 120px;
     }
 
-    /* 6. POSTS FEED */
-    .feed-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid var(--border-color, #e2e8f0);
-      padding-bottom: 1rem;
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .submit-btn {
+      width: 100%;
+    }
+
+    #forumPosts {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .forum-post,
+    .empty-state-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.2rem 1.25rem;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
     }
 
     .forum-post {
-      background: var(--bg-primary, #ffffff);
-      border: 1px solid var(--border-color, #e2e8f0);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      display: grid;
+      gap: 0.9rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .forum-post:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+      border-color: var(--primary);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
     }
 
     .post-meta {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-      color: var(--text-secondary, #64748b);
+      gap: 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      flex-wrap: wrap;
     }
 
     .author-avatar {
-      width: 32px;
-      height: 32px;
-      background: var(--bg-secondary, #e2e8f0);
-      border-radius: 50%;
-      display: flex;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--primary-green, #16a34a);
+      flex-shrink: 0;
     }
 
     .post-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      color: var(--primary-green, #16a34a);
+      font-size: 1.08rem;
+      line-height: 1.35;
     }
 
     .post-content {
-      color: var(--text-primary, #333);
-      line-height: 1.7;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.65;
     }
 
-    /* 7. FOOTER (Standardized) */
-    .site-footer {
-      background: #1e293b; /* Dark Slate */
-      color: #f8fafc;
-      padding: 4rem 2rem 2rem;
-      margin-top: auto;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+    .empty-state-card {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 3rem;
-    }
-
-    .footer-brand h3 {
-      font-family: 'Libertinus Serif', serif;
-      font-size: 1.8rem;
-      color: var(--accent-green, #4ade80);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-brand p {
-      opacity: 0.8;
-      line-height: 1.6;
-    }
-
-    .footer-links h4 {
-      color: #fff;
-      margin-bottom: 1.5rem;
-      font-family: 'Libertinus Serif', serif;
-      font-size: 1.2rem;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .footer-links h4::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background: var(--accent-green, #4ade80);
-    }
-
-    .footer-links ul {
-      list-style: none;
-    }
-
-    .footer-links a {
-      color: #cbd5e1;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.8rem;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .footer-links a:hover {
-      color: var(--accent-green, #4ade80);
-      transform: translateX(5px);
-    }
-
-    .social-media {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .social-media a {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50%;
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s;
-    }
-
-    .social-media a:hover {
-      background: var(--accent-green, #4ade80);
-      color: #1e293b;
-      transform: translateY(-3px);
-    }
-
-    .footer-bottom {
+      place-items: center;
+      gap: 0.5rem;
+      min-height: 180px;
+      color: var(--text-muted);
       text-align: center;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: #94a3b8;
-      font-size: 0.9rem;
+      border-style: dashed;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .navbar {
-        padding: 1rem;
+    .empty-state-card i {
+      font-size: 1.3rem;
+      color: var(--primary);
+    }
+
+    .empty-state-card p {
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .forum-grid {
+        grid-template-columns: 1fr;
       }
-      .brand span {
+    }
+
+    @media (max-width: 720px) {
+      .forum-topbar-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .forum-branding {
+        justify-content: space-between;
+      }
+
+      .nav-actions {
+        justify-content: space-between;
+      }
+
+      .section-heading-row {
+        flex-direction: column;
+      }
+
+      .forum-shell {
+        padding-inline: 1rem;
+      }
+
+      .create-post-card,
+      .posts-card {
+        padding: 1.25rem;
+      }
+
+      .brand span,
+      .back-link span {
         display: none;
       }
-      .forum-container {
-        padding: 0 1rem;
-      }
-      .forum-header h1 {
-        font-size: 2rem;
-      }
     }
-       /* --- Cursor Trail Container --- */
-.circle-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999999;
-}
-
-/* --- Individual Trail Circles --- */
-.cursor-circle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ff8c00;
-  box-shadow: 0 0 15px rgba(255, 140, 0, 0.7);
-  transform: translate(-50%, -50%);
-  will-change: transform;
-  mix-blend-mode: screen;
-  transition: transform 0.1s ease-out;
-}
-
-/* --- The Leading "Head" Circle --- */
-.cursor-circle:first-child {
-  width: 14px;
-  height: 14px;
-  background-color: #ffcc00;
-  box-shadow:
-    0 0 20px #ff8c00,
-    0 0 40px rgba(255, 140, 0, 0.5);
-}
-
-/* --- Interaction States --- */
-.cursor-clicking {
-  transform: translate(-50%, -50%) scale(2.5) !important;
-  background-color: #ffffff !important;
-  box-shadow: 0 0 30px #ffffff !important;
-}
-
-.cursor-hovering {
-  transform: translate(-50%, -50%) scale(1.8);
-  background-color: #22c55e; /* AgriTech green */
-  box-shadow: 0 0 20px #22c55e;
-}
   </style>
 </head>
 
 <body>
+  <header class="forum-topbar">
+    <div class="forum-topbar-inner">
+      <div class="forum-branding">
+        <a href="../index.html" class="brand" aria-label="AgriTech home">
+          <img src="../images/logo.png" alt="AgriTech logo" />
+          <span>AgriTech</span>
+        </a>
 
-  <nav class="navbar">
-    <a href="../index.html" class="brand">
-      <img src="../images/logo.png" alt="Logo">
-      <span>AgriTech</span>
-    </a>
-
-    <div class="nav-actions">
-      <a href="../index.html" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Home
-      </a>
-      
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <i class="fas fa-moon"></i>
-      </button>
-    </div>
-  </nav>
-
-  <main class="forum-container">
-    <div class="forum-header">
-      <h1>Community Forum</h1>
-      <p>Connect, share, and learn from fellow farmers.</p>
-    </div>
-
-    <section class="create-post-card">
-      <h2><i class="fas fa-pen-to-square"></i> Start a Discussion</h2>
-      <form id="forumForm">
-        <div class="form-group">
-          <label for="title">Discussion Title</label>
-          <input type="text" id="title" name="title" class="form-control" placeholder="e.g., Best organic fertilizer for wheat?" required maxlength="200">
-        </div>
-
-        <div class="form-group">
-          <label for="author">Your Name</label>
-          <input type="text" id="author" name="author" class="form-control" placeholder="Enter your name" required maxlength="100">
-        </div>
-
-        <div class="form-group">
-          <label for="content">Message</label>
-          <textarea id="content" name="content" class="form-control" placeholder="Share your experience or ask a question..." required maxlength="5000"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-          <i class="fas fa-paper-plane"></i> Post Discussion
-        </button>
-      </form>
-    </section>
-
-    <section>
-      <div class="feed-header">
-        <h2>Recent Discussions</h2>
-        <button class="btn btn-secondary" onclick="loadPosts()">
-          <i class="fas fa-sync-alt"></i> Refresh
-        </button>
-      </div>
-      
-      <div id="forumPosts">
-        <div style="text-align: center; padding: 2rem; color: #64748b;">
-          <i class="fas fa-spinner fa-spin"></i> Loading discussions...
+        <div class="forum-title-block">
+          <p class="forum-eyebrow">Farmer Forum</p>
+          <h1>Community Forum</h1>
         </div>
       </div>
+
+      <div class="nav-actions">
+        <a href="../index.html" class="btn btn-secondary back-link">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back to Main Page</span>
+        </a>
+
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="forum-shell">
+    <section class="forum-grid" aria-label="Forum content">
+      <article class="card create-post-card">
+        <div class="section-heading">
+          <p class="section-eyebrow">Create a Post</p>
+          <h2>Start a conversation</h2>
+          <p>Share advice, ask a question, or post an update for other farmers.</p>
+        </div>
+
+        <form id="forumForm" class="composer-form">
+          <div class="form-group">
+            <label for="title">Discussion Title</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="e.g., Best organic fertilizer for wheat?" required maxlength="200" />
+          </div>
+
+          <div class="form-group">
+            <label for="author">Your Name</label>
+            <input type="text" id="author" name="author" class="form-control" placeholder="Enter your name" required maxlength="100" />
+          </div>
+
+          <div class="form-group">
+            <label for="content">Message</label>
+            <textarea id="content" name="content" class="form-control" placeholder="Share your experience or ask a question..." required maxlength="5000"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary submit-btn">
+            <i class="fas fa-paper-plane"></i> Post Discussion
+          </button>
+        </form>
+      </article>
+
+      <article class="card posts-card">
+        <div class="section-heading section-heading-row">
+          <div>
+            <p class="section-eyebrow">Recent Posts</p>
+            <h2>Latest community discussions</h2>
+            <p>Browse the newest advice, questions, and shared experiences.</p>
+          </div>
+
+          <button class="btn btn-secondary" type="button" onclick="loadPosts()">
+            <i class="fas fa-sync-alt"></i>
+            Refresh
+          </button>
+        </div>
+
+        <div id="forumPosts">
+          <div class="empty-state-card">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading discussions...</p>
+          </div>
+        </div>
+      </article>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <h3><i class="fas fa-leaf"></i> AgriTech</h3>
-        <p>Empowering India's Farming Future with innovative technology solutions that connect every stakeholder in the agricultural ecosystem.</p>
-        <div class="social-media">
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        </div>
-      </div>
-      
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
-          <li><a href="../main.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-          <li><a href="../chat.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
-          <li><a href="../feed-back.html"><i class="fas fa-comment"></i> Feedback</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-links">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="../terms-and-service.html"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
-          <li><a href="../privacy-policy.html"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2026 AgriTech. All rights reserved.
-    </div>
-  </footer>
-  <!-- Cursor Trail -->
-<div class="circle-container" id="cursorTrail"></div>
   <script src="forum.js"></script>
-  
   <script>
-    const toggle = document.getElementById('themeToggle');
-    const icon = toggle.querySelector('i');
-    
-    // Check saved theme
-    if(localStorage.getItem('theme') === 'dark') {
-      document.body.setAttribute('data-theme', 'dark');
-      icon.classList.remove('fa-moon');
-      icon.classList.add('fa-sun');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    function syncThemeIcon() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      themeIcon.classList.toggle('fa-moon', !isDark);
+      themeIcon.classList.toggle('fa-sun', isDark);
+      themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
     }
 
-    toggle.addEventListener('click', () => {
-      const isDark = document.body.getAttribute('data-theme') === 'dark';
-      if(isDark) {
-        document.body.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-      } else {
-        document.body.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-      }
+    syncThemeIcon();
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      syncThemeIcon();
     });
-                // --- Cursor Trailing Effect ---
-const container = document.getElementById('cursorTrail');
-const circleCount = 12;
-const circles = [];
-
-let mouseX = 0;
-let mouseY = 0;
-
-// Create circles
-for (let i = 0; i < circleCount; i++) {
-    const circle = document.createElement('div');
-    circle.classList.add('cursor-circle');
-    container.appendChild(circle);
-    circles.push({ el: circle, x: 0, y: 0 });
-}
-
-// Mouse move
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-});
-
-// Click effects
-document.addEventListener('mousedown', () => {
-    circles.forEach(c => c.el.classList.add('cursor-clicking'));
-});
-document.addEventListener('mouseup', () => {
-    circles.forEach(c => c.el.classList.remove('cursor-clicking'));
-});
-
-// Hover effects on interactive elements
-document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
-        circles.forEach(c => c.el.classList.add('cursor-hovering'));
-    }
-});
-document.addEventListener('mouseout', (e) => {
-    if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
-        circles.forEach(c => c.el.classList.remove('cursor-hovering'));
-    }
-});
-
-// Animate trailing effect
-function animateCursor() {
-    let x = mouseX;
-    let y = mouseY;
-
-    circles.forEach((circle) => {
-        circle.x += (x - circle.x) * 0.25;
-        circle.y += (y - circle.y) * 0.25;
-
-        circle.el.style.left = circle.x + 'px';
-        circle.el.style.top = circle.y + 'px';
-
-        x = circle.x;
-        y = circle.y;
-    });
-
-    requestAnimationFrame(animateCursor);
-}
-animateCursor();
   </script>
 </body>
 </html>
