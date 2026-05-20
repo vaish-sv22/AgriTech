@@ -1,6 +1,33 @@
 const API_BASE = '/api/v1/ai-disease';
 
 let selectedImage = null;
+let analyzeButtonOriginalHtml = null;
+
+function setPredictionLoadingState(isLoading) {
+    const loadingCard = document.getElementById('loadingCard');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+
+    if (loadingCard) {
+        loadingCard.classList.toggle('hidden', !isLoading);
+    }
+
+    if (!analyzeBtn) return;
+
+    if (isLoading) {
+        if (analyzeButtonOriginalHtml === null) {
+            analyzeButtonOriginalHtml = analyzeBtn.innerHTML;
+        }
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Predicting...';
+    } else {
+        analyzeBtn.disabled = false;
+
+        if (analyzeButtonOriginalHtml !== null) {
+            analyzeBtn.innerHTML = analyzeButtonOriginalHtml;
+            analyzeButtonOriginalHtml = null;
+        }
+    }
+}
 
 function setStatusMessage(message, type = 'info') {
     const existing = document.getElementById('statusMessage');
@@ -62,9 +89,8 @@ async function analyzeImage() {
         return;
     }
 
-    document.getElementById('loadingCard').classList.remove('hidden');
+    setPredictionLoadingState(true);
     document.getElementById('resultCard').classList.add('hidden');
-    document.getElementById('analyzeBtn').disabled = true;
 
     try {
         const imageBase64 = selectedImage.split(',')[1];
@@ -112,10 +138,7 @@ async function analyzeImage() {
         );
 
     } finally {
-
-        document.getElementById('loadingCard').classList.add('hidden');
-
-        document.getElementById('analyzeBtn').disabled = false;
+        setPredictionLoadingState(false);
     }
 }
 
