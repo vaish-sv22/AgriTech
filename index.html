@@ -1995,6 +1995,38 @@
     ::-webkit-scrollbar-thumb:hover {
       background: var(--text-muted);
     }
+/* Features grid responsive fix */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 100%;
+}
+
+/* Feature card fix */
+.feature-card {
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  height: auto;              /* allow text expansion */
+  overflow: visible;         /* don’t clip text */
+  word-wrap: break-word;     /* break long words */
+}
+
+/* Responsive text scaling */
+@media (max-width: 768px) {
+  .feature-title {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .feature-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+
+
 
     /* Features grid responsive fix */
     .features-grid {
