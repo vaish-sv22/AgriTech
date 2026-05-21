@@ -1,6 +1,7 @@
 import { savePrediction } from "../predictionStorage.js";
 import RecentPredictions from "../components/RecentPredictions.js";
 const USE_AI_FALLBACK = true;
+const CHAT_HISTORY_STORAGE_KEY = 'agritech_chat_history';
 
 // Rule-based fallback responses (offline mode)
 const RULE_BASED_FALLBACKS = {
@@ -15,6 +16,15 @@ const RULE_BASED_FALLBACKS = {
 const DEFAULT_FALLBACK_MESSAGE =
   "I’m currently running in offline mode. Here’s some general advice: focus on soil health, proper irrigation, and timely crop care.";
 
+const FALLBACK_MESSAGES = [
+  "I did not fully catch that, but I can still help. Try asking about crop diseases, irrigation planning, or soil health.",
+  "I could not find an exact answer yet. Ask me about crop recommendation, weather impact, pest control, or fertilizers.",
+  "Let us try a more specific question. You can ask: best crops for your state, disease prevention, or water-saving techniques."
+];
+
+const MIN_TYPING_DELAY_MS = 700;
+const MAX_TYPING_DELAY_MS = 2200;
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- BUG FIX: DYNAMIC COPYRIGHT YEAR ---
   const yearElement = document.getElementById('current-year');
@@ -26,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const sendBtn = document.getElementById('send-button');
+  const clearChatBtn = document.getElementById('clear-chat-btn');
 
   // Initialize JSON-based chatbot
   const jsonChatbot = new JSONChatbot();
@@ -33,6 +44,81 @@ document.addEventListener('DOMContentLoaded', () => {
 if (predictionsContainer) {
   predictionsContainer.appendChild(RecentPredictions());
 }
+  let chatHistory = [];
+
+  const persistChatHistory = () => {
+    try {
+      localStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(chatHistory));
+    } catch (error) {
+      console.warn('Unable to persist chat history:', error);
+    }
+  };
+
+  const loadChatHistory = () => {
+    try {
+      const rawHistory = localStorage.getItem(CHAT_HISTORY_STORAGE_KEY);
+      const parsedHistory = rawHistory ? JSON.parse(rawHistory) : [];
+      return Array.isArray(parsedHistory)
+        ? parsedHistory.filter((entry) => entry && typeof entry.messageContent === 'string' && (entry.sender === 'user' || entry.sender === 'bot'))
+        : [];
+    } catch (error) {
+      console.warn('Unable to load chat history:', error);
+      return [];
+    }
+  };
+
+  const saveMessageToHistory = (messageContent, sender, time) => {
+    chatHistory.push({
+      messageContent,
+      sender,
+      time: time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    persistChatHistory();
+  };
+
+  const renderSavedHistory = () => {
+    if (!chatHistory.length) return false;
+
+    const welcomeMessage = chatWindow.querySelector('.welcome-message');
+    if (welcomeMessage) {
+      welcomeMessage.remove();
+    }
+
+    chatHistory.forEach(({ messageContent, sender, time }) => {
+      displayMessage(messageContent, sender, time);
+    });
+
+    return true;
+  };
+
+  const clearChatHistory = () => {
+    chatHistory = [];
+    persistChatHistory();
+    chatWindow.innerHTML = `
+      <div class="welcome-message">
+        <h3><i class="fas fa-leaf"></i> Welcome to AgriTech Assistant!</h3>
+        <p>
+          I'm powered by Google Gemini AI to help with all your farming
+          questions and guide you through AgriTech platform features.
+        </p>
+
+        <div class="suggestions">
+          <div class="suggestion">What can I do on AgriTech?</div>
+          <div class="suggestion">How to use crop recommendation?</div>
+          <div class="suggestion">Best crops for this season?</div>
+          <div class="suggestion">Organic pest control methods</div>
+          <div class="suggestion">Water conservation techniques</div>
+          <div class="suggestion">Soil health improvement</div>
+          <div class="suggestion">How to use crop disease detection?</div>
+          <div class="suggestion">How does labour scheduling work?</div>
+          <div class="suggestion">How to access farmer forum?</div>
+          <div class="suggestion">How to check weather updates?</div>
+          <div class="suggestion">Government schemes for farmers</div>
+          <div class="suggestion">Fertilizer recommendations</div>
+        </div>
+      </div>
+    `;
+  };
 
   // HTML escaping function to prevent XSS
   function escapeHtml(text) {
@@ -45,11 +131,11 @@ if (predictionsContainer) {
   }
 
   // Secure message rendering
-  function displayMessage(messageContent, sender) {
+  function displayMessage(messageContent, sender, timeOverride, shouldPersist = true) {
     const messageElement = document.createElement('div');
     messageElement.className = `message ${sender}`;
 
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const time = timeOverride || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const name = sender === 'user' ? 'You' : 'AgriBot';
 
     const headerDiv = document.createElement('div');
@@ -74,6 +160,10 @@ if (predictionsContainer) {
 
     chatWindow.appendChild(messageElement);
     chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    if (shouldPersist && !timeOverride) {
+      saveMessageToHistory(messageContent, sender, time);
+    }
   }
 
   document.addEventListener('click', (e) => {
@@ -82,6 +172,60 @@ if (predictionsContainer) {
       chatForm.dispatchEvent(new Event('submit'));
     }
   });
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const getRandomFallbackMessage = () => {
+    const randomIndex = Math.floor(Math.random() * FALLBACK_MESSAGES.length);
+    return FALLBACK_MESSAGES[randomIndex] || DEFAULT_FALLBACK_MESSAGE;
+  };
+
+  const getRuleBasedFallback = (input) => {
+    const lowerInput = (input || '').toLowerCase();
+    for (const keyword in RULE_BASED_FALLBACKS) {
+      if (lowerInput.includes(keyword)) {
+        return RULE_BASED_FALLBACKS[keyword];
+      }
+    }
+    return getRandomFallbackMessage();
+  };
+
+  const sanitizeReply = (reply) => {
+    const normalized = String(reply || '').trim();
+    if (!normalized) return '';
+
+    const weakReplies = [
+      'i do not know',
+      'cannot help',
+      'unable to process',
+      'something went wrong',
+      'try again'
+    ];
+
+    const normalizedLower = normalized.toLowerCase();
+    const isWeak = weakReplies.some((item) => normalizedLower.includes(item));
+    return isWeak ? '' : normalized;
+  };
+
+  const computeTypingDelay = (userInput, botReply, hasImage) => {
+    const inputLength = (userInput || '').length;
+    const replyLength = (botReply || '').length;
+    const base = hasImage ? 1000 : 750;
+    const dynamic = Math.min(900, Math.floor((inputLength + replyLength) * 2.2));
+    return Math.max(MIN_TYPING_DELAY_MS, Math.min(MAX_TYPING_DELAY_MS, base + dynamic));
+  };
+
+  const resolveLocalResponse = async (input) => {
+    try {
+      const details = await jsonChatbot.getResponseDetails(input);
+      if (details && details.response) {
+        return details.response;
+      }
+    } catch (error) {
+      console.warn('Local response matching failed:', error);
+    }
+    return getRuleBasedFallback(input);
+  };
 
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -98,13 +242,16 @@ if (predictionsContainer) {
     chatInput.value = '';
     chatInput.style.height = 'auto';
 
-    const typing = showTyping();
+    const typing = showTyping(window.selectedImageBase64 ? 'AgriBot is analyzing your image' : 'AgriBot is typing');
     toggleInput(true);
+    const startedAt = Date.now();
 
     try {
       let reply = "";
 
       if (USE_AI_FALLBACK && (window.selectedImageBase64 || input)) {
+        setTypingText(typing, window.selectedImageBase64 ? 'Checking crop and disease patterns...' : 'Understanding your question...');
+
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -130,46 +277,52 @@ if (predictionsContainer) {
               reply = RULE_BASED_FALLBACKS[keyword];
               break;
             }
+          reply = sanitizeReply(data.reply);
+          if (!reply) {
+            reply = await resolveLocalResponse(input);
           }
+        } else {
+          reply = await resolveLocalResponse(input);
         }
       } else {
-        reply = await jsonChatbot.getResponse(input);
+        reply = await resolveLocalResponse(input);
       }
 
-      setTimeout(() => {
-        displayMessage(reply, 'bot');
-        if (typeof clearImage === "function") clearImage();
-      }, 600);
+      setTypingText(typing, 'Finalizing answer...');
+      const typingDelay = computeTypingDelay(input, reply, Boolean(window.selectedImageBase64));
+      const elapsed = Date.now() - startedAt;
+      if (elapsed < typingDelay) {
+        await delay(typingDelay - elapsed);
+      }
+
+      displayMessage(reply || DEFAULT_FALLBACK_MESSAGE, 'bot');
+      if (typeof clearImage === "function") clearImage();
 
     } catch (error) {
       console.error('Chatbot Error:', error);
-
-      const lowerInput = input.toLowerCase();
-      let fallbackReply = DEFAULT_FALLBACK_MESSAGE;
-
-      for (const keyword in RULE_BASED_FALLBACKS) {
-        if (lowerInput.includes(keyword)) {
-          fallbackReply = RULE_BASED_FALLBACKS[keyword];
-          break;
-        }
-      }
-
+      const fallbackReply = await resolveLocalResponse(input);
       displayMessage(fallbackReply, 'bot');
     } finally {
-      setTimeout(() => {
-        typing.remove();
-        toggleInput(false);
-      }, 800);
+      typing.remove();
+      toggleInput(false);
     }
   });
 
-  const showTyping = () => {
+  const showTyping = (labelText) => {
     const typing = document.createElement('div');
     typing.className = 'typing-indicator';
-    typing.innerHTML = `<div>AgriBot is typing</div><span></span><span></span><span></span>`;
+    typing.innerHTML = `<div class="typing-text">${escapeHtml(labelText || 'AgriBot is typing')}</div><span></span><span></span><span></span>`;
     chatWindow.appendChild(typing);
     chatWindow.scrollTop = chatWindow.scrollHeight;
     return typing;
+  };
+
+  const setTypingText = (typingElement, text) => {
+    if (!typingElement) return;
+    const textElement = typingElement.querySelector('.typing-text');
+    if (textElement) {
+      textElement.textContent = text;
+    }
   };
 
   const toggleInput = (disable) => {
@@ -185,13 +338,23 @@ if (predictionsContainer) {
       .replace(/`(.*?)`/g, '<code>$1</code>');
 
   setTimeout(() => {
-    displayMessage(
-      "Hello! 🌱 I'm AgriBot, your AI assistant for AgriTech platform and farming guidance. I can help you navigate our tools, answer agriculture questions, recommend crops based on your region and season, and provide farming advice. How can I assist you today?",
-      'bot'
-    );
+    if (!renderSavedHistory()) {
+      displayMessage(
+        "Hello! 🌱 I'm AgriBot, your AI assistant for AgriTech platform and farming guidance. I can help you navigate our tools, answer agriculture questions, recommend crops based on your region and season, and provide farming advice. How can I assist you today?",
+        'bot',
+        undefined,
+        false
+      );
+    }
   }, 500);
 
+  if (clearChatBtn) {
+    clearChatBtn.addEventListener('click', clearChatHistory);
+  }
+
   chatInput.focus();
+
+  chatHistory = loadChatHistory();
 });
 
 // 🌙 GLOBAL DARK/LIGHT MODE FIX (Mobile + Desktop Toggle)

@@ -1,5 +1,136 @@
 const API_BASE = '/api/v1/crop-advisory';
 
+const COMPANION_RULES = {
+    'Basil|Tomato': {
+        type: 'friends',
+        title: 'Tomato + Basil are friends!',
+        message: 'Basil can help deter pests and improve the growing environment around tomatoes.',
+    },
+    'Marigold|Tomato': {
+        type: 'friends',
+        title: 'Tomato + Marigold are friends!',
+        message: 'Marigolds are commonly planted near tomatoes to help discourage pests.',
+    },
+    'Beans|Corn': {
+        type: 'friends',
+        title: 'Corn + Beans are friends!',
+        message: 'Beans can climb corn stalks while helping add nitrogen to the soil.',
+    },
+    'Corn|Squash': {
+        type: 'friends',
+        title: 'Corn + Squash are friends!',
+        message: 'Squash helps shade the soil, which can support a healthier corn bed.',
+    },
+    'Carrot|Onion': {
+        type: 'friends',
+        title: 'Carrot + Onion are friends!',
+        message: 'These crops are often paired because they can help confuse pests that target each other.',
+    },
+    'Cabbage|Dill': {
+        type: 'friends',
+        title: 'Cabbage + Dill are friends!',
+        message: 'Dill can support beneficial insects that help protect cabbage family crops.',
+    },
+    'Lettuce|Carrot': {
+        type: 'friends',
+        title: 'Lettuce + Carrot are friends!',
+        message: 'They occupy different layers of the bed and usually share space well.',
+    },
+    'Pepper|Basil': {
+        type: 'friends',
+        title: 'Pepper + Basil are friends!',
+        message: 'Basil is a common companion for peppers in mixed vegetable beds.',
+    },
+    'Potato|Tomato': {
+        type: 'foes',
+        title: 'Potato + Tomato are foes!',
+        message: 'They belong to the same family and can share disease pressure and nutrient demand.',
+    },
+    'Beans|Onion': {
+        type: 'foes',
+        title: 'Beans + Onion are foes!',
+        message: 'Onions can suppress bean growth when planted too close together.',
+    },
+    'Cabbage|Tomato': {
+        type: 'foes',
+        title: 'Cabbage + Tomato are foes!',
+        message: 'These crops can compete for resources and are not ideal bedmates in tight spaces.',
+    },
+};
+
+function normalizePair(cropA, cropB) {
+    return [cropA, cropB].sort().join('|');
+}
+
+function updateCompanionResult(type, title, message, crops) {
+    const result = document.getElementById('companionResult');
+    if (!result) return;
+
+    result.className = `compatibility-result ${type}`;
+    result.innerHTML = `
+        <h3>${title}</h3>
+        <p>${message}</p>
+        ${crops ? `<div class="compatibility-meta"><span class="compatibility-pill">${crops[0]}</span><span class="compatibility-pill">${crops[1]}</span></div>` : ''}
+    `;
+}
+
+function checkCompanionPlanting() {
+    const cropA = document.getElementById('companionCropA').value;
+    const cropB = document.getElementById('companionCropB').value;
+
+    if (!cropA || !cropB) {
+        updateCompanionResult(
+            'neutral',
+            'Choose two crops to compare',
+            'Select both Crop A and Crop B to see whether they make a good planting pair.'
+        );
+        return;
+    }
+
+    if (cropA === cropB) {
+        updateCompanionResult(
+            'neutral',
+            'Pick two different crops',
+            'Companion planting works best when comparing two different plants.'
+        );
+        return;
+    }
+
+    const relation = COMPANION_RULES[normalizePair(cropA, cropB)];
+
+    if (relation) {
+        updateCompanionResult(relation.type, relation.title, relation.message, [cropA, cropB]);
+        return;
+    }
+
+    updateCompanionResult(
+        'neutral',
+        'No direct pairing in the current library',
+        'This combination is not in the quick-reference list yet. Try a well-known pairing like Tomato + Basil or Potato + Tomato.'
+    );
+}
+
+function resetCompanionChecker() {
+    const cropA = document.getElementById('companionCropA');
+    const cropB = document.getElementById('companionCropB');
+    if (cropA) cropA.value = '';
+    if (cropB) cropB.value = '';
+
+    updateCompanionResult(
+        'neutral',
+        'Choose two crops to compare',
+        'You’ll see a quick companion planting verdict here.'
+    );
+}
+
+function bindCompanionChecker() {
+    const cropA = document.getElementById('companionCropA');
+    const cropB = document.getElementById('companionCropB');
+
+    if (cropA) cropA.addEventListener('change', checkCompanionPlanting);
+    if (cropB) cropB.addEventListener('change', checkCompanionPlanting);
+}
+
 // Lightweight loader helper
 function ensureLoaderStyles() {
     if (document.getElementById('agri-loader-styles')) return;
@@ -270,4 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             getRecommendations();
         }
     });
+
+    bindCompanionChecker();
+    resetCompanionChecker();
 });
