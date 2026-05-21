@@ -229,8 +229,7 @@
         }
 
         function openFavorite(blogId) {
-            // Open in new tab or redirect to blog page
-            window.open(`blog.html#${blogId}`, '_blank');
+            window.location.href = `blog.html?id=${encodeURIComponent(blogId)}`;
         }
 
         // Initialize favorites page
