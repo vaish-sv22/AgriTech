@@ -1,3 +1,5 @@
+import { savePrediction } from "../predictionStorage.js";
+import RecentPredictions from "../components/RecentPredictions.js";
 const USE_AI_FALLBACK = true;
 
 // Rule-based fallback responses (offline mode)
@@ -27,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize JSON-based chatbot
   const jsonChatbot = new JSONChatbot();
+  const predictionsContainer = document.getElementById("recent-predictions");
+if (predictionsContainer) {
+  predictionsContainer.appendChild(RecentPredictions());
+}
 
   // HTML escaping function to prevent XSS
   function escapeHtml(text) {
@@ -111,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (res.ok) {
           const data = await res.json();
           reply = data.reply || DEFAULT_FALLBACK_MESSAGE;
+          // Save prediction to LocalStorage
+          savePrediction(input || "Uploaded image", reply);
+
         } else {
           // Rule-based fallback on API failure
           const lowerInput = input.toLowerCase();
@@ -171,9 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const format = (txt) =>
     txt.replace(/\n/g, '<br>')
-       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-       .replace(/`(.*?)`/g, '<code>$1</code>');
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>');
 
   setTimeout(() => {
     displayMessage(
