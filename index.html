@@ -845,6 +845,154 @@
       font-size: 0.85rem;
     }
 
+    .footer-bottom a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .footer-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    .cookie-banner {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(24px);
+      width: min(980px, calc(100% - 24px));
+      background: rgba(8, 16, 25, 0.94);
+      border: 1px solid rgba(107, 142, 35, 0.28);
+      border-radius: 20px;
+      padding: 16px 18px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    [data-theme="light"] .cookie-banner {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(22, 163, 74, 0.16);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+    }
+
+    .cookie-banner.show {
+      display: flex;
+      animation: cookieRise 0.28s ease forwards;
+    }
+
+    @keyframes cookieRise {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .cookie-banner-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.2), rgba(107, 142, 35, 0.28));
+      color: var(--accent-color);
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .cookie-banner-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cookie-banner-content h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+
+    .cookie-banner-content p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .cookie-banner-actions a,
+    .cookie-banner-actions button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .cookie-banner-actions a:hover,
+    .cookie-banner-actions button:hover {
+      transform: translateY(-1px);
+    }
+
+    .cookie-link-btn {
+      background: transparent;
+      color: var(--text-color);
+      border: 1px solid rgba(148, 163, 184, 0.35) !important;
+    }
+
+    .cookie-accept-btn {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(34, 197, 94, 0.28);
+    }
+
+    .cookie-decline-btn {
+      background: rgba(148, 163, 184, 0.16);
+      color: var(--text-color);
+    }
+
+    @media (max-width: 720px) {
+      .cookie-banner {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        transform: translateY(24px);
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .cookie-banner.show {
+        transform: translateY(0);
+      }
+
+      .cookie-banner-actions {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .cookie-banner-actions a,
+      .cookie-banner-actions button {
+        flex: 1 1 120px;
+      }
+    }
+
     .footer-wave-overlay {
       display: none;
     }
@@ -2486,6 +2634,9 @@
         <a href="chat.html" data-i18n="footer_ai" class="mobile-footer-link">
           <i class="fas fa-robot"></i> AI Assistant
         </a>
+        <a href="cookie-policy.html" class="mobile-footer-link">
+          <i class="fas fa-cookie-bite"></i> Cookie Policy
+        </a>
       </div>
     </div>
   </div>
@@ -3013,6 +3164,9 @@
             <li>
               <a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
             </li>
+            <li>
+              <a href="cookie-policy.html"><i class="fas fa-cookie-bite"></i> Cookie Policy</a>
+            </li>
           </ul>
         </div>
 
@@ -3035,7 +3189,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© <span id="current-year"></span> AgriTech. All rights reserved. <a href="privacy-policy.html">Privacy Policy</a></p>
+      <p>© <span id="current-year"></span> AgriTech. All rights reserved. <a href="privacy-policy.html">Privacy Policy</a> · <a href="cookie-policy.html">Cookie Policy</a></p>
     </div>
 
     <div class="footer-wave-overlay"></div>
@@ -3044,6 +3198,24 @@
   <a href="chat.html" id="chatbotBtn" title="Chat with us" aria-label="AI Assistant">
     <i class="fas fa-robot"></i>
   </a>
+
+  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent banner" hidden>
+    <div class="cookie-banner-icon" aria-hidden="true">
+      <i class="fas fa-cookie-bite"></i>
+    </div>
+    <div class="cookie-banner-content">
+      <h3>We use cookies</h3>
+      <p>
+        AgriTech uses essential cookies and local storage to keep you signed in, remember preferences, and improve your experience.
+        Read the <a href="cookie-policy.html">Cookie Policy</a> for details.
+      </p>
+    </div>
+    <div class="cookie-banner-actions">
+      <a class="cookie-link-btn" href="cookie-policy.html">Learn more</a>
+      <button type="button" class="cookie-decline-btn" id="cookieDeclineBtn">Essential only</button>
+      <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">Accept all</button>
+    </div>
+  </div>
 
   <button class="scroll-btn" id="scrollBtn" title="Scroll">
     <i class="fas fa-arrow-down" id="scrollIcon"></i>
@@ -3060,6 +3232,36 @@
   <script>
     document.getElementById("current-year").textContent =
       new Date().getFullYear();
+  </script>
+
+  <script>
+    (function () {
+      const storageKey = "agritechCookieConsent";
+      const banner = document.getElementById("cookieBanner");
+      const acceptButton = document.getElementById("cookieAcceptBtn");
+      const declineButton = document.getElementById("cookieDeclineBtn");
+
+      if (!banner || !acceptButton || !declineButton) {
+        return;
+      }
+
+      const savedConsent = localStorage.getItem(storageKey);
+      if (!savedConsent) {
+        banner.hidden = false;
+        requestAnimationFrame(() => banner.classList.add("show"));
+      }
+
+      function closeBanner(consentValue) {
+        localStorage.setItem(storageKey, consentValue);
+        banner.classList.remove("show");
+        window.setTimeout(() => {
+          banner.hidden = true;
+        }, 250);
+      }
+
+      acceptButton.addEventListener("click", () => closeBanner("accepted"));
+      declineButton.addEventListener("click", () => closeBanner("essential"));
+    })();
   </script>
 
   <script type="module">
