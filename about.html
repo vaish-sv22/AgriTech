@@ -131,6 +131,10 @@
 
         <div class="footer-inner-content">
             <div class="footer-section footer-brand">
+                <div class="brand-header">
+                    <img src="images/logo.png" alt="AgriTech logo" class="brand-logo" />
+                    <h3>AgriTech</h3>
+                </div>
                 <a href="main.html" class="brand-header">
                     <img src="images/logo.png" alt="AgriTech logo" class="brand-logo" />
                     <h3>AgriTech</h3>
@@ -220,6 +224,7 @@
         .brand-header {
             display: flex;
             align-items: center;
+            gap: 0.6rem;
             gap: 8px;
             text-decoration: none;
             color: inherit;
@@ -283,6 +288,54 @@
             list-style: none;
             padding: 0;
             margin: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-section ul a {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.25s ease;
+            position: relative;
+        }
+
+        .footer-section ul a:hover {
+            color: var(--accent-color);
+            transform: translateX(6px);
+        }
+
+        .footer-section ul a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .footer-section ul a:hover::after {
+            width: 100%;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1rem;
+            background: var(--section-bg);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-wave-overlay {
+            display: none;
+        }
+
     .site-footer {
       background: var(--surface-color);
       color: var(--text-color);
@@ -623,6 +676,16 @@ function includeHTML(callback) {
             circles.forEach(c => c.el.classList.remove('cursor-clicking'));
         });
 
+        });
+
+        // Click effects
+        document.addEventListener('mousedown', () => {
+            circles.forEach(c => c.el.classList.add('cursor-clicking'));
+        });
+        document.addEventListener('mouseup', () => {
+            circles.forEach(c => c.el.classList.remove('cursor-clicking'));
+        });
+
         // Hover effects on interactive elements
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
@@ -644,17 +707,83 @@ function includeHTML(callback) {
                 circle.x += (x - circle.x) * 0.25;
                 circle.y += (y - circle.y) * 0.25;
 
-    themeToggle.addEventListener('click', () => {
-        const root = document.documentElement;
-        const current = root.getAttribute('data-theme') || 'dark';
-        const next = current === 'light' ? 'dark' : 'light';
+                circle.el.style.left = circle.x + 'px';
+                circle.el.style.top = circle.y + 'px';
 
-        root.setAttribute('data-theme', next);
-        localStorage.setItem('agritech-theme', next);
+                x = circle.x;
+                y = circle.y;
+            });
 
-        const themeLabel = document.querySelector('.theme-label');
-        if (themeLabel) {
-            themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Include navbar (UNCHANGED)
+        function includeHTML(callback) {
+            var z, i, elmnt, file, xhttp;
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) { elmnt.innerHTML = this.responseText; }
+                            if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML(callback);
+                            if (callback) callback();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    return;
+                }
+            }
+        }
+
+        // Function to fix Services Dropdown (New logic needed for functionality)
+        function initServicesDropdown() {
+            const servicesToggle = document.querySelector('.services-toggle');
+            const servicesDropdown = document.querySelector('.services-dropdown');
+            const servicesArrow = document.querySelector('.services-arrow');
+
+            if (servicesToggle && servicesDropdown) {
+                servicesToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    servicesDropdown.classList.toggle('active');
+                    if (servicesArrow) servicesArrow.classList.toggle('rotated');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!servicesToggle.contains(e.target) && !servicesDropdown.contains(e.target)) {
+                        servicesDropdown.classList.remove('active');
+                        if (servicesArrow) servicesArrow.classList.remove('rotated');
+                    }
+                });
+            }
+        }
+
+        // Initialize theme toggle (UNCHANGED)
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+
+            themeToggle.addEventListener('click', () => {
+                const root = document.documentElement;
+                const current = root.getAttribute('data-theme') || 'dark';
+                const next = current === 'light' ? 'dark' : 'light';
+
+                root.setAttribute('data-theme', next);
+                localStorage.setItem('agritech-theme', next);
+
+                const themeLabel = document.querySelector('.theme-label');
+                if (themeLabel) {
+                    themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
+                }
+            });
         }
                 circle.el.style.left = circle.x + 'px';
                 circle.el.style.top = circle.y + 'px';
@@ -860,6 +989,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 initHamburgerMenu();
                 initServicesDropdown(); // This starts the dropdown code
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+    </script>
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+            if (!scrollTopBtn) return;
+
+            // Monitor Scroll Position
+            window.addEventListener("scroll", function () {
+                // Show button after scrolling down 300px
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add("show");
+                } else {
+                    scrollTopBtn.classList.remove("show");
+                }
+            });
+
+            // Scroll to top on click
+            scrollTopBtn.addEventListener("click", function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        });
+    </script>
         });
     </script>
 

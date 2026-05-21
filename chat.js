@@ -1,3 +1,5 @@
+import { savePrediction } from "../predictionStorage.js";
+import RecentPredictions from "../components/RecentPredictions.js";
 const USE_AI_FALLBACK = true;
 const CHAT_HISTORY_STORAGE_KEY = 'agritech_chat_history';
 
@@ -38,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize JSON-based chatbot
   const jsonChatbot = new JSONChatbot();
+  const predictionsContainer = document.getElementById("recent-predictions");
+if (predictionsContainer) {
+  predictionsContainer.appendChild(RecentPredictions());
+}
   let chatHistory = [];
 
   const persistChatHistory = () => {
@@ -257,6 +263,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok) {
           const data = await res.json();
+          reply = data.reply || DEFAULT_FALLBACK_MESSAGE;
+          // Save prediction to LocalStorage
+          savePrediction(input || "Uploaded image", reply);
+
+        } else {
+          // Rule-based fallback on API failure
+          const lowerInput = input.toLowerCase();
+          reply = DEFAULT_FALLBACK_MESSAGE;
+
+          for (const keyword in RULE_BASED_FALLBACKS) {
+            if (lowerInput.includes(keyword)) {
+              reply = RULE_BASED_FALLBACKS[keyword];
+              break;
+            }
           reply = sanitizeReply(data.reply);
           if (!reply) {
             reply = await resolveLocalResponse(input);
@@ -313,9 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const format = (txt) =>
     txt.replace(/\n/g, '<br>')
-       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-       .replace(/`(.*?)`/g, '<code>$1</code>');
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>');
 
   setTimeout(() => {
     if (!renderSavedHistory()) {
