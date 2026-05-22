@@ -111,10 +111,14 @@ connect-src 'self' http://localhost:3000;
     </header>
 
     <main>
+      <div id="recent-predictions"></div>
       <div id="chat-container">
         <div class="chat-header">
           <i class="fas fa-robot"></i>
           <h2>Ask me about AgriTech features or agriculture support</h2>
+          <button type="button" id="clear-chat-btn" class="theme-toggle" aria-label="Clear chat history" title="Clear chat history" style="margin-left: auto; width: auto; min-width: 44px; padding: 0 14px; border-radius: 999px;">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </div>
 
         <div id="chat-window">

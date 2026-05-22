@@ -1,0 +1,86 @@
+{
+  "updatedAt": "2026-05-18T00:00:00Z",
+  "source": "shopkeeper.html",
+  "dealers": [
+    {
+      "id": "gurukirpa",
+      "name": "M/S Gurukirpa Agro Centre",
+      "category": "pesticide",
+      "location": "ludhiana",
+      "address": "Kohara, Sahnewal Road, Village Jandiale, Ludhiana",
+      "services": ["Pesticides & Insecticides", "Fertilizers", "Seeds", "Agricultural Chemicals"]
+    },
+    {
+      "id": "hicon",
+      "name": "M/S Hicon Pest Control",
+      "category": "pesticide",
+      "location": "ludhiana",
+      "address": "SCO 4, 2nd Floor, New Shopping Centre, Ghumar Mandi, Ludhiana",
+      "services": ["Professional Pest Control", "Spraying Equipment", "Consultation Services"]
+    },
+    {
+      "id": "singla",
+      "name": "Singla Tractors",
+      "category": "tractor",
+      "location": "fazilka",
+      "address": "Malout Road, Near 132 KVA Sub Station, Abohar, Fazilka",
+      "services": ["Tractor Sales", "Leasing Services", "Maintenance & Repair", "Spare Parts"]
+    },
+    {
+      "id": "gurkirpa",
+      "name": "GURKIRPA AUTOS",
+      "category": "tractor",
+      "location": "sangrur",
+      "address": "M.K. Bypass Road, Dhuri, Sangrur",
+      "services": ["Auto Parts", "Tractor Accessories", "Repair Services"]
+    },
+    {
+      "id": "majha",
+      "name": "Majha Agro Traders",
+      "category": "tractor",
+      "location": "amritsar",
+      "address": "Ground Floor, Ajnala, Amritsar Road, Bhakha Hari Singh, Amritsar - 143102",
+      "services": ["Agricultural Trading", "Equipment Supply", "Bulk Orders", "Export Services"]
+    },
+    {
+      "id": "sonalika",
+      "name": "Sonalika Samrat Combine Harvester",
+      "category": "harvester",
+      "location": "ludhiana",
+      "address": "Available through Sonalika dealers across Punjab",
+      "services": ["Combine Harvesters", "Seasonal Leasing", "Operator Training", "Maintenance"]
+    },
+    {
+      "id": "kartar",
+      "name": "Kartar Agro Industries Pvt. Ltd.",
+      "category": "equipment",
+      "location": "ludhiana",
+      "address": "Industrial Area, Ludhiana",
+      "services": ["Professional Harvesting Equipment", "Custom Solutions", "Technical Support"]
+    },
+    {
+      "id": "bhajan",
+      "name": "Bhajan Singh & Bros",
+      "category": "equipment",
+      "location": "ludhiana",
+      "address": "1913/36, Bhagwan Chowk, Janta Nagar, Gill Road, Ludhiana - 141003",
+      "services": ["Agricultural Tools", "Hand Tools", "Spare Parts", "Hardware"]
+    },
+    {
+      "id": "gpn",
+      "name": "GPN Machine Tools",
+      "category": "equipment",
+      "location": "ludhiana",
+      "address": "2436/2, Gali No-16, Dashmesh Nagar, Gill Road, Ludhiana - 141003",
+      "services": ["Machine Tools", "Equipment Repair", "Custom Fabrication", "Welding Services"]
+    },
+    {
+      "id": "jrs",
+      "name": "JRS Farmparts",
+      "category": "equipment",
+      "location": "ludhiana",
+      "address": "C-87, Phase 5, Focal Point, Ludhiana - 141010",
+      "services": ["Farm Parts", "Replacement Components", "Hydraulic Parts", "Engine Parts"]
+    }
+  ]
+}

@@ -22,19 +22,20 @@
   <style>
     /* 1. DEFINE VARIABLES FOR THEMES */
     :root {
-      /* DARK MODE DEFAULTS */
-      --bg-color: #030712;
-      --text-color: #ffffff;
+      /* DARK MODE DEFAULTS - Agriculture palette */
+      --bg-color: #081019; /* deep night */
+      --text-color: #f6f7f3; /* soft off-white */
       --text-muted: #cbd5e1;
-      --surface-color: rgba(15, 23, 42, 0.9);
-      --section-bg: rgba(30, 41, 59, 0.7);
-      --border-color: #334155;
-      --accent-color: #22c55e;
-      --input-bg: #333333;
-      --input-border: #555555;
-      --btn-bg: #334155;
+      --surface-color: rgba(8, 16, 25, 0.85);
+      --section-bg: rgba(7, 30, 12, 0.45);
+      --border-color: #294228; /* dark green border */
+      --accent-color: #6b8e23; /* olive green */
+      --accent-soil: #b5651d; /* warm soil brown */
+      --input-bg: #0f1720;
+      --input-border: #33402e;
+      --btn-bg: #294228;
       --btn-text: #ffffff;
-      --btn-hover: #475569;
+      --btn-hover: #3f5a2f;
       --shadow-color: rgba(0, 0, 0, 0.3);
     }
 
@@ -168,8 +169,9 @@
     .brand a {
       color: var(--accent-color);
       text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-family: 'Pacifico', cursive;
     }
 
     /* Left Navigation */
@@ -260,6 +262,49 @@
       border-color: var(--accent-color);
     }
 
+    /* Live suggestion dropdown */
+    .live-suggest-list {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      z-index: 1200;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    .live-suggest-item {
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .live-suggest-item .title {
+      font-weight: 600;
+      color: var(--text-color);
+      font-size: 0.95rem;
+    }
+
+    .live-suggest-item .meta {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .live-suggest-item:hover,
+    .live-suggest-item.active {
+      background: rgba(34,197,94,0.08);
+      color: var(--accent-color);
+    }
     /* Services Dropdown */
     .services-toggle-container {
       position: relative;
@@ -525,8 +570,24 @@
       padding: 2rem 1rem;
     }
 
+    /* Subtle agricultural field illustration behind hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'><defs><linearGradient id='g' x1='0' x2='0' y1='0' y2='1'><stop offset='0' stop-color='%23f5f7ed' stop-opacity='0.12'/><stop offset='1' stop-color='%23b5651d' stop-opacity='0.06'/></linearGradient></defs><rect width='1200' height='400' fill='none'/><g fill='%236b8e23' fill-opacity='0.08'><path d='M0 320 C150 280 350 360 600 320 C850 280 1050 360 1200 320 L1200 400 L0 400 Z'/></g><g fill='%23b5651d' fill-opacity='0.04'><path d='M0 340 C200 300 400 380 600 340 C800 300 1000 380 1200 340 L1200 400 L0 400 Z'/></g><g><circle cx='1100' cy='60' r='40' fill='%23ffd166' fill-opacity='0.35'/></g></svg>");
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: cover;
+      opacity: 0.95;
+      filter: blur(6px) saturate(0.9);
+      transform: translateY(-20px) scale(1.05);
+      pointer-events: none;
+    }
+
     .hero-content {
-      background: var(--surface-color);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
       padding: 2rem;
       border-radius: 12px;
       max-width: 800px;
@@ -568,6 +629,26 @@
       }
     }
 
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -1px;
+
+  /* Background Image inside text */
+  background: linear-gradient(90deg, rgba(107,142,35,1), rgba(181,101,29,1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.15);
+}
+@keyframes moveBg {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
     .hero-content p {
       font-size: 1.1rem;
       line-height: 1.8;
@@ -605,6 +686,13 @@
       font-size: 3rem;
       margin-bottom: 1rem;
       color: var(--text-color);
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(107,142,35,0.12), rgba(181,101,29,0.06));
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
 
     .feature-title {
@@ -755,6 +843,154 @@
       background: var(--section-bg);
       color: var(--text-muted);
       font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .footer-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    .cookie-banner {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(24px);
+      width: min(980px, calc(100% - 24px));
+      background: rgba(8, 16, 25, 0.94);
+      border: 1px solid rgba(107, 142, 35, 0.28);
+      border-radius: 20px;
+      padding: 16px 18px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    [data-theme="light"] .cookie-banner {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(22, 163, 74, 0.16);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+    }
+
+    .cookie-banner.show {
+      display: flex;
+      animation: cookieRise 0.28s ease forwards;
+    }
+
+    @keyframes cookieRise {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .cookie-banner-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.2), rgba(107, 142, 35, 0.28));
+      color: var(--accent-color);
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .cookie-banner-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cookie-banner-content h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+
+    .cookie-banner-content p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .cookie-banner-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .cookie-banner-actions a,
+    .cookie-banner-actions button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .cookie-banner-actions a:hover,
+    .cookie-banner-actions button:hover {
+      transform: translateY(-1px);
+    }
+
+    .cookie-link-btn {
+      background: transparent;
+      color: var(--text-color);
+      border: 1px solid rgba(148, 163, 184, 0.35) !important;
+    }
+
+    .cookie-accept-btn {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(34, 197, 94, 0.28);
+    }
+
+    .cookie-decline-btn {
+      background: rgba(148, 163, 184, 0.16);
+      color: var(--text-color);
+    }
+
+    @media (max-width: 720px) {
+      .cookie-banner {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        transform: translateY(24px);
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .cookie-banner.show {
+        transform: translateY(0);
+      }
+
+      .cookie-banner-actions {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      .cookie-banner-actions a,
+      .cookie-banner-actions button {
+        flex: 1 1 120px;
+      }
     }
 
     .footer-wave-overlay {
@@ -2101,7 +2337,7 @@
 
   <canvas id="bg-canvas"></canvas>
 
-  <nav class="navbar">
+  <nav class="navbar" aria-label="Primary Navigation">
     <div class="navbar-content">
       <!-- Brand -->
       <div class="brand">
@@ -2164,8 +2400,9 @@
       <div class="nav-buttons">
         <!-- Search -->
         <div class="search-container">
-          <input type="text" placeholder="Search..." class="search-input" autocomplete="off" />
-          <button class="search-button"><i class="fas fa-search"></i></button>
+          <input id="globalSearchInput" type="text" placeholder="Search..." class="search-input" autocomplete="off" aria-autocomplete="list" aria-controls="liveSuggestList" aria-expanded="false" />
+          <button class="search-button" id="globalSearchButton"><i class="fas fa-search"></i></button>
+          <div id="liveSuggestList" class="live-suggest-list" role="listbox" aria-label="Search suggestions" hidden></div>
         </div>
 
         <!-- Language Selector -->
@@ -2429,6 +2666,9 @@
         <a href="chat.html" data-i18n="footer_ai" class="mobile-footer-link">
           <i class="fas fa-robot"></i> AI Assistant
         </a>
+        <a href="cookie-policy.html" class="mobile-footer-link">
+          <i class="fas fa-cookie-bite"></i> Cookie Policy
+        </a>
       </div>
     </div>
   </div>
@@ -2445,6 +2685,10 @@
         to revolutionize India's agricultural ecosystem through smart
         solutions and seamless collaboration.
       </p>
+      <div style="margin-top:1.25rem; display:flex; gap:0.75rem; justify-content:center;">
+        <a class="btn btn-primary" href="crop.html" aria-label="Get started">🌾 Get Fertilizer Recommendation</a>
+        <a class="btn btn-secondary" href="community_forum.html">👩‍🌾 Community Forum</a>
+      </div>
     </div>
   </section>
 
@@ -2949,6 +3193,12 @@
             <li>
               <a href="terms-and-service.html"><i class="fas fa-file-contract"></i> Terms & Service</a>
             </li>
+            <li>
+              <a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+            </li>
+            <li>
+              <a href="cookie-policy.html"><i class="fas fa-cookie-bite"></i> Cookie Policy</a>
+            </li>
           </ul>
         </div>
 
@@ -2971,7 +3221,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© <span id="current-year"></span> AgriTech. All rights reserved.</p>
+      <p>© <span id="current-year"></span> AgriTech. All rights reserved. <a href="privacy-policy.html">Privacy Policy</a> · <a href="cookie-policy.html">Cookie Policy</a></p>
     </div>
 
     <div class="footer-wave-overlay"></div>
@@ -2980,6 +3230,24 @@
   <a href="chat.html" id="chatbotBtn" title="Chat with us" aria-label="AI Assistant">
     <i class="fas fa-robot"></i>
   </a>
+
+  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent banner" hidden>
+    <div class="cookie-banner-icon" aria-hidden="true">
+      <i class="fas fa-cookie-bite"></i>
+    </div>
+    <div class="cookie-banner-content">
+      <h3>We use cookies</h3>
+      <p>
+        AgriTech uses essential cookies and local storage to keep you signed in, remember preferences, and improve your experience.
+        Read the <a href="cookie-policy.html">Cookie Policy</a> for details.
+      </p>
+    </div>
+    <div class="cookie-banner-actions">
+      <a class="cookie-link-btn" href="cookie-policy.html">Learn more</a>
+      <button type="button" class="cookie-decline-btn" id="cookieDeclineBtn">Essential only</button>
+      <button type="button" class="cookie-accept-btn" id="cookieAcceptBtn">Accept all</button>
+    </div>
+  </div>
 
   <button class="scroll-btn" id="scrollBtn" title="Scroll">
     <i class="fas fa-arrow-down" id="scrollIcon"></i>
@@ -2996,6 +3264,36 @@
   <script>
     document.getElementById("current-year").textContent =
       new Date().getFullYear();
+  </script>
+
+  <script>
+    (function () {
+      const storageKey = "agritechCookieConsent";
+      const banner = document.getElementById("cookieBanner");
+      const acceptButton = document.getElementById("cookieAcceptBtn");
+      const declineButton = document.getElementById("cookieDeclineBtn");
+
+      if (!banner || !acceptButton || !declineButton) {
+        return;
+      }
+
+      const savedConsent = localStorage.getItem(storageKey);
+      if (!savedConsent) {
+        banner.hidden = false;
+        requestAnimationFrame(() => banner.classList.add("show"));
+      }
+
+      function closeBanner(consentValue) {
+        localStorage.setItem(storageKey, consentValue);
+        banner.classList.remove("show");
+        window.setTimeout(() => {
+          banner.hidden = true;
+        }, 250);
+      }
+
+      acceptButton.addEventListener("click", () => closeBanner("accepted"));
+      declineButton.addEventListener("click", () => closeBanner("essential"));
+    })();
   </script>
 
   <script type="module">

@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Careers | AgriTech</title>
-    <!-- Link the career CSS -->
-    <link rel="stylesheet" href="carrer.css">
-    <!-- Font Awesome CDN for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore careers at AgriTech and join a team building the future of agriculture." />
+  <title>Careers | AgriTech</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Libertinus+Serif:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="carrer.css" />
+
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', savedTheme || (prefersDark ? 'dark' : 'light'));
+    })();
+  </script>
 </head>
+
 <body>
     <div w3-include-html="navbar.html"></div>
 
     <main>
         <section class="career-section">
             <h1><i class="fa-solid fa-briefcase"></i> Careers</h1>
-            <p>Join us in building the future of agriculture. We're looking for passionate individuals to help transform farming through technology.</p>
+            <p>Join us in building the future of agriculture. We're looking for passionate individuals to help transform
+                farming through technology.</p>
 
             <!-- Career Stats -->
             <div class="career-stats">
@@ -34,122 +48,116 @@
             </div>
 
             <!-- 🌿 Modern Job Openings Section (Enhanced UI + Search + Filter + Modal Ready) -->
-<div class="job-openings modern-jobs">
-    <div class="jobs-header">
-        <div class="jobs-title">
-            <h2><i class="fa-solid fa-briefcase"></i> Current Openings</h2>
-            <p class="jobs-subtitle">Discover roles where technology meets agriculture 🚜</p>
-        </div>
+            <div class="job-openings modern-jobs">
+                <div class="jobs-header">
+                    <div class="jobs-title">
+                        <h2><i class="fa-solid fa-briefcase"></i> Current Openings</h2>
+                        <p class="jobs-subtitle">Discover roles where technology meets agriculture 🚜</p>
+                    </div>
 
-        <!-- Search & Filter Controls -->
-        <div class="jobs-controls">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input 
-                    type="text" 
-                    id="jobSearch" 
-                    placeholder="Search by role, keyword..."
-                />
-            </div>
+                    <!-- Search & Filter Controls -->
+                    <div class="jobs-controls">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="jobSearch" placeholder="Search by role, keyword..." />
+                        </div>
 
-            <select id="jobFilter" class="department-filter">
-                <option value="all">All Departments</option>
-                <option value="Research & Development">Research & Development</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Analytics">Analytics</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Job Grid -->
-    <div class="job-grid" id="jobList">
-
-        <!-- Job 1 -->
-        <div class="job-card modern-card"
-             data-title="Senior Agronomist"
-             data-department="Research & Development">
-             
-            <div class="job-top">
-                <div>
-                    <h3>Senior Agronomist</h3>
-                    <span class="job-badge r&d">Research & Development</span>
+                        <select id="jobFilter" class="department-filter">
+                            <option value="all">All Departments</option>
+                            <option value="Research & Development">Research & Development</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Analytics">Analytics</option>
+                        </select>
+                    </div>
                 </div>
-                <span class="job-type">Full-time</span>
-            </div>
 
-            <p class="job-description">
-                Lead research initiatives to improve crop yield through data-driven insights and innovative farming techniques.
-            </p>
+                <!-- Job Grid -->
+                <div class="job-grid" id="jobList">
 
-            <div class="job-meta">
-                <span><i class="fa-solid fa-location-dot"></i> Remote</span>
-                <span><i class="fa-solid fa-calendar"></i> Posted 2 days ago</span>
-            </div>
+                    <!-- Job 1 -->
+                    <div class="job-card modern-card" data-title="Senior Agronomist"
+                        data-department="Research & Development">
 
-            <div class="job-footer">
-                <button class="btn-view-details">View Details</button>
-                <button class="btn-apply">Apply Now</button>
-            </div>
-        </div>
+                        <div class="job-top">
+                            <div>
+                                <h3>Senior Agronomist</h3>
+                                <span class="job-badge r&d">Research & Development</span>
+                            </div>
+                            <span class="job-type">Full-time</span>
+                        </div>
 
-        <!-- Job 2 -->
-        <div class="job-card modern-card"
-             data-title="Full Stack Developer"
-             data-department="Engineering">
+                        <p class="job-description">
+                            Lead research initiatives to improve crop yield through data-driven insights and innovative
+                            farming techniques.
+                        </p>
 
-            <div class="job-top">
-                <div>
-                    <h3>Full Stack Developer</h3>
-                    <span class="job-badge eng">Engineering</span>
+                        <div class="job-meta">
+                            <span><i class="fa-solid fa-location-dot"></i> Remote</span>
+                            <span><i class="fa-solid fa-calendar"></i> Posted 2 days ago</span>
+                        </div>
+
+                        <div class="job-footer">
+                            <button class="btn-view-details">View Details</button>
+                            <button class="btn-apply">Apply Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Job 2 -->
+                    <div class="job-card modern-card" data-title="Full Stack Developer" data-department="Engineering">
+
+                        <div class="job-top">
+                            <div>
+                                <h3>Full Stack Developer</h3>
+                                <span class="job-badge eng">Engineering</span>
+                            </div>
+                            <span class="job-type">Full-time</span>
+                        </div>
+
+                        <p class="job-description">
+                            Build scalable applications for farm management, data analytics, and IoT integration in
+                            agriculture.
+                        </p>
+
+                        <div class="job-meta">
+                            <span><i class="fa-solid fa-location-dot"></i> Remote / Hybrid</span>
+                            <span><i class="fa-solid fa-calendar"></i> Posted 1 week ago</span>
+                        </div>
+
+                        <div class="job-footer">
+                            <button class="btn-view-details">View Details</button>
+                            <button class="btn-apply">Apply Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Job 3 -->
+                    <div class="job-card modern-card" data-title="Data Scientist" data-department="Analytics">
+
+                        <div class="job-top">
+                            <div>
+                                <h3>Data Scientist</h3>
+                                <span class="job-badge analytics">Analytics</span>
+                            </div>
+                            <span class="job-type">Full-time</span>
+                        </div>
+
+                        <p class="job-description">
+                            Develop predictive models for crop disease, weather patterns, and soil health using machine
+                            learning.
+                        </p>
+
+                        <div class="job-meta">
+                            <span><i class="fa-solid fa-location-dot"></i> Remote</span>
+                            <span><i class="fa-solid fa-calendar"></i> Posted 3 days ago</span>
+                        </div>
+
+                        <div class="job-footer">
+                            <button class="btn-view-details">View Details</button>
+                            <button class="btn-apply">Apply Now</button>
+                        </div>
+                    </div>
+
                 </div>
-                <span class="job-type">Full-time</span>
             </div>
-
-            <p class="job-description">
-                Build scalable applications for farm management, data analytics, and IoT integration in agriculture.
-            </p>
-
-            <div class="job-meta">
-                <span><i class="fa-solid fa-location-dot"></i> Remote / Hybrid</span>
-                <span><i class="fa-solid fa-calendar"></i> Posted 1 week ago</span>
-            </div>
-
-            <div class="job-footer">
-                <button class="btn-view-details">View Details</button>
-                <button class="btn-apply">Apply Now</button>
-            </div>
-        </div>
-
-        <!-- Job 3 -->
-        <div class="job-card modern-card"
-             data-title="Data Scientist"
-             data-department="Analytics">
-
-            <div class="job-top">
-                <div>
-                    <h3>Data Scientist</h3>
-                    <span class="job-badge analytics">Analytics</span>
-                </div>
-                <span class="job-type">Full-time</span>
-            </div>
-
-            <p class="job-description">
-                Develop predictive models for crop disease, weather patterns, and soil health using machine learning.
-            </p>
-
-            <div class="job-meta">
-                <span><i class="fa-solid fa-location-dot"></i> Remote</span>
-                <span><i class="fa-solid fa-calendar"></i> Posted 3 days ago</span>
-            </div>
-
-            <div class="job-footer">
-                <button class="btn-view-details">View Details</button>
-                <button class="btn-apply">Apply Now</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 
             <!-- Benefits Section -->
             <div class="benefits-section">
@@ -207,471 +215,568 @@
             </div>
         </section>
     </main>
-    
+
     <style>
-      .site-footer {
-        background: linear-gradient(135deg, #2e7d32, #66bb6a);
-        color: #fff;
-        margin-top: auto;
-        padding: 2rem 1.25rem;
-      }
-      .site-footer .footer-inner {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.5rem;
-        align-items: flex-start;
-      }
-      .footer-brand {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      .footer-logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        object-fit: cover;
-        background: #fff;
-        padding: 4px;
-      }
-      .site-footer h3,
-      .site-footer h4 {
-        margin: 0 0 0.5rem 0;
-      }
-      .site-footer p {
-        margin: 0;
-        opacity: 0.9;
-      }
-      .site-footer ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-      }
-      .site-footer a {
-        color: #fff;
-        text-decoration: none;
-        opacity: 0.9;
-        transition: opacity 0.2s;
-      }
-      .site-footer a:hover {
-        opacity: 1;
-        text-decoration: underline;
-      }
-      .footer-bottom {
-        max-width: 1200px;
-        margin: 1rem auto 0;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.25);
-        text-align: center;
-        font-size: 0.9rem;
-        opacity: 0.9;
-      }
-      .social-media {
-        display: flex;
-        gap: 1rem;
-        margin-top: 0.5rem;
-      }
-      .social-media a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        font-size: 1.2rem;
-      }
-      .social-media a:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
-      }
+        .site-footer {
+            margin-top: auto;
+            padding: 55px 30px 20px;
+            background:
+                linear-gradient(135deg, #052e16 0%, #14532d 50%, #022c22 100%);
+            color: #ffffff;
+            box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
 
-      /* ===== Modern Jobs Section ===== */
-.modern-jobs {
-    margin-top: 2rem;
-}
+        .site-footer::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.05), transparent 45%);
+            pointer-events: none;
+        }
 
-.jobs-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
+        .site-footer .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 2.5rem;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+        }
 
-.jobs-subtitle {
-    color: #6b7280;
-    font-size: 0.95rem;
-}
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
 
-/* Search Box */
-.jobs-controls {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
+        .footer-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px;
+            backdrop-filter: blur(8px);
+        }
 
-.search-box {
-    display: flex;
-    align-items: center;
-    background: #f4f6f5;
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-}
+        .site-footer h3 {
+            font-size: 1.6rem;
+            margin: 0;
+            font-weight: 700;
+        }
 
-.search-box input {
-    border: none;
-    outline: none;
-    background: transparent;
-    margin-left: 8px;
-    font-size: 0.9rem;
-    width: 200px;
-}
+        .site-footer h4 {
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
 
-.department-filter {
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    background: #fff;
-    cursor: pointer;
-}
+        .site-footer h4::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 42px;
+            height: 3px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.7);
+        }
 
-/* Grid Layout */
-.job-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
+        .site-footer p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
 
-/* Modern Card */
-.modern-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid #e6f4ea;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-}
+        .site-footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
 
-.modern-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 30px rgba(46,125,50,0.15);
-}
+        .site-footer li {
+            transition: transform 0.25s ease;
+        }
 
-/* Top Section */
-.job-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .site-footer li:hover {
+            transform: translateX(5px);
+        }
 
-.job-badge {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: #e8f5e9;
-    color: #2e7d32;
-    font-weight: 600;
-}
+        .site-footer a {
+            color: rgba(255, 255, 255, 0.88);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.94rem;
+        }
 
-.job-type {
-    font-size: 0.8rem;
-    background: #f1f5f9;
-    padding: 4px 10px;
-    border-radius: 8px;
-}
+        .site-footer a:hover {
+            color: #d1fae5;
+        }
 
-/* Meta Info */
-.job-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #6b7280;
-    margin-top: 10px;
-}
+        .footer-links,
+        .footer-brand {
+            transition: transform 0.3s ease;
+        }
 
-/* Footer Buttons */
-.job-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
+        .footer-links:hover,
+        .footer-brand:hover {
+            transform: translateY(-4px);
+        }
 
-.btn-view-details {
-    background: transparent;
-    border: 2px solid #2e7d32;
-    color: #2e7d32;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 1.4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(8px);
+        }
 
-.btn-view-details:hover {
-    background: #2e7d32;
-    color: white;
-}
-        
-      #scrollTopBtn {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        background: #2e7d32;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        display: none;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-        z-index: 999;
-      }
-      #scrollTopBtn:hover {
-        background: #1b5e20;
-        transform: translateY(-3px);
-      }
+        .social-media {
+            display: flex;
+            gap: 0.9rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .social-media a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .social-media a:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Footer */
+
+        @media (max-width: 768px) {
+
+            .site-footer {
+                padding: 45px 20px 18px;
+            }
+
+            .site-footer .footer-inner {
+                gap: 2rem;
+            }
+
+            .footer-brand {
+                align-items: flex-start;
+            }
+
+            .site-footer h3 {
+                font-size: 1.8rem;
+                font-weight: 800;
+                letter-spacing: 0.5px;
+                color: #ffffff;
+            }
+
+            .site-footer h4 {
+                margin-bottom: 0.9rem;
+            }
+
+            .social-media {
+                gap: 0.7rem;
+            }
+
+            .social-media a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* ===== Modern Jobs Section ===== */
+        .modern-jobs {
+            margin-top: 2rem;
+        }
+
+        .jobs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .jobs-subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        /* Search Box */
+        .jobs-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f4f6f5;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            margin-left: 8px;
+            font-size: 0.9rem;
+            width: 200px;
+        }
+
+        .department-filter {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        /* Grid Layout */
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Modern Card */
+        .modern-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e6f4ea;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(46, 125, 50, 0.15);
+        }
+
+        /* Top Section */
+        .job-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .job-type {
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        /* Meta Info */
+        .job-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 10px;
+        }
+
+        /* Footer Buttons */
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .btn-view-details {
+            background: transparent;
+            border: 2px solid #2e7d32;
+            color: #2e7d32;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-view-details:hover {
+            background: #2e7d32;
+            color: white;
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        #scrollTopBtn:hover {
+            background: #1b5e20;
+            transform: translateY(-3px);
+        }
     </style>
     <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="images/logo.png" alt="AgriTech logo" class="footer-logo" />
-          <h3>AgriTech</h3>
-          <p>Empowering India's Farming Future</p>
-          <div class="social-media">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow us on Instagram"
-              ><i class="fab fa-instagram"></i
-            ></a>
-            <a
-              href="https://github.com/omroy07"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View our GitHub repositories"
-              ><i class="fab fa-github"></i
-            ></a>
-            <a
-              href="https://www.linkedin.com/in/om-roy-3b809628a/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Connect with us on LinkedIn"
-              ><i class="fab fa-linkedin"></i
-            ></a>
-          </div>
-        </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="main.html">Dashboard</a></li>
-            <li><a href="feed-back.html">Feedback</a></li>
-            <li><a href="chat.html">AI Assistant</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Tools</h4>
-          <ul>
-            <li>
-              <a href="Crop Recommendation/index.html">Crop Recommendation</a>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="AgriTech logo" class="footer-logo" />
+                <h3>AgriTech</h3>
+                <p>Empowering India's Farming Future</p>
+                <div class="social-media">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/omroy07" target="_blank" rel="noopener noreferrer"
+                        aria-label="View our GitHub repositories"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/om-roy-3b809628a/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Connect with us on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="main.html">Dashboard</a></li>
+                    <li><a href="feed-back.html">Feedback</a></li>
+                    <li><a href="chat.html">AI Assistant</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Tools</h4>
+                <ul>
+                    <li>
+                        <a href="Crop Recommendation/index.html">Crop Recommendation</a>
 
-            </li>
-            <li>
-              <a href="Crop Yield Prediction/index.html">Yield Prediction</a>
+                    </li>
+                    <li>
+                        <a href="Crop Yield Prediction/index.html">Yield Prediction</a>
 
-            </li>
-            <li>
-              <a href="Disease prediction/index.html">Disease Detector</a>
+                    </li>
+                    <li>
+                        <a href="Disease prediction/index.html">Disease Detector</a>
 
-            </li>
-            <li>
-              <a href="Crop_Planning/templates/cropplan.html">Crop Planner</a>
-            </li>
-          </ul>
+                    </li>
+                    <li>
+                        <a href="Crop_Planning/templates/cropplan.html">Crop Planner</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="footer-bottom">© <span id="current-year">2026</span> AgriTech • Made for farmers</div>
+        <div class="footer-bottom">© <span id="current-year">2026</span> AgriTech • Made for farmers</div>
     </footer>
 
     <!-- Scroll to Top Button -->
     <button id="scrollTopBtn" aria-label="Scroll to top">
-         <i class="fa-solid fa-arrow-up"></i>
+        <i class="fa-solid fa-arrow-up"></i>
     </button>
 
     <!-- Optional: Add theme toggle script if needed -->
     <script>
         // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Check for saved theme or default to light
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme === 'dark' ? 'dark' : 'light');
-            
+
             // If you have a theme toggle button, you can add this:
-          const themeToggle = document.getElementById('themeToggle');
-          if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
-              const currentTheme = document.documentElement.getAttribute('data-theme');
-              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-              document.documentElement.setAttribute('data-theme', newTheme);
-              localStorage.setItem('theme', newTheme);
-            });
-          }
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function () {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                });
+            }
         });
     </script>
     <script src="auth.js"></script>
     <script>
-function applyTheme(theme) {
-    const html = document.documentElement;
-    html.setAttribute('data-theme', theme);
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', theme);
 
-    // Update labels/icons in navbar if present
-    const themeLabel = document.querySelector('.theme-label');
-    if (themeLabel) themeLabel.textContent = theme === 'light' ? 'Light' : 'Dark';
-}
+            // Update labels/icons in navbar if present
+            const themeLabel = document.querySelector('.theme-label');
+            if (themeLabel) themeLabel.textContent = theme === 'light' ? 'Light' : 'Dark';
+        }
 
-function initThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) return; // navbar not loaded yet
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return; // navbar not loaded yet
 
-    themeToggle.addEventListener('click', () => {
-        const html = document.documentElement;
-        const current = html.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        applyTheme(next);
-        localStorage.setItem('agritech-theme', next);
-    });
-}
+            themeToggle.addEventListener('click', () => {
+                const html = document.documentElement;
+                const current = html.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                applyTheme(next);
+                localStorage.setItem('agritech-theme', next);
+            });
+        }
 
 
-// Initialize theme from localStorage
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('agritech-theme') || 'light';
-    applyTheme(savedTheme);
-});
+        // Initialize theme from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('agritech-theme') || 'light';
+            applyTheme(savedTheme);
+        });
 
-// Load navbar and attach toggle AFTER navbar is loaded
-function includeHTML() {
-    var z, i, elmnt, file, xhttp;
-    z = document.getElementsByTagName("*");
-    for (i = 0; i < z.length; i++) {
-        elmnt = z[i];
-        file = elmnt.getAttribute("w3-include-html");
-        if (file) {
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                    if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-                    if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                    elmnt.removeAttribute("w3-include-html");
-                    includeHTML();
+        // Load navbar and attach toggle AFTER navbar is loaded
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) { elmnt.innerHTML = this.responseText; }
+                            if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML();
 
-                    // ✅ Attach theme toggle AFTER navbar loads
-                    initThemeToggle();
+                            // ✅ Attach theme toggle AFTER navbar loads
+                            initThemeToggle();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    return;
                 }
             }
-            xhttp.open("GET", file, true);
-            xhttp.send();
-            return;
         }
-    }
-}
-includeHTML();
-</script>
-<!-- ===== Universal Back To Top Button (All Pages) ===== -->
-<style>
-  #globalBackToTop {
-    position: fixed;
-    bottom: 90px; /* prevents overlap with chatbot/floating icons */
-    right: 25px;
-    z-index: 9999;
-    display: none;
-    background: #2ecc71;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    transition: opacity 0.3s ease, transform 0.2s ease;
-  }
+        includeHTML();
+    </script>
+    <!-- ===== Universal Back To Top Button (All Pages) ===== -->
+    <style>
+        #globalBackToTop {
+            position: fixed;
+            bottom: 90px;
+            /* prevents overlap with chatbot/floating icons */
+            right: 25px;
+            z-index: 9999;
+            display: none;
+            background: #2ecc71;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
 
-  #globalBackToTop:hover {
-    transform: scale(1.12);
-    background: #27ae60;
-  }
+        #globalBackToTop:hover {
+            transform: scale(1.12);
+            background: #27ae60;
+        }
 
-  @media (max-width: 768px) {
-    #globalBackToTop {
-      bottom: 100px; /* better spacing on mobile */
-      right: 18px;
-      width: 48px;
-      height: 48px;
-      font-size: 20px;
-    }
-  }
-</style>
+        @media (max-width: 768px) {
+            #globalBackToTop {
+                bottom: 100px;
+                /* better spacing on mobile */
+                right: 18px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
+    </style>
 
-<button id="globalBackToTop" title="Back to Top">↑</button>
+    <button id="globalBackToTop" title="Back to Top">↑</button>
 
-<script>
-  (function () {
-    const btn = document.getElementById("globalBackToTop");
+    <script>
+        (function () {
+            const btn = document.getElementById("globalBackToTop");
 
-    // Show button after scrolling down
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 300) {
-        btn.style.display = "block";
-      } else {
-        btn.style.display = "none";
-      }
-    });
+            // Show button after scrolling down
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 300) {
+                    btn.style.display = "block";
+                } else {
+                    btn.style.display = "none";
+                }
+            });
 
-    // Smooth scroll to top on click
-    btn.addEventListener("click", function () {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  })();
-</script>
-<!-- ===== End Back To Top Button ===== -->
+            // Smooth scroll to top on click
+            btn.addEventListener("click", function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        })();
+    </script>
+    <!-- ===== End Back To Top Button ===== -->
 
-<!-- Scroll-to-Top JS -->
-<script>
-const scrollBtn = document.getElementById("scrollTopBtn");
+    <!-- Scroll-to-Top JS -->
+    <script>
+        const scrollBtn = document.getElementById("scrollTopBtn");
 
-window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
-        scrollBtn.style.display = "block";
-    } else {
-        scrollBtn.style.display = "none";
-    }
-});
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        });
 
-scrollBtn.addEventListener("click", () => {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-});
-</script>
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    </script>
 
 
 </body>
+
 </html>
