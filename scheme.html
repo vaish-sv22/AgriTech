@@ -841,6 +841,15 @@
 
     /* ===== FIX HEADING UNDER NAVBAR ===== */
 
+.hero {
+  padding-top: 120px !important;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 140px !important;
+  }
+}
     .hero {
       padding-top: 120px !important;
     }
@@ -899,7 +908,6 @@
 
     /* ================================
    Sparkle Cursor Effect (Green Theme)
-================================ */
 
     .sparkle-container {
       position: fixed;
@@ -1021,6 +1029,20 @@
       <div id="modalBody"></div>
       <div class="close" onclick="closeModal()">Close</div>
     </div>
+  </div>
+  <!-- Floating Language Button -->
+  <div id="langFloatBtn">🌐</div>
+
+  <!-- Floating Language Panel -->
+  <div id="langPanel">
+    <h4>Select Language</h4>
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('hi')">हिंदी</button>
+  </div>
+
+  <!-- Cursor Trail -->
+  <div class="circle-container" id="cursorTrail"></div>
+
   </div>
   <!-- Floating Language Button -->
   <div id="langFloatBtn">🌐</div>
@@ -1448,6 +1470,11 @@
     (function () {
       const btn = document.getElementById("globalBackToTop");
 
+
+  <script>
+    (function () {
+      const btn = document.getElementById("globalBackToTop");
+
       // Show button after scrolling down
       window.addEventListener("scroll", function () {
         if (window.scrollY > 300) {
@@ -1455,6 +1482,18 @@
         } else {
           btn.style.display = "none";
         }
+      });
+
+      // Smooth scroll to top on click
+      btn.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    })();
+  </script>
+  <!-- ===== End Back To Top Button ===== -->
       });
 
       // Smooth scroll to top on click
