@@ -1,6 +1,37 @@
 // login.js — AgriTech Login Page Handler
 // Only change from original: handleLogin is now async (Firebase calls are async)
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function setFieldState(input, isValid) {
+  if (!input) return;
+  input.classList.toggle("error", !isValid);
+  input.setAttribute("aria-invalid", String(!isValid));
+}
+
+function validateLoginFields(email, password, emailInput, passwordInput) {
+  if (!email) {
+    setFieldState(emailInput, false);
+    return "Please enter your email address";
+  }
+
+  if (!isValidEmail(email) || !email.toLowerCase().endsWith("@gmail.com")) {
+    setFieldState(emailInput, false);
+    return "Please use a valid @gmail.com address";
+  }
+
+  if (!password) {
+    setFieldState(passwordInput, false);
+    return "Please enter your password";
+  }
+
+  setFieldState(emailInput, true);
+  setFieldState(passwordInput, true);
+  return "";
+}
+
 async function handleLogin(event) {
   event.preventDefault();
 
@@ -11,9 +42,22 @@ async function handleLogin(event) {
   const email    = emailInput.value.trim();
   const password = passwordInput.value;
 
-  if (!email || !password) {
-    showAuthMessage("Please enter both email and password", "error");
+  const validationMessage = validateLoginFields(email, password, emailInput, passwordInput);
+  if (validationMessage) {
+    showAuthMessage(validationMessage, "error");
     return;
+  }
+
+  // Basic client-side password length validation
+  const pwdInput = document.getElementById('password');
+  const pwdErr = document.getElementById('loginPasswordError');
+  if (password.length < 8) {
+    pwdErr.textContent = 'Password must be at least 8 characters long.';
+    pwdInput.classList.add('error');
+    return;
+  } else {
+    if (pwdErr) pwdErr.textContent = '';
+    pwdInput.classList.remove('error');
   }
 
   // Loading state

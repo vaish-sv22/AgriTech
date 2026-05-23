@@ -98,7 +98,7 @@
         <div class="progress-step" id="step-5"></div>
       </div>
 
-      <form onsubmit="handleRegister(event)">
+      <form onsubmit="handleRegister(event)" novalidate>
         <div class="input-group">
           <i class="fas fa-user-tag role-buyer" id="role-icon"></i>
           <select id="role" required onchange="updateRoleIcon()">
@@ -132,10 +132,10 @@
             id="email"
             placeholder="Enter your email"
             required
-            pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
-            title="Please use a @gmail.com address"
+            aria-describedby="emailError"
           />
         </div>
+        <div class="field-error" id="emailError" aria-live="polite"></div>
 
         <div class="input-group">
           <i class="fas fa-lock"></i>
@@ -144,6 +144,8 @@
             id="password"
             placeholder="Create a strong password"
             required
+            minlength="8"
+            aria-describedby="passwordError strength-text"
             oninput="checkPasswordStrength()"
           />
           <button
@@ -154,12 +156,27 @@
             <i class="fas fa-eye" id="password-eye"></i>
           </button>
         </div>
+        <div class="field-error" id="passwordError" aria-live="polite"></div>
 
         <!-- Password strength indicator -->
         <div class="password-strength">
           <div class="strength-bar" id="strength-bar"></div>
         </div>
         <div class="strength-text" id="strength-text"></div>
+
+        <!-- Confirm password -->
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm your password"
+            required
+            minlength="8"
+            aria-describedby="confirmPasswordError"
+          />
+        </div>
+        <div class="field-error" id="confirmPasswordError" aria-live="polite"></div>
 
         <button type="submit" id="register-btn">
           <span id="register-text">Create Account</span>
