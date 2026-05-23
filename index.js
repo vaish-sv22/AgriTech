@@ -5,6 +5,7 @@ const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 const mobileServicesToggle = document.getElementById('mobileServicesToggle');
 const mobileServicesList = document.getElementById('mobileServicesList');
+const themeToggle = document.getElementById('themeToggle');
 const themeText = document.getElementById('themeText');
 const moonIcon = document.getElementById('moonIcon');
 const sunIcon = document.getElementById('sunIcon');
@@ -621,6 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
       URL.revokeObjectURL(url);
     });
   }
+});
+
   // ============================================
 // PROFIT & LOSS ANALYTICS - ADDON SCRIPT
 // Add this to your existing main.js file
@@ -946,6 +949,7 @@ function generatePLCSV(user, timeRange) {
 document.addEventListener('DOMContentLoaded', () => {
   const plSelector = document.getElementById('plUserSelector');
   if (!plSelector) return;
+  const plRangeButtons = document.querySelectorAll('.pl-time-toggle [data-range]');
 
   // Populate dropdown with buyers and retailers only
   plSampleData.forEach(u => {
@@ -957,6 +961,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentTimeRange = 'monthly';
   let currentUser = null;
+
+  plRangeButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.range === currentTimeRange);
+  });
 
   // Load first user by default
   if (plSampleData.length > 0) {
@@ -979,17 +987,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Time range toggle handlers
-  document.querySelectorAll('.pl-time-toggle .btn').forEach(btn => {
+  plRangeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
+      const nextRange = btn.dataset.range;
+      if (!nextRange) return;
+
       // Update active state
-      document.querySelectorAll('.pl-time-toggle .btn').forEach(b => b.classList.remove('active'));
+      plRangeButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      
-      currentTimeRange = btn.dataset.range;
+
+      currentTimeRange = nextRange;
 
       if (currentUser) {
         updatePLSummary(currentUser, currentTimeRange);
         renderPLTrendChart(currentUser, currentTimeRange);
+        renderPLCategoryChart(currentUser.categories);
       }
     });
   });
@@ -1029,8 +1041,6 @@ document.addEventListener('DOMContentLoaded', () => {
     attributeFilter: ['data-theme']
   });
 });
-});
- main
 
 // ================================
 // Live Search Suggestions (debounced + fuzzy)
