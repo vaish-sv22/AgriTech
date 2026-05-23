@@ -13,8 +13,8 @@
   --border: #e0e0e0;
   --border-soft: #e8f5e8;
   --border-color: #e2e8f0;
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 [data-theme="dark"] {
@@ -31,8 +31,8 @@
   --border: #2d3e50;
   --border-soft: #2d3e50;
   --border-color: #334155;
-  --shadow: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* === BASE STYLES === */
@@ -906,5 +906,28 @@ body {
     font-size: 24px;
     bottom: 20px;
     right: 20px;
+  }
+}
+
+.sparkle {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #22c55e 40%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+  animation: sparkle-fade 0.8s forwards;
+}
+
+@keyframes sparkle-fade {
+  from {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0.5);
+    opacity: 0;
   }
 }

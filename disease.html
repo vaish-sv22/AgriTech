@@ -292,6 +292,24 @@
     </div>
   </div>
 
+  <div id="sparkle-container"></div>
+
+  <script>
+    document.addEventListener("mousemove", (e) => {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = e.pageX + "px";
+      sparkle.style.top = e.pageY + "px";
+
+      document.getElementById("sparkle-container").appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 800); // matches animation duration
+    });
+  </script>
+
+
   <!-- Footer -->
   <style>
     .site-footer {
@@ -502,26 +520,26 @@
 
   <script src="theme.js"></script>
   <script>
-      (function () {
-        const btn = document.getElementById("globalBackToTop");
+    (function () {
+      const btn = document.getElementById("globalBackToTop");
 
-        // Show button after scrolling down
-        window.addEventListener("scroll", function () {
-          if (window.scrollY > 300) {
-            btn.style.display = "block";
-          } else {
-            btn.style.display = "none";
-          }
-        });
+      // Show button after scrolling down
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 300) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      });
 
-        // Smooth scroll to top on click
-        btn.addEventListener("click", function () {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+      // Smooth scroll to top on click
+      btn.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
         });
-      })();
+      });
+    })();
   </script>
   <!-- ===== End Back To Top Button ===== -->
 
