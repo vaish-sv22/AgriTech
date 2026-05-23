@@ -43,16 +43,17 @@ document.getElementById('forumForm').addEventListener('submit', function (e) {
 
 function loadPosts() {
   const container = document.getElementById('forumPosts');
+  if (!container) return;
   
   fetch('http://localhost:5000/forum')
     .then(res => res.json())
     .then(posts => {
-      container.innerHTML = '';
+      container.innerHTML = '<div class="empty-state-card"><i class="fas fa-spinner fa-spin"></i><p>Loading discussions...</p></div>';
       
       if (posts.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 2rem; color: #64748b; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
-            <i class="fas fa-comments" style="font-size: 2rem; margin-bottom: 1rem; color: #cbd5e1;"></i>
+          <div class="empty-state-card">
+            <i class="fas fa-comments"></i>
             <p>No discussions yet. Be the first to start one!</p>
           </div>`;
         return;
