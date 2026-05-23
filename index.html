@@ -333,6 +333,7 @@
       width: 20px;
     }
 
+
     /* Language Selector */
   /* === LANG CONTAINER === */
 .lang-container {
@@ -816,6 +817,78 @@
     .mobile-menu-overlay {
       display: none;
     }
+
+    .features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.activity-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--surface-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.activity-container h2 {
+  margin-bottom: 1rem;
+}
+
+.activity-container .user-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.activity-container select,
+.activity-container button {
+  flex-shrink: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .features-title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .feature-intro {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .activity-container {
+    padding: 1rem;
+  }
+
+  .activity-container .user-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .activity-container select,
+  .activity-container button {
+    width: 100%;
+  }
+}
 
     @media (max-width: 1200px) {
       .hamburger-btn {
@@ -1982,6 +2055,56 @@
       background: var(--text-muted);
     }
 
+ .user-controls {
+  display: flex;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.user-controls label {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.user-controls select {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Group buttons together */
+.user-controls .button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto; /* pushes buttons to the right on desktop */
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .user-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-controls .button-group {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;  
+  }
+
+  .user-controls select,
+  .user-controls button {
+    width: 100%;  
+  }
+}
+
+
+
   </style>
 </head>
 
@@ -2471,28 +2594,20 @@
         Track your purchases, sales, and tool usage on AgriTech.
       </p>
 
-      <!-- User Selector -->
-      <div style="
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-          ">
-        <label for="userSelector" style="color: var(--text-color); font-weight: 500">Select User:</label>
-        <select id="userSelector" class="btn" style="
-              padding: 0.5rem 0.85rem;
-              border: 1px solid var(--border-color);
-              background: var(--input-bg);
-              color: var(--text-color);
-              cursor: pointer;
-              border-radius: 8px;
-            ">
-          <option value="">Choose a user...</option>
-        </select>
-        <div style="flex: 1"></div>
-        <button class="btn btn-secondary" id="clearUserDataBtn">Clear</button>
-        <button class="btn btn-primary" id="exportUserDataBtn">Export</button>
-      </div>
+     <!-- User Selector -->
+<div class="user-controls">
+  <label for="userSelector">Select User:</label>
+  <select id="userSelector" class="btn">
+    <option value="">Choose a user...</option>
+  </select>
+
+  <div class="button-group">
+    <button class="btn btn-secondary" id="clearUserDataBtn">Clear</button>
+    <button class="btn btn-primary" id="exportUserDataBtn">Export</button>
+  </div>
+</div>
+
+
 
       <!-- User Profile & Stats -->
       <div id="profileSection" style="
