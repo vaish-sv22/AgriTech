@@ -183,6 +183,95 @@
             color: var(--primary);
         }
 
+        .compatibility-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .compatibility-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .compatibility-result {
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            border: 1px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .compatibility-result.neutral {
+            background: #f8fafc;
+            border-color: #dbe4ee;
+            color: #334155;
+        }
+
+        .compatibility-result.friends {
+            background: #ecfdf5;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .compatibility-result.foes {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .compatibility-result h3 {
+            margin: 0 0 0.35rem 0;
+            font-size: 1.05rem;
+        }
+
+        .compatibility-result p {
+            margin: 0;
+        }
+
+        .compatibility-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .compatibility-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .compatibility-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compatibility-actions {
+                flex-direction: column;
+            }
+
+            .compatibility-actions .btn {
+                width: 100%;
+            }
+        }
+
         .alert-item {
             padding: 1rem;
             border-radius: 8px;
@@ -291,6 +380,63 @@
             <button class="btn btn-primary" onclick="getRecommendations()">
                 <i class="fas fa-magic"></i> Get Crop Recommendations
             </button>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-leaf"></i> Companion Planting Checker</h2>
+            <p style="margin-top: 0; color: #64748b;">Pick two crops to see whether they are good planting partners or should be kept apart.</p>
+            <div class="compatibility-grid">
+                <div class="form-group">
+                    <label for="companionCropA">Crop A</label>
+                    <select id="companionCropA">
+                        <option value="">Select Crop A</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Basil">Basil</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Onion">Onion</option>
+                        <option value="Carrot">Carrot</option>
+                        <option value="Beans">Beans</option>
+                        <option value="Corn">Corn</option>
+                        <option value="Squash">Squash</option>
+                        <option value="Lettuce">Lettuce</option>
+                        <option value="Cabbage">Cabbage</option>
+                        <option value="Marigold">Marigold</option>
+                        <option value="Pepper">Pepper</option>
+                        <option value="Dill">Dill</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="companionCropB">Crop B</label>
+                    <select id="companionCropB">
+                        <option value="">Select Crop B</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Basil">Basil</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Onion">Onion</option>
+                        <option value="Carrot">Carrot</option>
+                        <option value="Beans">Beans</option>
+                        <option value="Corn">Corn</option>
+                        <option value="Squash">Squash</option>
+                        <option value="Lettuce">Lettuce</option>
+                        <option value="Cabbage">Cabbage</option>
+                        <option value="Marigold">Marigold</option>
+                        <option value="Pepper">Pepper</option>
+                        <option value="Dill">Dill</option>
+                    </select>
+                </div>
+            </div>
+            <div class="compatibility-actions">
+                <button class="btn btn-primary" type="button" onclick="checkCompanionPlanting()">
+                    <i class="fas fa-check-circle"></i> Check Compatibility
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="resetCompanionChecker()">
+                    <i class="fas fa-rotate-left"></i> Reset
+                </button>
+            </div>
+            <div id="companionResult" class="compatibility-result neutral" aria-live="polite" style="margin-top: 1rem;">
+                <h3>Choose two crops to compare</h3>
+                <p>You'll see a quick companion planting verdict here.</p>
+            </div>
         </div>
 
         <div class="stats-container hidden" id="weatherStats">
