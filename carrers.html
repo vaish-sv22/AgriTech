@@ -217,6 +217,267 @@
     </main>
 
     <style>
+      .site-footer {
+        background: linear-gradient(135deg, #2e7d32, #66bb6a);
+        color: #fff;
+        margin-top: auto;
+        padding: 2rem 1.25rem;
+      }
+      .site-footer .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .footer-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: #fff;
+        padding: 4px;
+      }
+      .site-footer h3,
+      .site-footer h4 {
+        margin: 0 0 0.5rem 0;
+      }
+      .site-footer p {
+        margin: 0;
+        opacity: 0.9;
+      }
+      .site-footer ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .site-footer a {
+        color: #fff;
+        text-decoration: none;
+        opacity: 0.9;
+        transition: opacity 0.2s;
+      }
+      .site-footer a:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 1rem auto 0;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+        text-align: center;
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+      .social-media {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .social-media a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+      .social-media a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* ===== Modern Jobs Section ===== */
+.modern-jobs {
+    margin-top: 2rem;
+}
+
+.jobs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.jobs-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+/* Search Box */
+.jobs-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* General text inside job cards */
+.modern-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937; /* dark gray for visibility */
+    margin-bottom: 6px;
+}
+
+.job-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #374151; /* medium-dark gray */
+    margin-top: 8px;
+}
+
+.job-type {
+    font-size: 0.8rem;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 8px;
+    color: #111827; /* ensure text is visible */
+    font-weight: 500;
+}
+
+/* Meta info */
+.job-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #4b5563; /* slightly darker gray */
+    margin-top: 10px;
+}
+
+/* Search box input text */
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    margin-left: 8px;
+    font-size: 0.9rem;
+    width: 200px;
+    color: #111827; /* visible text */
+}
+
+/* Dropdown text */
+.department-filter {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    color: #111827; /* visible text */
+}
+
+
+/* Grid Layout */
+.job-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Modern Card */
+.modern-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e6f4ea;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.modern-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(46,125,50,0.15);
+}
+
+/* Top Section */
+.job-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.job-type {
+    font-size: 0.8rem;
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* Meta Info */
+.job-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 10px;
+}
+
+/* Footer Buttons */
+.job-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.btn-view-details {
+    background: transparent;
+    border: 2px solid #2e7d32;
+    color: #2e7d32;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-view-details:hover {
+    background: #2e7d32;
+    color: white;
+}
+        
+      #scrollTopBtn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: #2e7d32;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: none;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+      #scrollTopBtn:hover {
+        background: #1b5e20;
+        transform: translateY(-3px);
+      }
         .site-footer {
             margin-top: auto;
             padding: 55px 30px 20px;
