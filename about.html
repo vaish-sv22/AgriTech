@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./about.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="styles/footer.css" /> -->
     <link rel="stylesheet" href="styles/footer.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -297,6 +298,7 @@
         .footer-section ul a {
             color: var(--text-muted);
             text-decoration: none;
+            display: inline-flex;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -313,6 +315,16 @@
             content: "";
             position: absolute;
             left: 0;
+            bottom: -2px;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.25s ease;
+        }
+
+        .footer-section ul a:hover {
+            color: var(--accent-color);
+            transform: translate(-2px);
             bottom: -3px;
             width: 0%;
             height: 2px;
@@ -336,6 +348,42 @@
             display: none;
         }
 
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color, #2e7d32);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            /* ✅ always visible */
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dark Mode Support */
+        [data-theme="dark"] .scroll-top-btn {
+            background: #4caf50;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 768px) {
+            .footer-inner-content {
+                flex-direction: column;
+                align-items: flex-start;
     .site-footer {
       background: var(--surface-color);
       color: var(--text-color);
@@ -573,9 +621,6 @@ function includeHTML(callback) {
                     if (callback) callback();
                 }
             }
-            xhttp.open("GET", file, true);
-            xhttp.send();
-            return;
         }
 
         .footer-section ul li {
@@ -697,6 +742,116 @@ function includeHTML(callback) {
                 circles.forEach(c => c.el.classList.remove('cursor-hovering'));
             }
         });
+
+        // Animate trailing effect
+        function animateCursor() {
+            let x = mouseX;
+            let y = mouseY;
+
+            circles.forEach((circle) => {
+                circle.x += (x - circle.x) * 0.25;
+                circle.y += (y - circle.y) * 0.25;
+
+                circle.el.style.left = circle.x + 'px';
+                circle.el.style.top = circle.y + 'px';
+
+                x = circle.x;
+                y = circle.y;
+            });
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Include navbar (UNCHANGED)
+        function includeHTML(callback) {
+            var z, i, elmnt, file, xhttp;
+            z = document.getElementsByTagName("*");
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4) {
+                            if (this.status == 200) { elmnt.innerHTML = this.responseText; }
+                            if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
+                            elmnt.removeAttribute("w3-include-html");
+                            includeHTML(callback);
+                            if (callback) callback();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    return;
+                }
+            }
+        }
+
+        // Function to fix Services Dropdown (New logic needed for functionality)
+        function initServicesDropdown() {
+            const servicesToggle = document.querySelector('.services-toggle');
+            const servicesDropdown = document.querySelector('.services-dropdown');
+            const servicesArrow = document.querySelector('.services-arrow');
+
+            if (servicesToggle && servicesDropdown) {
+                servicesToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    servicesDropdown.classList.toggle('active');
+                    if (servicesArrow) servicesArrow.classList.toggle('rotated');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!servicesToggle.contains(e.target) && !servicesDropdown.contains(e.target)) {
+                        servicesDropdown.classList.remove('active');
+                        if (servicesArrow) servicesArrow.classList.remove('rotated');
+                    }
+                });
+            }
+        }
+
+        // Initialize theme toggle (UNCHANGED)
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+
+            themeToggle.addEventListener('click', () => {
+                const root = document.documentElement;
+                const current = root.getAttribute('data-theme') || 'dark';
+                const next = current === 'light' ? 'dark' : 'light';
+
+                root.setAttribute('data-theme', next);
+                localStorage.setItem('agritech-theme', next);
+
+                const themeLabel = document.querySelector('.theme-label');
+                if (themeLabel) {
+                    themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
+                }
+            });
+        }
+
+        // Initialize mobile hamburger (UNCHANGED)
+        function initHamburgerMenu() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+
+            if (!hamburgerBtn || !mobileMenu || !overlay) return;
+
+            hamburgerBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            overlay.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+
 
         // Animate trailing effect
         function animateCursor() {
@@ -996,6 +1151,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("current-year").textContent =
             new Date().getFullYear();
     </script>
+
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+
+    <script>
     <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -1040,6 +1202,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!scrollTopBtn) return;
 
+            // Smooth scroll to top
             // Monitor Scroll Position
             window.addEventListener("scroll", function () {
                 // Show button after scrolling down 300px
@@ -1057,6 +1220,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     behavior: "smooth"
                 });
             });
+        });
+
+    </script>
+
     // Scroll to top on click
   backToTopBtn.addEventListener("click", function () {
         window.scrollTo({
