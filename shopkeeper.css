@@ -24,6 +24,11 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius: 12px;
   --border-radius-large: 20px;
+
+  --text-primary: #212121;   /* dark gray for light mode */
+  --text-secondary: #374151; /* softer gray */
+  --text-light: #f1f5f9;     /* light text for dark backgrounds */
+  --accent-green: #22c55e;
 }
 
 body {
@@ -477,6 +482,48 @@ body {
   border-radius: var(--border-radius);
   border-left: 3px solid var(--accent-green);
 }
+
+.dealer-card .dealer-name {
+  color: var(--primary-green); /* strong green accent */
+}
+
+.dealer-card .address,
+.dealer-card .dealer-services span {
+  color: var(--text-secondary); /* readable gray */
+}
+
+.dealer-card i {
+  color: var(--accent-green); /* icons pop */
+}
+
+.container.dark-mode .dealer-card .address,
+.container.dark-mode .dealer-card .dealer-services span {
+  color: var(--text-light);
+}
+
+
+/* Force footer text to be light */
+.site-footer,
+.site-footer p,
+.site-footer h3,
+.site-footer h4,
+.site-footer ul a {
+  color: #f1f5f9;   /* light gray/white */
+  opacity: 1;       /* remove faint look */
+}
+
+/* Footer social icons */
+.social-media a {
+  color: #fff; /* white icons by default */
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.social-media a:hover {
+  background: #43a047; /* green hover */
+  color: #fff;
+}
+
+
 
 .location-icon {
   color: var(--secondary-green);
