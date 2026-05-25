@@ -6,6 +6,7 @@ from backend.extensions import db
 from backend.models import User
 from .jwt_utils import jwt_manager
 from .decorators import token_required
+from backend.docs.swagger import swagger_operation
 from backend.utils.validation import (
     sanitize_input,
     validate_email,
@@ -22,6 +23,37 @@ ALLOWED_ROLES = {'farmer', 'buyer', 'equipment', 'grocery', 'expert', 'admin', '
 
 
 @auth_bp.route('/register', methods=['POST'])
+@swagger_operation(
+    '/api/auth/register',
+    'post',
+    'Register a user',
+    'Create a new user account and return the created profile.',
+    request_body={
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': {
+                    'type': 'object',
+                    'required': ['username', 'email', 'password', 'full_name', 'role'],
+                    'properties': {
+                        'username': {'type': 'string', 'example': 'farmer123'},
+                        'email': {'type': 'string', 'format': 'email', 'example': 'farmer@example.com'},
+                        'password': {'type': 'string', 'example': 'SecurePass123'},
+                        'full_name': {'type': 'string', 'example': 'John Doe'},
+                        'role': {'type': 'string', 'example': 'farmer'},
+                        'phone': {'type': 'string', 'example': '9876543210'},
+                        'location': {'type': 'string', 'example': 'Maharashtra'},
+                    },
+                },
+            },
+        },
+    },
+    responses={
+        '201': {'description': 'User created successfully'},
+        '400': {'description': 'Validation error'},
+        '409': {'description': 'User already exists'},
+    },
+)
 def register():
     """
     Register a new user.
@@ -125,6 +157,32 @@ def register():
 
 
 @auth_bp.route('/login', methods=['POST'])
+@swagger_operation(
+    '/api/auth/login',
+    'post',
+    'Login a user',
+    'Authenticate a user and return an access token plus the user profile.',
+    request_body={
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': {
+                    'type': 'object',
+                    'required': ['username', 'password'],
+                    'properties': {
+                        'username': {'type': 'string', 'example': 'farmer123'},
+                        'password': {'type': 'string', 'example': 'SecurePass123'},
+                    },
+                },
+            },
+        },
+    },
+    responses={
+        '200': {'description': 'Login successful'},
+        '400': {'description': 'Validation error'},
+        '401': {'description': 'Invalid credentials'},
+    },
+)
 def login():
     """
     Authenticate user and return tokens.
@@ -211,6 +269,16 @@ def login():
 
 
 @auth_bp.route('/refresh', methods=['POST'])
+@swagger_operation(
+    '/api/auth/refresh',
+    'post',
+    'Refresh access token',
+    'Exchange a valid refresh token cookie for a new access token.',
+    responses={
+        '200': {'description': 'Token refreshed successfully'},
+        '401': {'description': 'Refresh token missing or invalid'},
+    },
+)
 def refresh_token():
     """
     Refresh access token using refresh token from cookie.
@@ -266,6 +334,17 @@ def refresh_token():
 
 
 @auth_bp.route('/logout', methods=['POST'])
+@swagger_operation(
+    '/api/auth/logout',
+    'post',
+    'Logout the current user',
+    'Invalidate the current session by clearing the refresh token cookie.',
+    security=[{'bearerAuth': []}],
+    responses={
+        '200': {'description': 'Logout successful'},
+        '401': {'description': 'Authentication required'},
+    },
+)
 @token_required
 def logout(current_user):
     """
@@ -293,6 +372,18 @@ def logout(current_user):
 
 
 @auth_bp.route('/me', methods=['GET'])
+@swagger_operation(
+    '/api/auth/me',
+    'get',
+    'Get current user',
+    'Return the authenticated user profile.',
+    security=[{'bearerAuth': []}],
+    responses={
+        '200': {'description': 'User information returned successfully'},
+        '401': {'description': 'Authentication required'},
+        '404': {'description': 'User not found'},
+    },
+)
 @token_required
 def get_current_user(current_user):
     """
@@ -316,6 +407,17 @@ def get_current_user(current_user):
 
 
 @auth_bp.route('/validate', methods=['GET'])
+@swagger_operation(
+    '/api/auth/validate',
+    'get',
+    'Validate access token',
+    'Check whether the access token is still valid.',
+    security=[{'bearerAuth': []}],
+    responses={
+        '200': {'description': 'Token is valid'},
+        '401': {'description': 'Authentication required'},
+    },
+)
 @token_required
 def validate_token(current_user):
     """
