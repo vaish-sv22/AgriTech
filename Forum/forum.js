@@ -25,10 +25,13 @@ document.getElementById('forumForm').addEventListener('submit', function (e) {
       if (!res.ok) throw new Error('Network response was not ok');
       return res.json();
     })
-    .then(() => {
-      loadPosts();
+    .then(data => {
       e.target.reset();
-      // Show simple success feedback (optional)
+      if (data && data.post) {
+        prependPost(data.post);
+      } else {
+        loadPosts();
+      }
       alert('Post created successfully!');
     })
     .catch(err => {
@@ -90,6 +93,40 @@ function loadPosts() {
       container.innerHTML = `<p style="color: red; text-align: center;">Error loading posts. Is the backend running?</p>`;
       console.error(err);
     });
+}
+
+function prependPost(post) {
+  const container = document.getElementById('forumPosts');
+  if (!container) return;
+
+  const emptyState = container.querySelector('.empty-state-card');
+  if (emptyState) {
+    emptyState.remove();
+  }
+
+  const el = document.createElement('div');
+  el.className = 'forum-post';
+
+  const title = post.title || 'Untitled Discussion';
+  const author = post.author || 'Anonymous';
+  const content = post.content || '';
+
+  el.innerHTML = `
+    <div class="post-meta">
+      <div class="author-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <strong>${escapeHtml(author)}</strong>
+      <span>•</span>
+      <span>Just now</span>
+    </div>
+    <h3 class="post-title">${escapeHtml(title)}</h3>
+    <div class="post-content">
+      ${escapeHtml(content)}
+    </div>
+  `;
+
+  container.prepend(el);
 }
 
 // Helper to prevent XSS

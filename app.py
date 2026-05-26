@@ -33,6 +33,8 @@ import backend.sockets.knowledge_events # Register knowledge exchange events
 import backend.sockets.alert_socket # Register centralized alert socket events
 import backend.sockets.crisis_events # Register crisis monitoring events
 from backend.utils.i18n import t
+from backend.auth import auth_bp as legacy_auth_bp
+from backend.docs.swagger import swagger_bp
 
 from routes.irrigation_routes import irrigation_bp
 
@@ -86,6 +88,8 @@ app.register_blueprint(ingestion_bp, url_prefix='/api/v1')
 app.register_blueprint(model_versioning_bp)
 app.register_blueprint(irrigation_bp)
 app.register_blueprint(rotation_bp)
+app.register_blueprint(legacy_auth_bp)
+app.register_blueprint(swagger_bp)
 
 # Register API v1 (including loan, weather, schemes, etc.)
 register_api(app)
