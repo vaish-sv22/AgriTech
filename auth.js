@@ -74,35 +74,33 @@ class AuthManager {
 
   // ── Register ──────────────────────────────
   async register({ role, fullname, email, password }) {
-    // Client-side validation (same as before)
-    if (!role || !fullname || !email || !password)
-      return { success: false, message: "All fields are required" };
-
-    if (!this._validateEmail(email))
-      return { success: false, message: "Please use a @gmail.com address" };
-
-    if (!/^[a-zA-Z\s]+$/.test(fullname))
-      return { success: false, message: "Full Name should only contain letters and spaces" };
+    const validation = this._validateRegistrationData({ role, fullname, email, password });
+    if (!validation.valid) {
+      return { success: false, message: validation.message };
+    }
 
     const pwCheck = this._validatePassword(password);
     if (!pwCheck.valid) return { success: false, message: pwCheck.message };
 
     try {
       const { auth, db } = await getFirebaseInstances();
+      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedFullname = fullname.trim();
+      const normalizedRole = role.trim().toLowerCase();
 
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, normalizedEmail, password);
 
       // Store profile + role in Firestore
       await setDoc(doc(db, "users", cred.user.uid), {
-        fullname: fullname.trim(),
-        email: email.toLowerCase().trim(),
-        role,
+        fullname: normalizedFullname,
+        email: normalizedEmail,
+        role: normalizedRole,
         createdAt: serverTimestamp(),
         isActive: true,
         isBanned: false,
       });
 
-      const userData = { id: cred.user.uid, fullname, email, role };
+      const userData = { id: cred.user.uid, fullname: normalizedFullname, email: normalizedEmail, role: normalizedRole };
       this._setSession(userData);
 
       return {
@@ -117,16 +115,16 @@ class AuthManager {
 
   // ── Login ─────────────────────────────────
   async login(email, password) {
-    if (!email || !password)
-      return { success: false, message: "Email and password are required" };
-
-    if (!this._validateEmail(email))
-      return { success: false, message: "Please enter a valid email address" };
+    const validation = this._validateLoginData(email, password);
+    if (!validation.valid) {
+      return { success: false, message: validation.message };
+    }
 
     try {
       const { auth, db } = await getFirebaseInstances();
+      const normalizedEmail = email.trim().toLowerCase();
 
-      const cred = await signInWithEmailAndPassword(auth, email, password);
+      const cred = await signInWithEmailAndPassword(auth, normalizedEmail, password);
 
       // Fetch role and profile from Firestore
       const snap = await getDoc(doc(db, "users", cred.user.uid));
@@ -260,6 +258,41 @@ class AuthManager {
         valid: false,
         message: "Password must contain at least one number",
       };
+    return { valid: true };
+  }
+
+  _validateRegistrationData({ role, fullname, email, password }) {
+    if (!role || !fullname || !email || !password) {
+      return { valid: false, message: "All fields are required" };
+    }
+
+    const normalizedRole = role.trim().toLowerCase();
+    const allowedRoles = ["buyer", "farmer", "equipment", "grocery", "expert"];
+
+    if (!allowedRoles.includes(normalizedRole)) {
+      return { valid: false, message: "Please select a valid role" };
+    }
+
+    if (!/^[a-zA-Z\s.'-]+$/.test(fullname.trim())) {
+      return { valid: false, message: "Full name can only contain letters and spaces" };
+    }
+
+    if (!this._validateEmail(email)) {
+      return { valid: false, message: "Please use a valid @gmail.com address" };
+    }
+
+    return { valid: true };
+  }
+
+  _validateLoginData(email, password) {
+    if (!email || !password) {
+      return { valid: false, message: "Email and password are required" };
+    }
+
+    if (!this._validateEmail(email)) {
+      return { valid: false, message: "Please enter a valid @gmail.com address" };
+    }
+
     return { valid: true };
   }
 

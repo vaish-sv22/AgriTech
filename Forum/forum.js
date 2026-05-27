@@ -25,10 +25,13 @@ document.getElementById('forumForm').addEventListener('submit', function (e) {
       if (!res.ok) throw new Error('Network response was not ok');
       return res.json();
     })
-    .then(() => {
-      loadPosts();
+    .then(data => {
       e.target.reset();
-      // Show simple success feedback (optional)
+      if (data && data.post) {
+        prependPost(data.post);
+      } else {
+        loadPosts();
+      }
       alert('Post created successfully!');
     })
     .catch(err => {
@@ -43,16 +46,17 @@ document.getElementById('forumForm').addEventListener('submit', function (e) {
 
 function loadPosts() {
   const container = document.getElementById('forumPosts');
+  if (!container) return;
   
   fetch('http://localhost:5000/forum')
     .then(res => res.json())
     .then(posts => {
-      container.innerHTML = '';
+      container.innerHTML = '<div class="empty-state-card"><i class="fas fa-spinner fa-spin"></i><p>Loading discussions...</p></div>';
       
       if (posts.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 2rem; color: #64748b; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
-            <i class="fas fa-comments" style="font-size: 2rem; margin-bottom: 1rem; color: #cbd5e1;"></i>
+          <div class="empty-state-card">
+            <i class="fas fa-comments"></i>
             <p>No discussions yet. Be the first to start one!</p>
           </div>`;
         return;
@@ -89,6 +93,40 @@ function loadPosts() {
       container.innerHTML = `<p style="color: red; text-align: center;">Error loading posts. Is the backend running?</p>`;
       console.error(err);
     });
+}
+
+function prependPost(post) {
+  const container = document.getElementById('forumPosts');
+  if (!container) return;
+
+  const emptyState = container.querySelector('.empty-state-card');
+  if (emptyState) {
+    emptyState.remove();
+  }
+
+  const el = document.createElement('div');
+  el.className = 'forum-post';
+
+  const title = post.title || 'Untitled Discussion';
+  const author = post.author || 'Anonymous';
+  const content = post.content || '';
+
+  el.innerHTML = `
+    <div class="post-meta">
+      <div class="author-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <strong>${escapeHtml(author)}</strong>
+      <span>•</span>
+      <span>Just now</span>
+    </div>
+    <h3 class="post-title">${escapeHtml(title)}</h3>
+    <div class="post-content">
+      ${escapeHtml(content)}
+    </div>
+  `;
+
+  container.prepend(el);
 }
 
 // Helper to prevent XSS

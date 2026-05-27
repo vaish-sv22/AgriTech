@@ -3,10 +3,37 @@ from backend.services.auth_service import AuthService
 from backend.services.audit_service import AuditService
 from backend.models import User
 from backend.extensions import db, limiter
+from backend.docs.swagger import swagger_operation
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
+@swagger_operation(
+    '/api/v1/auth/register',
+    'post',
+    'Register a user and send a verification email',
+    'Create a new user account, then send a verification email.',
+    request_body={
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': {
+                    'type': 'object',
+                    'required': ['username', 'email', 'password'],
+                    'properties': {
+                        'username': {'type': 'string', 'example': 'Farmer Name'},
+                        'email': {'type': 'string', 'format': 'email', 'example': 'farmer@gmail.com'},
+                        'password': {'type': 'string', 'example': 'SecurePass123'},
+                    },
+                },
+            },
+        },
+    },
+    responses={
+        '201': {'description': 'User registered successfully'},
+        '400': {'description': 'Validation error'},
+    },
+)
 @limiter.limit("5 per hour")
 def register():
     """Register a new user and send verification email."""
@@ -50,6 +77,16 @@ def register():
     }), 201
 
 @auth_bp.route('/verify-email/<token>', methods=['GET'])
+@swagger_operation(
+    '/api/v1/auth/verify-email/{token}',
+    'get',
+    'Verify email address',
+    'Verify a user email address using the emailed token.',
+    responses={
+        '200': {'description': 'Email verified successfully'},
+        '400': {'description': 'Verification token invalid or expired'},
+    },
+)
 def verify_email(token):
     """Verify email endpoint."""
     success, message = AuthService.verify_email(token)
@@ -60,6 +97,30 @@ def verify_email(token):
     return jsonify({'status': 'error', 'message': message}), 400
 
 @auth_bp.route('/forgot-password', methods=['POST'])
+@swagger_operation(
+    '/api/v1/auth/forgot-password',
+    'post',
+    'Request a password reset',
+    'Send a password reset email without revealing whether the address exists.',
+    request_body={
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': {
+                    'type': 'object',
+                    'required': ['email'],
+                    'properties': {
+                        'email': {'type': 'string', 'format': 'email', 'example': 'farmer@gmail.com'},
+                    },
+                },
+            },
+        },
+    },
+    responses={
+        '200': {'description': 'Password reset email queued'},
+        '400': {'description': 'Missing email'},
+    },
+)
 @limiter.limit("3 per hour")
 def forgot_password():
     """Request password reset email."""
@@ -83,6 +144,30 @@ def forgot_password():
     }), 200
 
 @auth_bp.route('/reset-password/<token>', methods=['POST'])
+@swagger_operation(
+    '/api/v1/auth/reset-password/{token}',
+    'post',
+    'Reset password with token',
+    'Set a new password using the reset token.',
+    request_body={
+        'required': True,
+        'content': {
+            'application/json': {
+                'schema': {
+                    'type': 'object',
+                    'required': ['password'],
+                    'properties': {
+                        'password': {'type': 'string', 'example': 'NewSecurePass123'},
+                    },
+                },
+            },
+        },
+    },
+    responses={
+        '200': {'description': 'Password reset successfully'},
+        '400': {'description': 'Invalid token or password'},
+    },
+)
 @limiter.limit("5 per hour")
 def reset_password(token):
     """Reset password using token."""

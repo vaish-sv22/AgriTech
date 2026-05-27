@@ -19,7 +19,7 @@
     })();
   </script>
 
-    <link rel="stylesheet" href="contact.css">
+  <link rel="stylesheet" href="contact.css">
   <style>
     :root {
       --primary-green: #2e7d32;
@@ -335,7 +335,8 @@
       align-items: center;
       gap: 10px;
       padding: 12px 24px;
-      background: #24292e; /* GitHub Dark */
+      background: #24292e;
+      /* GitHub Dark */
       color: white;
       text-decoration: none;
       border-radius: 8px;
@@ -346,7 +347,7 @@
     .github-cta:hover {
       background: #000;
       transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
     
     /* Sparkle Cursor Effect */
@@ -403,15 +404,15 @@
     <!-- HEADER -->
     <header class="header" id="navbar">
       <div class="header-content">
-        <div class="logo">
+        <a href="index.html" class="logo">
           <i class="fas fa-seedling"></i>
           <span>AgriTech</span>
-        </div>
+        </a>
         <!-- Animated Sun/Moon Toggle -->
-        <button class="theme-toggle" type="button"
-          id="themeToggle" title="Switch to dark mode" aria-label="Switch to dark mode">
-          <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
+        <button class="theme-toggle" type="button" id="themeToggle" title="Switch to dark mode"
+          aria-label="Switch to dark mode">
+          <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <mask id="moon-mask">
               <rect x="0" y="0" width="100%" height="100%" fill="white" />
               <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
@@ -534,7 +535,8 @@
 
           <div class="form-group">
             <label for="message">Message *</label>
-            <textarea id="message" name="message" rows="6" maxlength="200" placeholder="Please describe your question, issue, or how we can help you..." required></textarea>
+            <textarea id="message" name="message" rows="6" maxlength="200"
+              placeholder="Please describe your question, issue, or how we can help you..." required></textarea>
 
             <div class="char-counter" id="messageCounter">0 / 200</div>
 
@@ -556,8 +558,9 @@
     <!-- TEAM MEMBERS -->
     <section class="team-section" style="text-align: center; padding: 80px 20px;">
       <h2 style="font-size: 2.5rem; margin-bottom: 40px;">Meet Our Team</h2>
-      
-      <div class="team-grid" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 60px;">
+
+      <div class="team-grid"
+        style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 60px;">
         <div class="team-member">
           <div class="member-avatar"><i class="fas fa-user-tie"></i></div>
           <h3>Om Roy</h3>
@@ -587,81 +590,82 @@
       </div>
 
       <div class="contributors-section">
-    <h2>Hall of Contributions</h2>
-    <p style="margin-bottom: 30px; opacity: 0.8;">Recognizing the heroes of the AgriTech open-source community.</p>
-    
-    <div id="github-contributors" class="contributor-grid">
-        <p>Loading contributors...</p>
-    </div>
+        <h2>Hall of Contributions</h2>
+        <p style="margin-bottom: 30px; opacity: 0.8;">Recognizing the heroes of the AgriTech open-source community.</p>
 
-    <a href="https://github.com/omroy07/AgriTech" target="_blank" class="github-cta">
-        <i class="fab fa-github"></i>
-        Become a Contributor
-    </a>
-</div>
+        <div id="github-contributors" class="contributor-grid">
+          <p>Loading contributors...</p>
+        </div>
+
+        <a href="https://github.com/omroy07/AgriTech" target="_blank" class="github-cta">
+          <i class="fab fa-github"></i>
+          Become a Contributor
+        </a>
+      </div>
     </section>
 
     <!-- FAQ -->
-  <section class="faq-section">
-    <h2>Frequently Asked Questions</h2>
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
 
-    <div class="faq-accordion">
+      <div class="faq-accordion">
 
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>How accurate are the crop recommendations?</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Our AI models are trained on extensive agricultural data and provide recommendations with high accuracy
-            based on your soil conditions and local weather patterns.
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>How accurate are the crop recommendations?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Our AI models are trained on extensive agricultural data and provide recommendations with high accuracy
+              based on your soil conditions and local weather patterns.
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>Is AgriTech suitable for small-scale farmers?</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Absolutely! AgriTech is designed to be accessible and valuable for farmers of all scales, from small family
-            farms to large agricultural operations.
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Is AgriTech suitable for small-scale farmers?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Absolutely! AgriTech is designed to be accessible and valuable for farmers of all scales, from small
+              family
+              farms to large agricultural operations.
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>How do I join the farmer community?</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Simply create an account on our platform and you'll have access to our community chat features where you
-            can connect with fellow farmers and share experiences.
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>How do I join the farmer community?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Simply create an account on our platform and you'll have access to our community chat features where you
+              can connect with fellow farmers and share experiences.
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span>Do you offer training on using the platform?</span>
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            Yes! We provide comprehensive guides, video tutorials, and offer support sessions to help you get the most
-            out of all AgriTech features.
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>Do you offer training on using the platform?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Yes! We provide comprehensive guides, video tutorials, and offer support sessions to help you get the most
+              out of all AgriTech features.
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
-  </section>
-</div>
+      </div>
+    </section>
+  </div>
 
 <div id="sparkle-container"></div>
 
@@ -694,113 +698,115 @@
 }
 
 document.querySelectorAll(".faq-question").forEach(button => {
+  <script>
+    document.querySelectorAll(".faq-question").forEach(button => {
 
-  button.addEventListener("click", () => {
-    const item = button.parentElement;
-    const answer = item.querySelector(".faq-answer");
-    const isOpen = item.classList.contains("active");
+      button.addEventListener("click", () => {
+        const item = button.parentElement;
+        const answer = item.querySelector(".faq-answer");
+        const isOpen = item.classList.contains("active");
 
-    // Close all
-    document.querySelectorAll(".faq-item").forEach(faq => {
-      faq.classList.remove("active");
-      faq.querySelector(".faq-answer").style.height = 0;
-      faq.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+        // Close all
+        document.querySelectorAll(".faq-item").forEach(faq => {
+          faq.classList.remove("active");
+          faq.querySelector(".faq-answer").style.height = 0;
+          faq.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+        });
+
+        // Open selected
+        if (!isOpen) {
+          item.classList.add("active");
+          button.setAttribute("aria-expanded", "true");
+          answer.style.height = answer.scrollHeight + "px";
+        }
+      });
+
     });
+  </script>
 
-    // Open selected
-    if (!isOpen) {
-      item.classList.add("active");
-      button.setAttribute("aria-expanded", "true");
-      answer.style.height = answer.scrollHeight + "px";
-    }
-  });
+  <script>
+    // --- NAVBAR & SCROLL EFFECTS ---
+    const navbar = document.getElementById('navbar');
+    let lastScrollTop = 0;
 
-});
-</script>
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
- <script>
-  // --- NAVBAR & SCROLL EFFECTS ---
-  const navbar = document.getElementById('navbar');
-  let lastScrollTop = 0;
-
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    // Glassmorphism + shrink
-    if (scrollTop > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-
-    // Hide on scroll down / show on scroll up
-    if (scrollTop > lastScrollTop && scrollTop > 200) {
-      navbar.classList.add('nav-up');
-    } else {
-      navbar.classList.remove('nav-up');
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  });
-
-  const body = document.body;
-
-  // --- MESSAGE CHARACTER COUNTER ---
-  const messageInput = document.getElementById('message');
-  const messageCounter = document.getElementById('messageCounter');
-  const maxLength = parseInt(messageInput.getAttribute('maxlength'), 10);
-
-  messageInput.addEventListener('input', () => {
-    const length = messageInput.value.length;
-    messageCounter.textContent = `${length} / ${maxLength}`;
-
-    messageCounter.classList.toggle('warning', length > maxLength * 0.8);
-  });
-
-  // --- FORM SUBMISSION ---
-  const contactForm = document.getElementById('contactForm');
-
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    alert('Message sent successfully! 🌱');
-    contactForm.reset();
-
-    messageCounter.textContent = `0 / ${maxLength}`;
-    messageCounter.classList.remove('warning', 'danger');
-  });
-
-  // --- SMOOTH SCROLL ---
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+      // Glassmorphism + shrink
+      if (scrollTop > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
       }
-    });
-  });
-</script>
-<script>
-async function fetchContributors() {
-    const repo = "omroy07/AgriTech";
-    const container = document.getElementById('github-contributors');
 
-    try {
+      // Hide on scroll down / show on scroll up
+      if (scrollTop > lastScrollTop && scrollTop > 200) {
+        navbar.classList.add('nav-up');
+      } else {
+        navbar.classList.remove('nav-up');
+      }
+
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    const body = document.body;
+
+    // --- MESSAGE CHARACTER COUNTER ---
+    const messageInput = document.getElementById('message');
+    const messageCounter = document.getElementById('messageCounter');
+    const maxLength = parseInt(messageInput.getAttribute('maxlength'), 10);
+
+    messageInput.addEventListener('input', () => {
+      const length = messageInput.value.length;
+      messageCounter.textContent = `${length} / ${maxLength}`;
+
+      messageCounter.classList.toggle('warning', length > maxLength * 0.8);
+    });
+
+    // --- FORM SUBMISSION ---
+    const contactForm = document.getElementById('contactForm');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      alert('Message sent successfully! 🌱');
+      contactForm.reset();
+
+      messageCounter.textContent = `0 / ${maxLength}`;
+      messageCounter.classList.remove('warning', 'danger');
+    });
+
+    // --- SMOOTH SCROLL ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+  <script>
+    async function fetchContributors() {
+      const repo = "omroy07/AgriTech";
+      const container = document.getElementById('github-contributors');
+
+      try {
         const response = await fetch(`https://api.github.com/repos/${repo}/contributors`);
         if (!response.ok) throw new Error('Failed to fetch');
-        
+
         const contributors = await response.json();
-        
+
         // Clear the loading message
         container.innerHTML = '';
 
         contributors.forEach(user => {
-            // Create the card element
-            const card = document.createElement('div');
-            card.className = 'contributor-card';
-            
-            card.innerHTML = `
+          // Create the card element
+          const card = document.createElement('div');
+          card.className = 'contributor-card';
+
+          card.innerHTML = `
                 <a href="${user.html_url}" target="_blank" style="text-decoration: none; color: inherit;">
                     <img src="${user.avatar_url}" alt="${user.login}" 
                          style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent-green); margin-bottom: 10px;">
@@ -808,83 +814,85 @@ async function fetchContributors() {
                     <span style="font-size: 0.75rem; color: var(--accent-green);">${user.contributions} Commits</span>
                 </a>
             `;
-            container.appendChild(card);
+          container.appendChild(card);
         });
-    } catch (error) {
+      } catch (error) {
         console.error("Error loading contributors:", error);
         container.innerHTML = '<p>Check out our contributors on GitHub!</p>';
+      }
     }
-}
 
-// Run the function when the page loads
-document.addEventListener('DOMContentLoaded', fetchContributors);
-</script>
+    // Run the function when the page loads
+    document.addEventListener('DOMContentLoaded', fetchContributors);
+  </script>
 
   <script src="theme.js"></script>
   <script src="auth.js"></script>
 
   <!-- ===== Universal Back To Top Button (All Pages) ===== -->
-<style>
-  #globalBackToTop {
-    position: fixed;
-    bottom: 25px; /* prevents overlap with chatbot/floating icons */
-    right: 25px;
-    z-index: 9999;
-    display: none;
-    background: #2ecc71;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    transition: opacity 0.3s ease, transform 0.2s ease;
-  }
-
-  #globalBackToTop:hover {
-    transform: scale(1.12);
-    background: #27ae60;
-  }
-
-  @media (max-width: 768px) {
+  <style>
     #globalBackToTop {
-      bottom: 100px; /* better spacing on mobile */
-      right: 18px;
-      width: 48px;
-      height: 48px;
-      font-size: 20px;
+      position: fixed;
+      bottom: 25px;
+      /* prevents overlap with chatbot/floating icons */
+      right: 25px;
+      z-index: 9999;
+      display: none;
+      background: #2ecc71;
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: opacity 0.3s ease, transform 0.2s ease;
     }
-  }
-</style>
 
-<button id="globalBackToTop" title="Back to Top">↑</button>
+    #globalBackToTop:hover {
+      transform: scale(1.12);
+      background: #27ae60;
+    }
 
-<script>
-  (function () {
-    const btn = document.getElementById("globalBackToTop");
-
-    // Show button after scrolling down
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 300) {
-        btn.style.display = "block";
-      } else {
-        btn.style.display = "none";
+    @media (max-width: 768px) {
+      #globalBackToTop {
+        bottom: 100px;
+        /* better spacing on mobile */
+        right: 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
       }
-    });
+    }
+  </style>
 
-    // Smooth scroll to top on click
-    btn.addEventListener("click", function () {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+  <button id="globalBackToTop" title="Back to Top">↑</button>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("globalBackToTop");
+
+      // Show button after scrolling down
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 300) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
       });
-    });
-  })();
-</script>
-<!-- ===== End Back To Top Button ===== -->
+
+      // Smooth scroll to top on click
+      btn.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    })();
+  </script>
+  <!-- ===== End Back To Top Button ===== -->
 
 </body>
 

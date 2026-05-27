@@ -61,18 +61,19 @@
       </div>
 
       <!-- Login form — unchanged -->
-      <form onsubmit="handleLogin(event)">
+      <form onsubmit="handleLogin(event)" novalidate>
         <div class="input-group">
           <i class="fas fa-envelope"></i>
           <input type="email" id="email" placeholder="Enter your email" required>
         </div>
         <div class="input-group">
           <i class="fas fa-lock"></i>
-          <input type="password" id="password" placeholder="Enter your password" required>
+          <input type="password" id="password" placeholder="Enter your password" required minlength="8" aria-describedby="loginPasswordError">
           <button type="button" class="password-toggle" onclick="togglePassword()">
             <i class="fas fa-eye" id="password-eye"></i>
           </button>
         </div>
+        <div class="field-error" id="loginPasswordError" aria-live="polite"></div>
 
         <div class="forgot-password">
           <a href="forgot-password.html">Forgot Password?</a>
