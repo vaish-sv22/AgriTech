@@ -138,6 +138,21 @@
       <div class="results-summary" id="resultsSummary">
         <span id="resultsCount">10</span> dealers found
       </div>
+
+      <!-- Shop Directory Sync Status -->
+      <div class="directory-status is-loading" id="directoryStatus" role="status" aria-live="polite">
+        <div class="directory-status-icon" id="directoryStatusIcon">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div class="directory-status-copy">
+          <strong id="directoryStatusTitle">Refreshing shop directory</strong>
+          <p id="directoryStatusMessage">Checking the latest dealer listings...</p>
+        </div>
+        <button class="directory-status-retry" id="directoryStatusRetry" type="button" hidden>
+          <i class="fas fa-rotate-right"></i>
+          Retry
+        </button>
+      </div>
     </div>
 
     <!-- Pesticide & Insecticide Sellers -->

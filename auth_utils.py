@@ -3,6 +3,7 @@ from flask import request, jsonify
 import jwt
 import os
 from security_utils import roles_required, log_security_event
+from datetime import datetime, timedelta
 
 def token_required(f):
     @wraps(f)
@@ -161,3 +162,15 @@ def require_batch_ownership(allow_admin=True):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
+
+def generate_token(user_id: int, email: str, role: str = 'farmer', expires_hours: int = 24) -> str:
+    """Generate JWT token with role claim."""
+    payload = {
+        'user_id': user_id,
+        'email': email,
+        'role': role,
+        'exp': datetime.utcnow() + timedelta(hours=expires_hours)
+    }
+    token = jwt.encode(payload, os.environ.get('JWT_SECRET', 'agritech_secret_key'), algorithm='HS256')
+    return token

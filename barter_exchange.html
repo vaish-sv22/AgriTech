@@ -157,6 +157,73 @@
             background: #34495e;
             color: #fff;
         }
+
+        /* ================= RESPONSIVE DESIGN ================= */
+
+        /* Tablets and below */
+        @media (max-width: 1024px) {
+            .hub-container {
+                grid-template-columns: 1fr;
+                /* stack main + sidebar */
+            }
+
+            .sidebar {
+                margin-top: 20px;
+                /* push below main panel */
+            }
+
+            .trade-builder {
+                grid-template-columns: 1fr;
+                /* stack resource columns */
+            }
+        }
+
+        /* Mobile screens */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            header h1 {
+                font-size: 1.4rem;
+            }
+
+            header p {
+                font-size: 0.85rem;
+            }
+
+            .value-orchestrator {
+                padding: 15px;
+            }
+
+            .trade-builder {
+                gap: 12px;
+            }
+
+            .resource-column {
+                padding: 15px;
+            }
+
+            .column-header {
+                font-size: 1rem;
+            }
+
+            .btn-action {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            select,
+            input[type="number"] {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .balance-meter {
+                height: 8px;
+            }
+        }
     </style>
 </head>
 
