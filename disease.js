@@ -255,6 +255,8 @@ const loading = document.getElementById("loading");
 const resultsDiv = document.getElementById("results");
 
 let selectedFile = null;
+let uploadInProgress = false;
+let fileSelectionToken = 0;
 
 // File upload handling
 uploadArea.addEventListener("click", () => fileInput.click());
@@ -308,7 +310,7 @@ fileInput.addEventListener("change", (e) => {
 
 // Analysis function
 analyzeBtn.addEventListener("click", async () => {
-  if (!selectedFile) return;
+  if (uploadInProgress || !selectedFile) return;
 
   loading.style.display = "block";
   resultsDiv.innerHTML = "";
@@ -470,40 +472,59 @@ function validateImage(file) {
   return true;
 }
 
+function readPreviewDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => resolve(event.target.result);
+    reader.onerror = () => reject(new Error("Error loading image preview."));
+    reader.readAsDataURL(file);
+  });
+}
+
 // Enhanced file handling with validation
-function handleFileSelect(file) {
+async function handleFileSelect(file) {
+  const currentSelectionToken = ++fileSelectionToken;
+
   try {
     validateImage(file);
-    selectedFile = file;
+    uploadInProgress = true;
+    selectedFile = null;
+    analyzeBtn.disabled = true;
 
     previewContainer.innerHTML = '<div class="spinner"></div>';
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewContainer.innerHTML = `<img src="${e.target.result}" alt="Plant preview" class="preview-image">`;
-      analyzeBtn.disabled = false;
-      resultsDiv.innerHTML = "";
-      document.getElementById("downloadPdfBtn").style.display = "none";
+    const previewDataUrl = await readPreviewDataUrl(file);
 
-      document.getElementById("modelStatus").innerHTML =
-        "🔍 Image loaded - Ready for analysis";
-      document.getElementById("modelStatus").className =
-        "status-indicator status-warning";
-    };
+    if (currentSelectionToken !== fileSelectionToken) {
+      return;
+    }
 
-    reader.onerror = () => {
-      previewContainer.innerHTML =
-        '<div class="no-results">❌ Error loading image</div>';
-      selectedFile = null;
-    };
+    selectedFile = file;
+    previewContainer.innerHTML = `<img src="${previewDataUrl}" alt="Plant preview" class="preview-image">`;
+    resultsDiv.innerHTML = "";
+    document.getElementById("downloadPdfBtn").style.display = "none";
 
-    reader.readAsDataURL(file);
+    document.getElementById("modelStatus").innerHTML =
+      "🔍 Image loaded - Ready for analysis";
+    document.getElementById("modelStatus").className =
+      "status-indicator status-warning";
+
+    analyzeBtn.disabled = false;
   } catch (error) {
+    if (currentSelectionToken !== fileSelectionToken) {
+      return;
+    }
+
     alert(error.message);
     previewContainer.innerHTML =
       '<div class="no-results">📷 Upload an image to get started</div>';
     selectedFile = null;
     analyzeBtn.disabled = true;
+  } finally {
+    if (currentSelectionToken === fileSelectionToken) {
+      uploadInProgress = false;
+    }
   }
 }
 

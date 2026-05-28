@@ -1,5 +1,7 @@
 import {
   CropSchema,
+  FertilizerRecommendationInputSchema,
+  FertilizerRecommendationSchema,
   GrowthStageSchema,
   PredictionResultSchema,
   SoilDataSchema
@@ -7,6 +9,8 @@ import {
 
 const schemaMap = {
   Crop: CropSchema,
+  FertilizerRecommendationInput: FertilizerRecommendationInputSchema,
+  FertilizerRecommendation: FertilizerRecommendationSchema,
   GrowthStage: GrowthStageSchema,
   PredictionResult: PredictionResultSchema,
   SoilData: SoilDataSchema
