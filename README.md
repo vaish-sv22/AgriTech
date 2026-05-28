@@ -133,6 +133,7 @@ Note: Backend and frontend must be running simultaneously for proper functionali
 ## 🌟 Core Features
 
 - 🌾 Crop Recommendation
+- 🌿 Fertilizer Recommendation
 - 📉 Yield Prediction
 - 🔬 Disease Detection
 - � **AI Chatbot** - Platform guidance & agriculture support
@@ -226,6 +227,7 @@ AGRITECH/
 │       ├── 📁 css/             # Stylesheets
 │       └── 📁 js/              # Client-side scripts
 ├── 📁 Crop Recommendation/   # 🌾 Crop recommendation module
+├── 📁 Fertiliser Recommendation System/   # 🌿 Fertilizer recommendation ML module
 ├── 📁 Disease Prediction/     # 🔬 Disease detection module
 ├── 📁 Crop Yield Prediction/   # 📊 Yield forecasting module
 ├── 📁 Community/               # 💬 community/forum backend

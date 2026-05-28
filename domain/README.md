@@ -9,6 +9,8 @@ This directory defines shared domain contracts used across AgriTech.
 
 ## Current Schemas
 - Crop
+- FertilizerRecommendationInput
+- FertilizerRecommendation
 - GrowthStage
 - SoilData
 - PredictionResult
