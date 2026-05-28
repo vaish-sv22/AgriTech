@@ -183,3 +183,13 @@ def reset_password(token):
         return jsonify({'status': 'success', 'message': message}), 200
     AuditService.log_action(action="PASSWORD_RESET_FAILED", risk_level='MEDIUM', meta_data={"error": message})
     return jsonify({'status': 'error', 'message': message}), 400
+
+@auth_bp.route('/reset-password/<token>/validate', methods=['GET'])
+def validate_reset_password_token(token):
+    """Validate a password reset token before showing the reset form."""
+    success, message = AuthService.validate_reset_token(token)
+    status_code = 200 if success else 400
+    return jsonify({
+        'status': 'success' if success else 'error',
+        'message': message
+    }), status_code
