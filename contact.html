@@ -349,6 +349,53 @@
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
+    
+    /* Sparkle Cursor Effect */
+
+#sparkle-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.sparkle {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, #22c55e 0%, transparent 70%);
+  animation: sparkleFade 0.8s ease-out forwards;
+  box-shadow:
+    0 0 8px #22c55e,
+    0 0 18px #22c55e,
+    0 0 28px rgba(34, 197, 94, 0.8);
+
+  z-index: 9999;
+}
+
+@keyframes sparkleFade {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  20% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
   </style>
 </head>
 
@@ -620,6 +667,37 @@
     </section>
   </div>
 
+<div id="sparkle-container"></div>
+
+<script>
+
+  if (window.innerWidth > 768) {
+  const sparkleContainer = document.getElementById("sparkle-container");
+
+  let lastSparkle = 0;
+
+  document.addEventListener("mousemove", (e) => {
+    const now = Date.now();
+
+    if (now - lastSparkle < 40) return;
+
+    lastSparkle = now;
+
+    const sparkle = document.createElement("div");
+    sparkle.classList.add("sparkle");
+
+    sparkle.style.left = `${e.clientX}px`;
+    sparkle.style.top = `${e.clientY}px`;
+
+    sparkleContainer.appendChild(sparkle);
+
+    setTimeout(() => {
+      sparkle.remove();
+    }, 1000);
+  });
+}
+
+document.querySelectorAll(".faq-question").forEach(button => {
   <script>
     document.querySelectorAll(".faq-question").forEach(button => {
 
