@@ -375,14 +375,49 @@ body {
 .results-summary {
   text-align: center;
   margin-bottom: 2rem;
-  padding: 0.75rem 1.5rem;
-  background: var(--light-green);
-  border-radius: 25px;
-  color: var(--dark-green);
-  font-weight: 600;
-  font-size: 1rem;
-  display: inline-block;
 }
+
+/* Modern pill badge */
+.dealer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 20px;
+  border-radius: 999px; /* pill shape */
+
+  background: linear-gradient(135deg, #22c55e, #16a34a); /* gradient green */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  transition: all 0.3s ease;
+  animation: pulseGlow 2.5s infinite;
+}
+
+/* Hover/focus effect */
+.dealer-badge:hover,
+.dealer-badge:focus {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.6);
+  cursor: pointer;
+}
+
+/* Glow animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  }
+}
+
 
 #resultsCount {
   font-weight: 700;
