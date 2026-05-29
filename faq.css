@@ -1,21 +1,21 @@
 /* FAQ Specific Styles */
 
 /* FIX: Remove footer link stroke/underline animations */
-.site-footer .footer-links a::before,
+/* .site-footer .footer-links a::before,
 .site-footer .footer-links a::after,
 .footer-links ul li a::after,
 .site-footer .footer-links a:hover::before {
   display: none !important;
   width: 0 !important;
   content: none !important;
-}
+} */
 
 /* Optional: Keep a simple color change on hover so it's not boring */
-.site-footer .footer-links a:hover {
+/* .site-footer .footer-links a:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateX(5px);
   text-decoration: none !important;
-}
+} */
 
 /* FAQ Hero Section */
 .faq-hero {
@@ -284,7 +284,7 @@
   position: absolute;
   width: 300px;
   height: 300px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 50%;
   top: -80px;
   right: -80px;
@@ -350,7 +350,7 @@
 }
 
 .secondary-cta:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   transform: translateY(-3px);
 }
 
@@ -359,9 +359,11 @@
 /* Chatbot Button - Blue Circle */
 #chatbotBtn {
   position: fixed;
-  bottom: 110px; /* creates spacing */
+  bottom: 110px;
+  /* creates spacing */
   right: 25px;
-  background: #1e88e5; /* Blue = support identity */
+  background: #1e88e5;
+  /* Blue = support identity */
   color: #ffffff;
   width: 56px;
   height: 56px;
@@ -370,7 +372,7 @@
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   z-index: 999;
   transition: all 0.3s ease;
 }
@@ -389,11 +391,12 @@
   color: #ffffff;
   width: 52px;
   height: 52px;
-  border-radius: 12px; /* KEY CHANGE: not circle anymore */
+  border-radius: 12px;
+  /* KEY CHANGE: not circle anymore */
   border: none;
   cursor: pointer;
   z-index: 999;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -419,4 +422,149 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* FOOTER */
+.site-footer {
+  background: var(--surface-color);
+  color: var(--text-color);
+  position: relative;
+  font-size: 0.95rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer-top-accent {
+  height: 4px;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.footer-inner-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  flex: 1 1 280px;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-logo {
+  width: 42px;
+}
+
+.footer-brand h3 {
+  color: var(--accent-color);
+  font-size: 1.3rem;
+}
+
+.serif {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-family: "Noto Sans", sans-serif;
+  margin-bottom: 1rem;
+
+  background-image: url("assets/bg.png");
+  background-size: 200% auto;
+  background-position: 0% 50;
+  background-repeat: no-repeat;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: animate 20s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.social-icons {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.social-icons a {
+  width: 36px;
+  height: 36px;
+  background: #1e1e1e;
+  /* dark circle background */
+  color: #22c55e;
+  /* bright green icon */
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+
+.social-icons a:hover {
+  background: #22c55e;
+  color: #fff;
+}
+
+.footer-group-links {
+  display: flex;
+  gap: 3rem;
+  flex: 1 1 320px;
+}
+
+.footer-section h4 {
+  color: var(--accent-color);
+  margin-bottom: 0.9rem;
+  font-size: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-section ul a {
+  color: var(--text-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.25s ease;
+}
+
+.footer-section ul a:hover {
+  color: var(--accent-color);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 1rem;
+  background: var(--section-bg);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer-wave-overlay {
+  display: none;
 }

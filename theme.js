@@ -1,9 +1,11 @@
 (function () {
-  const KEY = 'theme';
+  const KEY = 'agritech-theme';
+  const LEGACY_KEY = 'theme';
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(KEY, theme);
+    localStorage.removeItem(LEGACY_KEY);
     const btn = document.getElementById('themeToggle');
     if (btn) {
       const label = theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
@@ -14,9 +16,15 @@
   }
 
   // Apply immediately on script load (no flash)
-  const saved = localStorage.getItem(KEY);
+  const saved = localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY);
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  const initialTheme = saved || (prefersDark ? 'dark' : 'light');
+
+  if (saved && !localStorage.getItem(KEY)) {
+    localStorage.setItem(KEY, saved);
+  }
+
+  applyTheme(initialTheme);
 
   document.addEventListener('DOMContentLoaded', function () {
     const btn = document.getElementById('themeToggle');

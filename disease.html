@@ -60,52 +60,59 @@
     </div>
   </div>
 
-  <!-- Enhanced Navbar -->
-  <header class="navbar">
+  <!-- Compact Navbar -->
+  <header class="navbar" role="banner">
     <div class="nav-container">
-      <a href="main.html" class="logo">
-        <img src="images/logo.png" alt="AgriTech">
-        <span>AgriTech</span>
-      </a>
+      <div class="nav-brand">
+        <a href="main.html" class="logo" aria-label="Go to AgriTech dashboard">
+          <img src="images/logo.png" alt="AgriTech">
+          <span>AgriTech</span>
+        </a>
+        <div class="nav-page-title">
+          <span class="nav-page-kicker">Plant Health AI</span>
+          <p class="nav-page-title-text">Plant Disease Detection</p>
+        </div>
+      </div>
 
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="main.html">Dashboard</a>
-        <a href="feed-back.html">Feedback</a>
-      </nav>
+      <div class="nav-actions">
+        <a href="main.html" class="back-btn" aria-label="Back to Main dashboard">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          <span>Back to Main</span>
+        </a>
 
-      <button class="theme-toggle" type="button" id="themeToggle" title="Switch theme" aria-label="Switch theme">
-        <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <mask id="moon-mask">
-            <rect x="0" y="0" width="100%" height="100%" fill="white" />
-            <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
-          </mask>
-          <circle class="sun-core" cx="12" cy="12" r="7" fill="currentColor" mask="url(#moon-mask)" />
-          <g class="sun-rays" stroke="currentColor">
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </g>
-        </svg>
-      </button>
+        <button class="theme-toggle" type="button" id="themeToggle" title="Switch theme" aria-label="Switch theme">
+          <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <mask id="moon-mask">
+              <rect x="0" y="0" width="100%" height="100%" fill="white" />
+              <circle class="moon-bite" cx="14" cy="9" r="14" fill="black" />
+            </mask>
+            <circle class="sun-core" cx="12" cy="12" r="7" fill="currentColor" mask="url(#moon-mask)" />
+            <g class="sun-rays" stroke="currentColor">
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero-section">
+  <section class="hero-section" aria-labelledby="page-title">
     <div class="hero-container">
       <div class="hero-content">
         <div class="hero-badge">
           <i class="fas fa-leaf"></i>
           <span>AI-Powered Plant Health</span>
         </div>
-        <h1 class="hero-title">
+        <h1 class="hero-title" id="page-title">
           Detect Plant Diseases
           <span class="gradient-text">Instantly</span>
         </h1>
@@ -244,6 +251,71 @@
         </div>
       </div>
     </div>
+
+    <section class="success-stories-section" id="successStories">
+      <div class="stories-heading">
+        <p class="stories-kicker">Real Farmers. Real Results.</p>
+        <h2><span aria-hidden="true">🌾</span> Farmer Success Stories & Testimonials</h2>
+        <p>See how growers are using AI diagnosis and treatment advice to protect yields, reduce losses, and make
+          faster decisions in the field.</p>
+      </div>
+
+      <div class="stories-grid">
+        <article class="story-card">
+          <div class="story-header">
+            <div class="story-avatar" aria-hidden="true">RK</div>
+            <div>
+              <h3>Ramesh Kumar</h3>
+              <p>Nashik, Maharashtra • Tomato Farmer</p>
+            </div>
+          </div>
+          <blockquote>
+            "Early blight appeared suddenly in my crop. The detector identified it in minutes, and the treatment plan
+            helped me control spread before it reached half the field."
+          </blockquote>
+          <div class="story-metrics">
+            <span>Yield Saved: 32%</span>
+            <span>Response Time: 1 Day</span>
+          </div>
+        </article>
+
+        <article class="story-card">
+          <div class="story-header">
+            <div class="story-avatar" aria-hidden="true">SP</div>
+            <div>
+              <h3>Sunita Patil</h3>
+              <p>Belagavi, Karnataka • Chili Farmer</p>
+            </div>
+          </div>
+          <blockquote>
+            "I used to wait for local visits to confirm disease type. Now I upload a leaf photo and get practical
+            guidance instantly. It reduced medicine misuse on my farm."
+          </blockquote>
+          <div class="story-metrics">
+            <span>Chemical Cost: -24%</span>
+            <span>Confidence: High</span>
+          </div>
+        </article>
+
+        <article class="story-card">
+          <div class="story-header">
+            <div class="story-avatar" aria-hidden="true">AG</div>
+            <div>
+              <h3>Arjun Gowda</h3>
+              <p>Mysuru, Karnataka • Potato Grower</p>
+            </div>
+          </div>
+          <blockquote>
+            "The late blight alert was accurate and timely. Following preventive steps from the app protected my next
+            planting cycle and improved overall crop quality."
+          </blockquote>
+          <div class="story-metrics">
+            <span>Loss Prevented: 18%</span>
+            <span>Quality Grade: +2 Levels</span>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 
   <!-- Modals (keeping your existing modals) -->
@@ -291,6 +363,24 @@
       </div>
     </div>
   </div>
+
+  <div id="sparkle-container"></div>
+
+  <script>
+    document.addEventListener("mousemove", (e) => {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = e.pageX + "px";
+      sparkle.style.top = e.pageY + "px";
+
+      document.getElementById("sparkle-container").appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 800); // matches animation duration
+    });
+  </script>
+
 
   <!-- Footer -->
   <style>
@@ -502,26 +592,26 @@
 
   <script src="theme.js"></script>
   <script>
-      (function () {
-        const btn = document.getElementById("globalBackToTop");
+    (function () {
+      const btn = document.getElementById("globalBackToTop");
 
-        // Show button after scrolling down
-        window.addEventListener("scroll", function () {
-          if (window.scrollY > 300) {
-            btn.style.display = "block";
-          } else {
-            btn.style.display = "none";
-          }
-        });
+      // Show button after scrolling down
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > 300) {
+          btn.style.display = "block";
+        } else {
+          btn.style.display = "none";
+        }
+      });
 
-        // Smooth scroll to top on click
-        btn.addEventListener("click", function () {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+      // Smooth scroll to top on click
+      btn.addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
         });
-      })();
+      });
+    })();
   </script>
   <!-- ===== End Back To Top Button ===== -->
 

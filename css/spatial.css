@@ -19,8 +19,8 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-y: auto;
 }
 
 /* Sidebar */
@@ -91,6 +91,7 @@ body {
     padding: 24px;
     gap: 24px;
     position: relative;
+    min-height: 100vh;
 }
 
 /* Header */
@@ -135,8 +136,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 24px;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
 }
 
 /* Cards */
@@ -252,4 +252,61 @@ body {
     align-items: center;
     gap: 10px;
     font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+
+    .nav-links {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+
+    .nav-links li {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .user-profile {
+        display: none;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .controls {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .glass-input,
+    .btn-primary {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #map {
+        height: 400px;
+    }
+
+    .stat-grid {
+        grid-template-columns: 1fr;
+    }
 }
