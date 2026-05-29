@@ -156,6 +156,66 @@
             border-radius: 0 12px 12px 0;
             margin-bottom: 1rem;
         }
+        /* Summary boxes: stack neatly on mobile */
+.summary-boxes {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Stats grid: stack boxes on mobile */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr; /* single column */
+  }
+
+  .stat-box {
+    width: 100%;
+  }
+}
+
+/* Content layout: stack inventory + alerts vertically */
+@media (max-width: 1024px) {
+  .content-layout {
+    grid-template-columns: 1fr; /* single column */
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+/* Inventory table: scrollable on small screens */
+@media (max-width: 768px) {
+  .inventory-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .inventory-table th,
+  .inventory-table td {
+    min-width: 120px; /* prevent squish */
+  }
+}
+
+/* Header buttons: stack neatly on mobile */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header div button {
+    width: 100%;
+  }
+}
+
     </style>
 </head>
 
