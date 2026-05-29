@@ -48,8 +48,8 @@ def validate_payload(required_fields):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            payload = request.get_json()
-            if not payload or 'data' not in payload:
+            payload = request.get_json(silent=True)
+            if not isinstance(payload, dict) or 'data' not in payload or not isinstance(payload['data'], dict):
                 return jsonify({'error': True, 'message': 'Missing "data" key in JSON'}), 400
             
             data = payload['data']
@@ -98,7 +98,8 @@ def home():
 @validate_payload(['season', 'soil_type', 'climate', 'water_availability'])
 def predict():
     try:
-        user_input_data = request.get_json()['data']
+        payload = request.get_json(silent=True) or {}
+        user_input_data = payload['data']
         
         # Get result from AI
         ai_data = get_ai_prediction(user_input_data)

@@ -10,6 +10,216 @@ document.addEventListener("DOMContentLoaded", () => {
   const guideIdealRainfall = document.getElementById("guide-ideal-rainfall");
   const guidePostHarvest = document.getElementById("guide-post-harvest");
 
+  const cropProfiles = [
+    {
+      name: "Rice",
+      pH: [5.5, 7.0],
+      temperature: [20, 35],
+      rainfall: [800, 1800],
+      soils: ["Clay", "Black"],
+      seasons: ["Monsoon"],
+      irrigation: ["Canal", "Rainfed"],
+      fertilizers: ["Urea+DAP", "NPK 10-26-26"],
+      pests: ["Stem Borer"],
+      demand: ["High"],
+    },
+    {
+      name: "Wheat",
+      pH: [6.0, 7.5],
+      temperature: [15, 25],
+      rainfall: [350, 700],
+      soils: ["Loamy", "Clay"],
+      seasons: ["Winter"],
+      irrigation: ["Canal", "Sprinkler"],
+      fertilizers: ["Urea+DAP", "NPK 10-26-26"],
+      pests: ["Aphids"],
+      demand: ["Medium", "High"],
+    },
+    {
+      name: "Maize",
+      pH: [5.8, 7.5],
+      temperature: [18, 30],
+      rainfall: [500, 1200],
+      soils: ["Loamy", "Black"],
+      seasons: ["Monsoon", "Summer"],
+      irrigation: ["Sprinkler", "Canal"],
+      fertilizers: ["Urea+DAP", "NPK 10-26-26"],
+      pests: ["Bollworm", "Stem Borer"],
+      demand: ["Medium"],
+    },
+    {
+      name: "Cotton",
+      pH: [6.0, 8.0],
+      temperature: [21, 35],
+      rainfall: [400, 900],
+      soils: ["Black", "Clay"],
+      seasons: ["Summer", "Monsoon"],
+      irrigation: ["Drip", "Rainfed"],
+      fertilizers: ["Urea+DAP", "NPK 10-26-26"],
+      pests: ["Bollworm", "Aphids"],
+      demand: ["High"],
+    },
+    {
+      name: "Tomato",
+      pH: [6.0, 7.0],
+      temperature: [18, 30],
+      rainfall: [400, 800],
+      soils: ["Loamy", "Sandy", "Clay"],
+      seasons: ["Winter", "Summer"],
+      irrigation: ["Drip", "Sprinkler"],
+      fertilizers: ["NPK 10-26-26", "Urea+DAP"],
+      pests: ["Aphids", "Bollworm"],
+      demand: ["High"],
+    },
+    {
+      name: "Potato",
+      pH: [5.0, 6.5],
+      temperature: [15, 22],
+      rainfall: [300, 600],
+      soils: ["Loamy", "Sandy"],
+      seasons: ["Winter"],
+      irrigation: ["Sprinkler", "Drip"],
+      fertilizers: ["NPK 10-26-26"],
+      pests: ["Aphids"],
+      demand: ["High", "Medium"],
+    },
+    {
+      name: "Sugarcane",
+      pH: [6.0, 8.0],
+      temperature: [20, 35],
+      rainfall: [800, 1500],
+      soils: ["Black", "Clay", "Loamy"],
+      seasons: ["Monsoon"],
+      irrigation: ["Canal", "Drip"],
+      fertilizers: ["Urea+DAP", "NPK 10-26-26"],
+      pests: ["Stem Borer"],
+      demand: ["High"],
+    },
+    {
+      name: "Groundnut",
+      pH: [5.5, 7.0],
+      temperature: [20, 30],
+      rainfall: [500, 1000],
+      soils: ["Sandy", "Loamy"],
+      seasons: ["Summer", "Monsoon"],
+      irrigation: ["Drip", "Sprinkler"],
+      fertilizers: ["Single Super Phosphate", "NPK 10-26-26"],
+      pests: ["Aphids"],
+      demand: ["Medium"],
+    },
+  ];
+
+  function scoreRange(value, range, maxScore) {
+    if (value >= range[0] && value <= range[1]) {
+      return maxScore;
+    }
+
+    const gap = value < range[0] ? range[0] - value : value - range[1];
+    return Math.max(0, maxScore - gap * (maxScore / 6));
+  }
+
+  function scoreMatch(value, options, maxScore) {
+    return options.includes(value) ? maxScore : 0;
+  }
+
+  function buildTimeline(crop, season) {
+    const timelines = {
+      Rice: {
+        Monsoon: "Plant: June-July | Harvest: October-November (110-140 days)",
+        Summer: "Plant: Late spring | Harvest: Late summer (110-140 days)",
+        Winter: "Plant: Not ideal for winter | Shift to a warm-season window",
+      },
+      Wheat: {
+        Winter: "Plant: November-December | Harvest: March-April (110-130 days)",
+        Monsoon: "Plant: Not ideal in monsoon | Wait for cool, dry weather",
+        Summer: "Plant: Early summer only if irrigation is reliable",
+      },
+      Potato: {
+        Winter: "Plant: October-November | Harvest: January-February (90-120 days)",
+      },
+      Tomato: {
+        Winter: "Plant: August-October | Harvest: November-February (75-110 days)",
+        Summer: "Plant: January-March | Harvest: April-June (75-110 days)",
+      },
+    };
+
+    return (
+      timelines[crop]?.[season] ||
+      `Plant in the ${season.toLowerCase()} window best suited for ${crop}. | Harvest after the main growth cycle.`
+    );
+  }
+
+  function buildGuide(crop, data, profile) {
+    const plantingAdvice = {
+      Rice:
+        "Prepare a puddled seedbed, maintain standing water during establishment, and transplant healthy seedlings for better tillering.",
+      Wheat:
+        "Use a fine, firm seedbed and sow at the recommended spacing so the crop can establish before the coldest period.",
+      Maize:
+        "Sow on raised rows or beds for drainage, and maintain uniform spacing to support ear development.",
+      Cotton:
+        "Use well-prepared ridges or beds, sow at moderate depth, and avoid excess early moisture.",
+      Tomato:
+        "Transplant healthy seedlings into well-drained beds with staking or trellising to keep fruit off the ground.",
+      Potato:
+        "Plant disease-free seed tubers in ridges or furrows and keep soil loose for tuber expansion.",
+      Sugarcane:
+        "Plant setts in furrows with good soil moisture and keep rows wide enough for long-term cane growth.",
+      Groundnut:
+        "Sow on light, well-drained soil and keep the field weed-free during the first growth phase.",
+    };
+
+    const fertilizerAdvice = {
+      Rice: "Begin with Urea + DAP, then top-dress after establishment to support tillering and grain fill.",
+      Wheat: "Use Urea + DAP at sowing and a balanced NPK top-up during tillering if growth slows.",
+      Maize: "Apply Urea + DAP early, then a nitrogen boost at knee-high stage for better cob formation.",
+      Cotton: "Use Urea + DAP with split nitrogen applications to avoid excess vegetative growth.",
+      Tomato: "Use NPK 10-26-26 early, then switch to a lighter nitrogen feed during flowering and fruiting.",
+      Potato: "Use NPK 10-26-26 at planting and avoid overusing nitrogen to protect tuber quality.",
+      Sugarcane: "Use Urea + DAP at planting and follow with split nitrogen applications through the season.",
+      Groundnut: "Use Single Super Phosphate or a low-nitrogen starter mix to support pod development.",
+    };
+
+    return {
+      title: `Complete Growing Guide for ${crop}`,
+      timeline: buildTimeline(crop, data.Season),
+      how_to_plant: plantingAdvice[crop] || `Prepare the field carefully and follow best agronomic spacing for ${crop}.`,
+      fertilizer: fertilizerAdvice[crop] || `Use a balanced fertilizer plan matched to the nutrient needs of ${crop}.`,
+      ideal_rainfall: `Target roughly ${profile.rainfall[0]}-${profile.rainfall[1]} mm of rainfall during the season. Match irrigation to soil moisture rather than a fixed schedule.`,
+      post_harvest: `Harvest ${crop} at market-ready maturity, sort damaged produce quickly, and use cool, dry storage to reduce losses.`,
+    };
+  }
+
+  function getCropRecommendation(data) {
+    const cropScores = cropProfiles.map((profile) => {
+      let score = 0;
+
+      score += scoreRange(data.pH, profile.pH, 20);
+      score += scoreRange(data.Temperature, profile.temperature, 20);
+      score += scoreRange(data.Rainfall, profile.rainfall, 15);
+      score += scoreMatch(data.Soil_Type, profile.soils, 10);
+      score += scoreMatch(data.Season, profile.seasons, 10);
+      score += scoreMatch(data.Irrigation_Method, profile.irrigation, 10);
+      score += scoreMatch(data.Fertilizer_Used, profile.fertilizers, 5);
+      score += scoreMatch(data.Market_Demand, profile.demand, 5);
+
+      if (data.Pest_Issue && data.Pest_Issue !== "None") {
+        score -= profile.pests.includes(data.Pest_Issue) ? 8 : 0;
+      } else {
+        score += 3;
+      }
+
+      return { profile, score };
+    });
+
+    cropScores.sort((a, b) => b.score - a.score);
+    const bestMatch = cropScores[0].profile;
+    return {
+      crop: bestMatch.name,
+      guide: buildGuide(bestMatch.name, data, bestMatch),
+    };
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -22,51 +232,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show loading message
     displayLoading();
+    window.__cropPlannerRenderPending = true;
 
-    // Generate a prompt for the Gemini API
-    const prompt = `Act as an expert agricultural AI. Based on the following farm conditions, recommend the best crop and provide a detailed farming guide.
-        - Soil pH: ${data.pH}
-        - Temperature: ${data.Temperature}°C
-        - Rainfall: ${data.Rainfall} mm
-        - Soil Type: ${data.Soil_Type}
-        - Season: ${data.Season}
-        - Market Demand: ${data.Market_Demand}
-        - Fertilizer Used: ${data.Fertilizer_Used}
-        - Pest Issue: ${data.Pest_Issue}
-        - Irrigation Method: ${data.Irrigation_Method}
-
-        Provide the response in a JSON format with the following schema. Use natural language and markdown formatting (like **bold** or lists) where appropriate for readability.
-        
-        {
-          "crop": "Recommended Crop Name",
-          "guide": {
-            "title": "Farming Guide for [Crop Name]",
-            "timeline": "Detailed timeline (e.g., planting season, harvest time).",
-            "how_to_plant": "Step-by-step instructions on how to plant the crop.",
-            "fertilizer": "A plan for fertilizer application.",
-            "ideal_rainfall": "The ideal rainfall amount and schedule.",
-            "post_harvest": "Instructions for post-harvest care and storage."
-          }
-        }
-        `;
-
-    try {
-      // Make the API call to Gemini
-      const result = await generateContentWithRetry(prompt);
-
-      // Check for valid response structure
-      if (result && result.crop && result.guide) {
+    setTimeout(() => {
+      try {
+        const result = getCropRecommendation(data);
         displayResultAndGuide(result.crop, result.guide);
         showFeedback('Crop guide generated successfully!', 'success');
-      } else {
-        showFeedback('Failed to get a valid response from the AI. Please try again.', 'error');
-        displayError('Failed to get a valid response from the AI. Please try again.');
+      } catch (error) {
+        console.error("Error generating crop plan:", error);
+        showFeedback('Could not generate a crop plan. Please review your inputs and try again.', 'error');
+        displayError('Could not generate a crop plan. Please review your inputs and try again.');
+      } finally {
+        window.__cropPlannerRenderPending = false;
       }
-    } catch (error) {
-      console.error("Error calling Gemini API:", error);
-      showFeedback('Could not connect to the AI service. Please check your network connection.', 'error');
-      displayError('Could not connect to the AI service. Please check your network connection.');
-    }
+    }, 600);
   });
 
   /**
@@ -334,53 +514,12 @@ form.querySelectorAll("input, select").forEach((field) => {
 });
 
 form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const fields = form.querySelectorAll("input[required], select[required]");
-  let isValid = true;
-
-  fields.forEach((field) => {
-    if (!validateField(field)) {
-      isValid = false;
-    }
-  });
-
-  if (!isValid) {
-    const firstError = form.querySelector(".form-group.error");
-    if (firstError) {
-      firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+  if (window.__cropPlannerRenderPending) {
     return;
   }
 
-  submitBtn.innerHTML = '<span class="loading"></span> Analyzing Your Farm...';
-  submitBtn.disabled = true;
-
-  setTimeout(() => {
-    const mockCrop = "Tomato";
-
-    document.getElementById("result-text").textContent = mockCrop;
-    document.getElementById(
-      "guide-title"
-    ).textContent = `Complete Growing Guide for ${mockCrop}`;
-
-    document.getElementById("guide-timeline").textContent =
-      "Plant: March-April | Harvest: June-July (90-120 days growth cycle)";
-    document.getElementById("guide-how-to-plant").textContent =
-      "Prepare seedbed, sow seeds 2-3cm deep with 30cm spacing between rows. Transplant seedlings after 4-6 weeks.";
-    document.getElementById("guide-fertilizer").textContent =
-      "Apply NPK (19:19:19) at planting, followed by weekly liquid fertilizer during growing season.";
-    document.getElementById("guide-ideal-rainfall").textContent =
-      "Requires 400-600mm water throughout season. Drip irrigation recommended for optimal results.";
-    document.getElementById("guide-post-harvest").textContent =
-      "Harvest when fruits are firm and fully colored. Store at 12-15°C. Market within 7-10 days for best prices.";
-
-    resultContainer.classList.remove("hidden");
-    resultContainer.scrollIntoView({ behavior: "smooth" });
-
-    submitBtn.innerHTML = "Get Full Farming Plan";
-    submitBtn.disabled = false;
-  }, 2000);
+  e.preventDefault();
+  return;
 });
 
 updateProgress();

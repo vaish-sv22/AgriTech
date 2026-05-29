@@ -1,6 +1,80 @@
 // register.js — AgriTech Registration Page Handler
 // Change from original: handleRegister is async + removed fake setTimeout
 
+const ALLOWED_ROLES = ["buyer", "farmer", "equipment", "grocery", "expert"];
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPassword(password) {
+  return (
+    typeof password === "string" &&
+    password.length >= 8 &&
+    /[a-z]/.test(password) &&
+    /[A-Z]/.test(password) &&
+    /\d/.test(password)
+  );
+}
+
+function isValidFullName(fullname) {
+  return /^[A-Za-z\s.'-]+$/.test(fullname);
+}
+
+function setFieldState(input, isValid) {
+  if (!input) return;
+  input.classList.toggle("error", !isValid);
+  input.setAttribute("aria-invalid", String(!isValid));
+}
+
+function validateRegisterFields(formData) {
+  const roleInput = document.getElementById("role");
+  const fullnameInput = document.getElementById("fullname");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  if (!ALLOWED_ROLES.includes(formData.role)) {
+    setFieldState(roleInput, false);
+    return "Please select a valid role";
+  }
+
+  if (!formData.fullname) {
+    setFieldState(fullnameInput, false);
+    return "Please enter your full name";
+  }
+
+  if (!isValidFullName(formData.fullname)) {
+    setFieldState(fullnameInput, false);
+    return "Full name can only contain letters and spaces";
+  }
+
+  if (!formData.email) {
+    setFieldState(emailInput, false);
+    return "Please enter your email address";
+  }
+
+  if (!isValidEmail(formData.email) || !formData.email.toLowerCase().endsWith("@gmail.com")) {
+    setFieldState(emailInput, false);
+    return "Please use a valid @gmail.com address";
+  }
+
+  if (!formData.password) {
+    setFieldState(passwordInput, false);
+    return "Please create a password";
+  }
+
+  if (!isValidPassword(formData.password)) {
+    setFieldState(passwordInput, false);
+    return "Password must be at least 8 characters and include uppercase, lowercase, and a number";
+  }
+
+  setFieldState(roleInput, true);
+  setFieldState(fullnameInput, true);
+  setFieldState(emailInput, true);
+  setFieldState(passwordInput, true);
+  return "";
+}
+
 function togglePassword() {
   const passwordInput = document.getElementById("password");
   const eyeIcon = document.getElementById("password-eye");
@@ -126,6 +200,15 @@ async function handleRegister(event) {
     email: document.getElementById("email").value.trim(),
     password: document.getElementById("password").value,
   };
+
+  const validationMessage = validateRegisterFields(formData);
+  if (validationMessage) {
+    showAuthMessage(validationMessage, "error");
+    registerBtn.classList.remove("loading");
+    registerText.textContent = "Create Account";
+    registerBtn.disabled = false;
+    return;
+  }
 
   const result = await window.authManager.register(formData);
 

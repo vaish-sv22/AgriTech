@@ -234,11 +234,12 @@ body {
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 1.6rem;
   font-weight: 700;
   color: #228B22;
   cursor: pointer;
+  text-decoration: none;
   transition: transform 0.3s ease;
 }
 

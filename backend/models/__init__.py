@@ -3,6 +3,7 @@ Database models package.
 """
 
 from .user import User, UserRole
+from .token import Token
 from .loan_request import LoanRequest
 from .prediction_history import PredictionHistory
 from .misc import (
@@ -139,6 +140,7 @@ __all__ = [
     # Core
     "User",
     "UserRole",
+    "Token",
     "LoanRequest",
     "PredictionHistory",
     "Notification",

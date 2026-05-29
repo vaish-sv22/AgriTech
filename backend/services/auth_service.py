@@ -1,6 +1,5 @@
 import secrets
 from datetime import datetime, timedelta
-from flask import current_app, url_for
 from flask_mail import Message
 from backend.extensions import db, mail
 from backend.models import User, Token
@@ -49,7 +48,8 @@ class AuthService:
     def send_password_reset_email(user):
         """Send a password reset link to the user."""
         token = AuthService.generate_token(user.id, 'reset', hours=1)
-        reset_url = f"http://localhost:5000/reset-password/{token}"
+        frontend_base = current_app.config.get('FRONTEND_BASE_URL', 'http://localhost:5000')
+        reset_url = f"{frontend_base}/reset-password/{token}"
         
         msg = Message(
             "AgriTech Password Reset",
@@ -97,3 +97,16 @@ class AuthService:
             return True, "Password reset successfully"
         
         return False, "User not found"
+
+            @staticmethod
+            def validate_reset_token(token_value):
+                """Check whether a reset token exists and is still valid."""
+                token_record = Token.query.filter_by(token=token_value, type='reset').first()
+
+                if not token_record:
+                    return False, "Invalid token"
+
+                if token_record.is_expired():
+                    return False, "Token has expired"
+
+                return True, "Token is valid"
