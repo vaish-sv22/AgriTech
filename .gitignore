@@ -83,3 +83,6 @@ datasets/
 
 # Notebooks checkpoints
 .ipynb_checkpoints/
+
+
+*.bak

@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from auth_utils import token_required, roles_required
 from flask_cors import CORS
 import re
 from functools import wraps
@@ -48,14 +47,9 @@ def validate_post_data(data):
 forum_posts = []
 
 @app.route('/forum', methods=['GET', 'POST'])
-@token_required
 def forum_api():
     try:
         if request.method == 'POST':
-            # Only allow farmers and admins to create posts
-            user = getattr(request, 'user', {})
-            if user.get('role') not in ['farmer', 'admin']:
-                return jsonify({'error': 'Insufficient permissions'}), 403
             # Validate content type
             if not request.is_json:
                 return jsonify({'error': 'Content-Type must be application/json'}), 400
@@ -80,7 +74,11 @@ def forum_api():
             # Add to posts (in a real app, this would go to a database)
             forum_posts.append(sanitized_data)
             
-            return jsonify({"status": "success", "message": "Post created successfully"}), 201
+            return jsonify({
+                "status": "success",
+                "message": "Post created successfully",
+                "post": sanitized_data
+            }), 201
         else:
             return jsonify(forum_posts)
             

@@ -144,6 +144,103 @@
       font-size: 20px;
     }
   }
+  /* =========================
+   MOBILE RESPONSIVE FIX
+========================= */
+
+@media (max-width: 768px) {
+
+  /* Layout becomes vertical */
+  body {
+    flex-direction: column;
+  }
+
+  /* Sidebar full width top navbar style */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 16px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Navigation horizontal scroll */
+  .nav-links {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .nav-links li {
+    flex-shrink: 0;
+  }
+
+  .nav-links a {
+    white-space: nowrap;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  /* Hide user profile on small screens */
+  .user-profile {
+    display: none;
+  }
+
+  /* Main content takes full width */
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 16px;
+  }
+
+  /* Header stack */
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .top-bar h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .controls {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .glass-input,
+  .btn-primary {
+    width: 100%;
+  }
+
+  /* Grid becomes single column */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Map responsive */
+  #map {
+    height: 400px;
+    width: 100%;
+  }
+
+  /* Stats responsive */
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Prevent overflow */
+  .card {
+    width: 100%;
+    overflow: hidden;
+  }
+}
 </style>
 
 <button id="globalBackToTop" title="Back to Top">↑</button>

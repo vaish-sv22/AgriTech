@@ -1,3 +1,5 @@
+import { validateDomainData } from '../domain/validate.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const analyzeBtn = document.getElementById('analyze_btn');
     
@@ -16,6 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const selectedCrop = document.getElementById('crop_select').value;
 
+        const soilValidation = validateDomainData('SoilData', soilData);
+        if (!soilValidation.valid) {
+            alert('Please enter valid soil nutrient values before generating the analysis.');
+            return;
+        }
+
+        if (!selectedCrop) {
+            alert('Please select a crop before generating the analysis.');
+            return;
+        }
+
+        analyzeBtn.disabled = true;
         analyzeBtn.innerText = "Processing...";
         
         try {
@@ -34,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Fetch error:", error);
             alert("Could not connect to the analysis server. Check if app.py is running.");
         } finally {
+            analyzeBtn.disabled = false;
             analyzeBtn.innerText = "Generate Analysis";
         }
     });
