@@ -265,6 +265,36 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
+.back-home-inline {
+  margin: 20px 40px;
+  display: flex;
+  justify-content: flex-start; /* aligns to the right side */
+}
+
+.back-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 16px;
+  border-radius: 999px; /* oval pill shape */
+
+  background: #22c55e; /* green accent */
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: all 0.3s ease;
+}
+
+/* Hover stays visible */
+.back-home-link:hover {
+  background: #16a34a; /* darker green */
+  color: #fff;         /* keep text white */
+}
+
   </style>
 </head>
 
@@ -274,6 +304,12 @@
   <h1>AgriTech Sitemap</h1>
   <button onclick="toggleTheme()">Toggle Theme</button>
 </header>
+
+<div class="back-home-inline">
+  <a href="index.html" class="back-home-link">
+    <i class="fa-solid fa-house"></i> Back to Home
+  </a>
+</div>
 
 <main>
 
