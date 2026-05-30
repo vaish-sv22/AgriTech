@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,14 +76,65 @@
         .modal-favorite-btn.active {
             color: #e74c3c;
         }
+
+        .back-home {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .back-home {
+            margin-right: auto;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--accent);
+            color: #ffffff !important;
+            font-weight: 600;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-home:hover {
+            background: #16a34a;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+
+        .back-home a.btn-home {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #22c55e;
+            color: #ffffff !important;
+            font-weight: 600;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-home a.btn-home:hover {
+            background: #16a34a;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
+
 <body>
     <section class="agritech-blog">
         <div class="blog-container">
             <!-- Blog Header with Favorites -->
             <div class="blog-header">
                 <div class="header-actions">
+                    <div class="back-home">
+                        <a href="index.html" class="btn-home">⬅ Back to Home</a>
+                    </div>
                     <button class="theme-toggle" id="themeToggle">
                         <span id="themeIcon">🌙</span>
                         <span id="themeText">Dark Mode</span>
@@ -92,15 +144,17 @@
                         <span>My Favorites</span>
                         <span class="favorite-count">0</span>
                     </a>
+
                 </div>
                 <h1 class="blog-title">🌱 AgriTech Blog — Farming Tips & Insights</h1>
-                <p class="blog-subtitle">Stay updated with the latest in agriculture, technology, and sustainability.</p>
+                <p class="blog-subtitle">Stay updated with the latest in agriculture, technology, and sustainability.
+                </p>
             </div>
 
             <!-- Rest of your content... -->
             <div class="search-filter-section">
                 <input type="text" class="search-bar" placeholder="Search blog posts..." id="searchInput">
-                
+
                 <div class="category-filters">
                     <button class="filter-btn active" data-category="all">All Posts</button>
                     <button class="filter-btn" data-category="farming-tips">Farming Tips</button>
@@ -159,14 +213,14 @@
                 blogData.addedAt = new Date().toISOString();
                 this.favorites.push(blogData);
                 localStorage.setItem(this.storageKey, JSON.stringify(this.favorites));
-                
+
                 // Show notification
                 const notification = document.createElement('div');
                 notification.textContent = `Added to favorites: ${blogData.title}`;
                 notification.style.cssText = 'position:fixed;top:20px;right:20px;background:#2c5f2d;color:white;padding:10px;border-radius:5px;z-index:10000;';
                 document.body.appendChild(notification);
                 setTimeout(() => notification.remove(), 2000);
-                
+
                 return true;
             }
 
@@ -201,7 +255,7 @@
             },
             {
                 id: 'ai-agriculture-revolution',
-                title: "AI in Agriculture: The Next Revolution", 
+                title: "AI in Agriculture: The Next Revolution",
                 category: "technology",
                 description: "How AI is transforming farming.",
                 image: "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=400&h=250&fit=crop",
@@ -211,7 +265,7 @@
             }
         ];
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('Blog loaded!');
             displayPosts();
             setupEventListeners();
@@ -221,7 +275,7 @@
         function displayPosts() {
             const blogGrid = document.getElementById('blogGrid');
             blogGrid.innerHTML = '';
-            
+
             blogPosts.forEach(post => {
                 const isFavorite = window.favoritesManager.isFavorite(post.id);
                 const postElement = document.createElement('div');
@@ -244,7 +298,7 @@
 
         function setupEventListeners() {
             // Favorite buttons
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (e.target.closest('.favorite-btn')) {
                     const button = e.target.closest('.favorite-btn');
                     const blogId = button.getAttribute('data-blog-id');
@@ -261,7 +315,7 @@
             if (!post) return;
 
             const isFavorite = window.favoritesManager.isFavorite(blogId);
-            
+
             if (isFavorite) {
                 window.favoritesManager.removeFromFavorites(blogId);
             } else {
@@ -305,73 +359,76 @@
         }
 
         // Close modal
-        document.querySelector('.close').addEventListener('click', function() {
+        document.querySelector('.close').addEventListener('click', function () {
             document.getElementById('blogModal').style.display = 'none';
         });
     </script>
     <script src="theme.js"></script>
     <!-- ===== Universal Back To Top Button (All Pages) ===== -->
-<style>
-  #globalBackToTop {
-    position: fixed;
-    bottom: 90px; /* prevents overlap with chatbot/floating icons */
-    right: 25px;
-    z-index: 9999;
-    display: none;
-    background: #2ecc71;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    transition: opacity 0.3s ease, transform 0.2s ease;
-  }
+    <style>
+        #globalBackToTop {
+            position: fixed;
+            bottom: 90px;
+            /* prevents overlap with chatbot/floating icons */
+            right: 25px;
+            z-index: 9999;
+            display: none;
+            background: #2ecc71;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
 
-  #globalBackToTop:hover {
-    transform: scale(1.12);
-    background: #27ae60;
-  }
+        #globalBackToTop:hover {
+            transform: scale(1.12);
+            background: #27ae60;
+        }
 
-  @media (max-width: 768px) {
-    #globalBackToTop {
-      bottom: 100px; /* better spacing on mobile */
-      right: 18px;
-      width: 48px;
-      height: 48px;
-      font-size: 20px;
-    }
-  }
-</style>
+        @media (max-width: 768px) {
+            #globalBackToTop {
+                bottom: 100px;
+                /* better spacing on mobile */
+                right: 18px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
+    </style>
 
-<button id="globalBackToTop" title="Back to Top">↑</button>
+    <button id="globalBackToTop" title="Back to Top">↑</button>
 
-<script>
-  (function () {
-    const btn = document.getElementById("globalBackToTop");
+    <script>
+        (function () {
+            const btn = document.getElementById("globalBackToTop");
 
-    // Show button after scrolling down
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > 300) {
-        btn.style.display = "block";
-      } else {
-        btn.style.display = "none";
-      }
-    });
+            // Show button after scrolling down
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 300) {
+                    btn.style.display = "block";
+                } else {
+                    btn.style.display = "none";
+                }
+            });
 
-    // Smooth scroll to top on click
-    btn.addEventListener("click", function () {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  })();
-</script>
-<!-- ===== End Back To Top Button ===== -->
+            // Smooth scroll to top on click
+            btn.addEventListener("click", function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        })();
+    </script>
+    <!-- ===== End Back To Top Button ===== -->
 
 </body>
+
 </html>
