@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Control Center | AgriTech</title>
-    <meta name="description" content="Warehouse Control Center dashboard for real-time inventory tracking, stock management, expiry alerts, and automated reconciliation.">
+    <meta name="description"
+        content="Warehouse Control Center dashboard for real-time inventory tracking, stock management, expiry alerts, and automated reconciliation.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -156,70 +157,152 @@
             border-radius: 0 12px 12px 0;
             margin-bottom: 1rem;
         }
+
         /* Summary boxes: stack neatly on mobile */
-.summary-boxes {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
+        .summary-boxes {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
 
-/* Stats grid: stack boxes on mobile */
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr; /* single column */
-  }
+        /* Stats grid: stack boxes on mobile */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                /* single column */
+            }
 
-  .stat-box {
-    width: 100%;
-  }
-}
+            .stat-box {
+                width: 100%;
+            }
+        }
 
-/* Content layout: stack inventory + alerts vertically */
-@media (max-width: 1024px) {
-  .content-layout {
-    grid-template-columns: 1fr; /* single column */
-  }
+        /* Content layout: stack inventory + alerts vertically */
+        @media (max-width: 1024px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+                /* single column */
+            }
 
-  .card {
-    width: 100%;
-  }
-}
+            .card {
+                width: 100%;
+            }
+        }
 
-/* Inventory table: scrollable on small screens */
-@media (max-width: 768px) {
-  .inventory-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+        /* Inventory table: scrollable on small screens */
+        @media (max-width: 768px) {
+            .inventory-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
 
-  .inventory-table th,
-  .inventory-table td {
-    min-width: 120px; /* prevent squish */
-  }
-}
+            .inventory-table th,
+            .inventory-table td {
+                min-width: 120px;
+                /* prevent squish */
+            }
+        }
 
-/* Header buttons: stack neatly on mobile */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+        /* Header buttons: stack neatly on mobile */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
 
-  .header h1 {
-    font-size: 1.5rem;
-  }
+            .header h1 {
+                font-size: 1.5rem;
+            }
 
-  .header div button {
-    width: 100%;
-  }
-}
+            .header div button {
+                width: 100%;
+            }
+        }
 
+        .navbar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo img {
+            height: 40px;
+            /* adjust size */
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: var(--accent);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent);
+            
+        }
     </style>
 </head>
 
 <body>
+
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="AgriTech Logo">
+            <span class="logo-text">AgriTech</span>
+        </a>
+
+        <ul class="nav-links">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="about.html">About</a>
+            </li>
+            <li>
+                <a href="blog.html">Blog</a>
+            </li>
+        </ul>
+    </nav>
 
     <div class="control-panel">
         <header class="header">
