@@ -94,11 +94,9 @@ body {
 /* Back to Home button */
 .back-bar-inner {
   max-width: 1200px;
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 0.5rem auto; /* reduced bottom margin */
   display: flex;
   justify-content: flex-start;
-  position: relative;
-  z-index: 10; 
 }
 
 /* base styling stays the same */
@@ -188,12 +186,12 @@ body {
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-  color: white;
-  padding: 3rem 0;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  padding: 6px 10px;   /* reduced from 60px+ */
+  border-radius: 8px;
+  color: #fff;
   text-align: center;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
 }
 
 .page-header::before {
@@ -207,12 +205,9 @@ body {
   opacity: 0.3;
 }
 
-.header-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 1;
+.header-content h1 {
+  font-size: clamp(22px, 5vw, 32px); /* smaller heading */
+  margin-bottom: 8px;
 }
 
 .page-header h1 {
@@ -222,20 +217,14 @@ body {
 }
 
 .subtitle {
-  font-size: 1.125rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: rgba(255,255,255,.85);
 }
 
 .last-updated {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  backdrop-filter: blur(10px);
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
 }
 
 /* Main Content Layout */
@@ -809,10 +798,13 @@ body {
    ================================ */
 
 .navbar {
-  width: 100%;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.6rem 0;   /* reduced from 1rem */
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 100;
+  backdrop-filter: blur(12px);
 }
 
 .navbar-content {
@@ -972,4 +964,8 @@ body {
 .navbar .logo {
   font-size: 1.4rem;
   letter-spacing: 0.5px;
+}
+
+.brand .logo {
+  font-size: 1.3rem; /* instead of 1.5rem */
 }
