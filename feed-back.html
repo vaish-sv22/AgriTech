@@ -1360,6 +1360,52 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* Rating Stars styling */
+.rating-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.rating-stars {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.rating-stars .star {
+    font-size: 2.2rem;
+    color: var(--text-muted, #81c784);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+}
+
+.rating-stars .star:hover {
+    transform: scale(1.25);
+}
+
+.rating-stars .star.selected,
+.rating-stars .star.hovered {
+    color: #fbbf24; /* Gold */
+}
+
+/* Submission card rating layout */
+.feedback-rating {
+    margin: 8px 0;
+    display: flex;
+    gap: 4px;
+}
+
+.feedback-rating i {
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.feedback-rating i:hover {
+    transform: scale(1.15);
+}
     </style>
 </head>
 
@@ -1454,6 +1500,23 @@
                                 Email <span class="optional">(optional)</span>
                             </label>
                             <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group rating-group">
+                            <label>
+                                <i class="fas fa-star input-icon"></i>
+                                Rating <span class="required">*</span>
+                            </label>
+                            <div class="rating-stars" id="ratingStars">
+                                <i class="far fa-star star" data-value="1" role="button" aria-label="1 Star" tabindex="0"></i>
+                                <i class="far fa-star star" data-value="2" role="button" aria-label="2 Stars" tabindex="0"></i>
+                                <i class="far fa-star star" data-value="3" role="button" aria-label="3 Stars" tabindex="0"></i>
+                                <i class="far fa-star star" data-value="4" role="button" aria-label="4 Stars" tabindex="0"></i>
+                                <i class="far fa-star star" data-value="5" role="button" aria-label="5 Stars" tabindex="0"></i>
+                            </div>
+                            <input type="hidden" id="ratingInput" name="rating" required>
                         </div>
                     </div>
 
@@ -1668,6 +1731,69 @@
                 });
             }
 
+            // Rating Stars selection functionality
+            const stars = document.querySelectorAll('#ratingStars .star');
+            const ratingInput = document.getElementById('ratingInput');
+
+            stars.forEach(star => {
+                // Hover effect
+                star.addEventListener('mouseenter', function () {
+                    const hoverValue = parseInt(this.getAttribute('data-value'));
+                    highlightStars(hoverValue);
+                });
+
+                // Mouse leave
+                star.addEventListener('mouseleave', function () {
+                    const currentValue = parseInt(ratingInput.value) || 0;
+                    highlightStars(currentValue);
+                });
+
+                // Click to select
+                star.addEventListener('click', function () {
+                    const selectValue = this.getAttribute('data-value');
+                    ratingInput.value = selectValue;
+                    
+                    // visually set selected stars
+                    stars.forEach(s => {
+                        const sVal = parseInt(s.getAttribute('data-value'));
+                        if (sVal <= selectValue) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                            s.classList.remove('selected');
+                        }
+                    });
+                });
+
+                // Keyboard support
+                star.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+
+            function highlightStars(count) {
+                stars.forEach(s => {
+                    const sVal = parseInt(s.getAttribute('data-value'));
+                    if (sVal <= count) {
+                        s.classList.add('hovered');
+                        s.classList.remove('far');
+                        s.classList.add('fas');
+                    } else {
+                        s.classList.remove('hovered');
+                        if (!s.classList.contains('selected')) {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    }
+                });
+            }
+
             // Form submission
             feedbackForm.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -1675,11 +1801,22 @@
                 const name = document.getElementById('name').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const feedbackText = document.getElementById('feedback').value.trim();
+                const rating = ratingInput.value;
 
                 if (!name || !feedbackText) {
                     Swal.fire({
                         title: 'Missing Information',
                         text: 'Please fill in all required fields.',
+                        icon: 'warning',
+                        confirmButtonColor: '#4caf50'
+                    });
+                    return;
+                }
+
+                if (!rating) {
+                    Swal.fire({
+                        title: 'Rating Required',
+                        text: 'Please select a star rating (1 to 5) before submitting.',
                         icon: 'warning',
                         confirmButtonColor: '#4caf50'
                     });
@@ -1697,6 +1834,7 @@
                         name: name,
                         email: email || 'Not provided',
                         feedback: feedbackText,
+                        rating: parseInt(rating, 10),
                         date: new Date().toLocaleString(),
                         id: Date.now()
                     };
@@ -1712,6 +1850,13 @@
                     document.querySelector('.feedback-header').classList.add('hidden');
                     thankYouMessage.classList.remove('hidden');
                     feedbackForm.reset();
+
+                    // Reset rating stars visually and hidden value
+                    ratingInput.value = '';
+                    stars.forEach(s => {
+                        s.classList.remove('fas', 'selected', 'hovered');
+                        s.classList.add('far');
+                    });
 
                     if (charCountElement) {
                         charCountElement.textContent = '0';
@@ -1750,6 +1895,7 @@
             feedbacksList.innerHTML = allFeedbacks.map((fb, index) => `
                 <div class="feedback-item">
                     <h4><i class="fas fa-user-circle" style="color: #4caf50; margin-right: 8px;"></i>${escapeHtml(fb.name)}</h4>
+                    ${getStarsHTML(fb.rating)}
                     ${fb.email !== 'Not provided' ? `<p style="color: #81c784; font-size: 0.9rem; margin: 5px 0;"><i class="fas fa-envelope" style="margin-right: 8px;"></i>${escapeHtml(fb.email)}</p>` : ''}
                     <p style="margin-top: 1rem;"><i class="fas fa-quote-left" style="color: #66bb6a; margin-right: 8px; opacity: 0.6;"></i>${escapeHtml(fb.feedback)}</p>
                     <div class="feedback-meta">
@@ -1757,6 +1903,20 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function getStarsHTML(rating) {
+            let starsHTML = '';
+            // If old feedback has no rating, display 5 stars or check for rating
+            const roundedRating = Math.round(rating) || 5;
+            for (let i = 1; i <= 5; i++) {
+                if (i <= roundedRating) {
+                    starsHTML += '<i class="fas fa-star" style="color: #fbbf24; margin-right: 2px;"></i>';
+                } else {
+                    starsHTML += '<i class="far fa-star" style="color: #ccc; margin-right: 2px;"></i>';
+                }
+            }
+            return `<div class="feedback-rating">${starsHTML}</div>`;
         }
 
         function escapeHtml(text) {

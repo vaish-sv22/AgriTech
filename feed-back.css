@@ -825,3 +825,49 @@ footer a:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-3px) scale(1.1);
 }
+
+/* Rating Stars styling */
+.rating-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.rating-stars .star {
+  font-size: 2.2rem;
+  color: var(--text-muted, #81c784);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+}
+
+.rating-stars .star:hover {
+  transform: scale(1.25);
+}
+
+.rating-stars .star.selected,
+.rating-stars .star.hovered {
+  color: #fbbf24; /* Gold */
+}
+
+/* Submission card rating layout */
+.feedback-rating {
+  margin: 8px 0;
+  display: flex;
+  gap: 4px;
+}
+
+.feedback-rating i {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.feedback-rating i:hover {
+  transform: scale(1.15);
+}
