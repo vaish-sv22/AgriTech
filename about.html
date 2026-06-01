@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="./about.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="styles/footer.css" /> -->
-    <link rel="stylesheet" href="styles/footer.css" />
+    <!-- <link rel="stylesheet" href="./footer.css" /> -->
+    <link rel="stylesheet" href="./footer.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </head>
@@ -132,10 +132,6 @@
 
         <div class="footer-inner-content">
             <div class="footer-section footer-brand">
-                <div class="brand-header">
-                    <img src="images/logo.png" alt="AgriTech logo" class="brand-logo" />
-                    <h3>AgriTech</h3>
-                </div>
                 <a href="main.html" class="brand-header">
                     <img src="images/logo.png" alt="AgriTech logo" class="brand-logo" />
                     <h3>AgriTech</h3>
@@ -193,500 +189,11 @@
         <div class="footer-wave-overlay"></div>
     </footer>
 
-    <style>
-        /* FOOTER */
-        .site-footer {
-            background: var(--surface-color);
-            color: var(--text-color);
-            position: relative;
-            font-size: 0.95rem;
-            border-top: 1px solid var(--border-color);
-        }
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-        .footer-top-accent {
-            height: 4px;
-            background: linear-gradient(90deg, #16a34a, #22c55e);
-        }
-
-        .footer-inner-content {
-            max-width: 1200px;
-            margin: auto;
-            padding: 3rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            gap: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-brand {
-            flex: 1 1 280px;
-        }
-
-        .brand-header {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            gap: 8px;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-        }
-
-        .brand-header:hover {
-            opacity: 0.8;
-        }
-
-        .brand-logo {
-            width: 42px;
-        }
-
-        .footer-brand h3 {
-            color: var(--accent-color);
-            font-size: 1.3rem;
-        }
-
-        .tagline {
-            margin: 0.8rem 0 1.2rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 0.7rem;
-        }
-
-        .social-icons a {
-            width: 36px;
-            height: 36px;
-            background: #e6f4ea;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            color: #15803d;
-            transition: all 0.25s ease;
-        }
-
-        .social-icons a:hover {
-            background: #22c55e;
-            color: #fff;
-        }
-
-        .footer-group-links {
-            display: flex;
-            gap: 3rem;
-            flex: 1 1 320px;
-        }
-
-        .footer-section h4 {
-            color: var(--accent-color);
-            margin-bottom: 0.9rem;
-            font-size: 1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.6rem;
-        }
-
-        .footer-section ul a {
-            color: var(--text-muted);
-            text-decoration: none;
-            display: inline-flex;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.25s ease;
-            position: relative;
-        }
-
-        .footer-section ul a:hover {
-            color: var(--accent-color);
-            transform: translateX(6px);
-        }
-
-        .footer-section ul a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 0%;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.25s ease;
-        }
-
-        .footer-section ul a:hover {
-            color: var(--accent-color);
-            transform: translate(-2px);
-            bottom: -3px;
-            width: 0%;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        .footer-section ul a:hover::after {
-            width: 100%;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding: 1rem;
-            background: var(--section-bg);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .footer-wave-overlay {
-            display: none;
-        }
-
-        .scroll-top-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border: none;
-            border-radius: 50%;
-            background: var(--primary-color, #2e7d32);
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            /* ✅ always visible */
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: all 0.3s ease;
-        }
-
-        .scroll-top-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Dark Mode Support */
-        [data-theme="dark"] .scroll-top-btn {
-            background: #4caf50;
-        }
-
-        /* Responsive footer */
-        @media (max-width: 768px) {
-            .footer-inner-content {
-                flex-direction: column;
-                align-items: flex-start;
-    .site-footer {
-      background: var(--surface-color);
-      color: var(--text-color);
-      position: relative;
-      font-size: 0.95rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .footer-top-accent {
-      height: 4px;
-      background: linear-gradient(90deg, #16a34a, #22c55e);
-    }
-
-    .footer-inner-content {
-      max-width: 1200px;
-      margin: auto;
-      padding: 3rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-brand {
-      flex: 1 1 280px;
-    }
-
-    .brand-header {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .brand-logo {
-      width: 42px;
-    }
-
-    .footer-brand h3 {
-      color: var(--accent-color);
-      font-size: 1.3rem;
-    }
-
-    .tagline {
-      margin: 0.8rem 0 1.2rem;
-      line-height: 1.6;
-      color: var(--text-muted);
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 0.7rem;
-    }
-
-    .social-icons a {
-      width: 36px;
-      height: 36px;
-      background: #e6f4ea;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: #15803d;
-      transition: all 0.25s ease;
-    }
-
-    .social-icons a:hover {
-      background: #22c55e;
-      color: #fff;
-    }
-
-    .footer-group-links {
-      display: flex;
-      gap: 3rem;
-      flex: 1 1 320px;
-    }
-
-    .footer-section h4 {
-      color: var(--accent-color);
-      margin-bottom: 0.9rem;
-      font-size: 1rem;
-    }
-
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-section ul li {
-      margin-bottom: 0.6rem;
-    }
-
-    .footer-section ul a {
-      color: var(--text-muted);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      width: fit-content;
-      cursor: pointer;
-      transition: color 0.25s ease;
-    }
-
-    .footer-section ul a:hover {
-      color: var(--accent-color);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding: 1rem;
-      background: var(--section-bg);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .footer-wave-overlay {
-      display: none;
-    }
-
-    /* Back To Top Button */
-    .back-to-top-btn {
-        position: fixed;
-      bottom: 30px;
-      right: 30px;
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
-        border: none;
-        background: #2ecc71;
-        color: #ffffff;
-        font-size: 20px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(20px);
-        transition: all 0.3s ease;
-        z-index: 9999;
-    }
-
-      .back-to-top-btn.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-      .back-to-top-btn:hover {
-        background: #27ae60;
-        transform: scale(1.1);
-    }
-</style>
-<!-- Cursor Trail -->
-<div class="circle-container" id="cursorTrail"></div>
-
-<script>
-  // --- Cursor Trailing Effect ---
-const container = document.getElementById('cursorTrail');
-const circleCount = 12;
-const circles = [];
-
-let mouseX = 0;
-let mouseY = 0;
-
-// Create circles
-for (let i = 0; i < circleCount; i++) {
-    const circle = document.createElement('div');
-    circle.classList.add('cursor-circle');
-    container.appendChild(circle);
-    circles.push({ el: circle, x: 0, y: 0 });
-}
-
-// Mouse move
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-});
-
-// Click effects
-document.addEventListener('mousedown', () => {
-    circles.forEach(c => c.el.classList.add('cursor-clicking'));
-});
-document.addEventListener('mouseup', () => {
-    circles.forEach(c => c.el.classList.remove('cursor-clicking'));
-});
-
-// Hover effects on interactive elements
-document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
-        circles.forEach(c => c.el.classList.add('cursor-hovering'));
-    }
-});
-document.addEventListener('mouseout', (e) => {
-    if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
-        circles.forEach(c => c.el.classList.remove('cursor-hovering'));
-    }
-});
-
-// Animate trailing effect
-function animateCursor() {
-    let x = mouseX;
-    let y = mouseY;
-
-    circles.forEach((circle) => {
-        circle.x += (x - circle.x) * 0.25;
-        circle.y += (y - circle.y) * 0.25;
-
-        circle.el.style.left = circle.x + 'px';
-        circle.el.style.top = circle.y + 'px';
-
-        x = circle.x;
-        y = circle.y;
-    });
-
-    requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-// Include navbar (UNCHANGED)
-function includeHTML(callback) {
-    var z, i, elmnt, file, xhttp;
-    z = document.getElementsByTagName("*");
-    for (i = 0; i < z.length; i++) {
-        elmnt = z[i];
-        file = elmnt.getAttribute("w3-include-html");
-        if (file) {
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                    if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-                    if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                    elmnt.removeAttribute("w3-include-html");
-                    includeHTML(callback);
-                    if (callback) callback();
-                }
-            }
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.6rem;
-        }
-
-        .footer-section ul a {
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.25s ease;
-        }
-
-        .footer-section ul a:hover {
-            color: var(--accent-color);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding: 1rem;
-            background: var(--section-bg);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .footer-wave-overlay {
-            display: none;
-        }
-
-        /* Scroll To Top Button */
-        .scroll-top-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: none;
-            background: #2ecc71;
-            color: #ffffff;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            z-index: 9999;
-        }
-
-        .scroll-top-btn.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .scroll-top-btn:hover {
-            background: #27ae60;
-            transform: scale(1.1);
-        }
-    </style>
     <!-- Cursor Trail -->
     <div class="circle-container" id="cursorTrail"></div>
 
@@ -695,11 +202,9 @@ function includeHTML(callback) {
         const container = document.getElementById('cursorTrail');
         const circleCount = 12;
         const circles = [];
-
         let mouseX = 0;
         let mouseY = 0;
 
-        // Create circles
         for (let i = 0; i < circleCount; i++) {
             const circle = document.createElement('div');
             circle.classList.add('cursor-circle');
@@ -707,13 +212,11 @@ function includeHTML(callback) {
             circles.push({ el: circle, x: 0, y: 0 });
         }
 
-        // Mouse move
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // Click effects
         document.addEventListener('mousedown', () => {
             circles.forEach(c => c.el.classList.add('cursor-clicking'));
         });
@@ -721,17 +224,6 @@ function includeHTML(callback) {
             circles.forEach(c => c.el.classList.remove('cursor-clicking'));
         });
 
-        });
-
-        // Click effects
-        document.addEventListener('mousedown', () => {
-            circles.forEach(c => c.el.classList.add('cursor-clicking'));
-        });
-        document.addEventListener('mouseup', () => {
-            circles.forEach(c => c.el.classList.remove('cursor-clicking'));
-        });
-
-        // Hover effects on interactive elements
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('a, button, .cta-button, .service-card, .shipment-card')) {
                 circles.forEach(c => c.el.classList.add('cursor-hovering'));
@@ -743,35 +235,29 @@ function includeHTML(callback) {
             }
         });
 
-        // Animate trailing effect
         function animateCursor() {
             let x = mouseX;
             let y = mouseY;
-
             circles.forEach((circle) => {
                 circle.x += (x - circle.x) * 0.25;
                 circle.y += (y - circle.y) * 0.25;
-
                 circle.el.style.left = circle.x + 'px';
                 circle.el.style.top = circle.y + 'px';
-
                 x = circle.x;
                 y = circle.y;
             });
-
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // Include navbar (UNCHANGED)
+        // --- Include Navbar & Footer ---
         function includeHTML(callback) {
-            var z, i, elmnt, file, xhttp;
-            z = document.getElementsByTagName("*");
-            for (i = 0; i < z.length; i++) {
-                elmnt = z[i];
-                file = elmnt.getAttribute("w3-include-html");
+            let z = document.getElementsByTagName("*");
+            for (let i = 0; i < z.length; i++) {
+                let elmnt = z[i];
+                let file = elmnt.getAttribute("w3-include-html");
                 if (file) {
-                    xhttp = new XMLHttpRequest();
+                    let xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4) {
                             if (this.status == 200) { elmnt.innerHTML = this.responseText; }
@@ -788,7 +274,7 @@ function includeHTML(callback) {
             }
         }
 
-        // Function to fix Services Dropdown (New logic needed for functionality)
+        // --- Dropdown Menu ---
         function initServicesDropdown() {
             const servicesToggle = document.querySelector('.services-toggle');
             const servicesDropdown = document.querySelector('.services-dropdown');
@@ -811,7 +297,7 @@ function includeHTML(callback) {
             }
         }
 
-        // Initialize theme toggle (UNCHANGED)
+        // --- Theme Management ---
         function initThemeToggle() {
             const themeToggle = document.getElementById('themeToggle');
             if (!themeToggle) return;
@@ -831,7 +317,7 @@ function includeHTML(callback) {
             });
         }
 
-        // Initialize mobile hamburger (UNCHANGED)
+        // --- Mobile Hamburger Menu ---
         function initHamburgerMenu() {
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const mobileMenu = document.getElementById('mobileMenu');
@@ -852,383 +338,44 @@ function includeHTML(callback) {
             });
         }
 
+        // --- Scroll to Top Button ---
+        function initScrollTop() {
+            const scrollTopBtn = document.getElementById("scrollTopBtn");
+            if (!scrollTopBtn) return;
 
-        // Animate trailing effect
-        function animateCursor() {
-            let x = mouseX;
-            let y = mouseY;
-
-            circles.forEach((circle) => {
-                circle.x += (x - circle.x) * 0.25;
-                circle.y += (y - circle.y) * 0.25;
-
-                circle.el.style.left = circle.x + 'px';
-                circle.el.style.top = circle.y + 'px';
-
-                x = circle.x;
-                y = circle.y;
-            });
-
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        // Include navbar (UNCHANGED)
-        function includeHTML(callback) {
-            var z, i, elmnt, file, xhttp;
-            z = document.getElementsByTagName("*");
-            for (i = 0; i < z.length; i++) {
-                elmnt = z[i];
-                file = elmnt.getAttribute("w3-include-html");
-                if (file) {
-                    xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4) {
-                            if (this.status == 200) { elmnt.innerHTML = this.responseText; }
-                            if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
-                            elmnt.removeAttribute("w3-include-html");
-                            includeHTML(callback);
-                            if (callback) callback();
-                        }
-                    }
-                    xhttp.open("GET", file, true);
-                    xhttp.send();
-                    return;
-                }
-            }
-        }
-
-        // Function to fix Services Dropdown (New logic needed for functionality)
-        function initServicesDropdown() {
-            const servicesToggle = document.querySelector('.services-toggle');
-            const servicesDropdown = document.querySelector('.services-dropdown');
-            const servicesArrow = document.querySelector('.services-arrow');
-
-            if (servicesToggle && servicesDropdown) {
-                servicesToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    servicesDropdown.classList.toggle('active');
-                    if (servicesArrow) servicesArrow.classList.toggle('rotated');
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!servicesToggle.contains(e.target) && !servicesDropdown.contains(e.target)) {
-                        servicesDropdown.classList.remove('active');
-                        if (servicesArrow) servicesArrow.classList.remove('rotated');
-                    }
-                });
-            }
-        }
-
-        // Initialize theme toggle (UNCHANGED)
-        function initThemeToggle() {
-            const themeToggle = document.getElementById('themeToggle');
-            if (!themeToggle) return;
-
-            themeToggle.addEventListener('click', () => {
-                const root = document.documentElement;
-                const current = root.getAttribute('data-theme') || 'dark';
-                const next = current === 'light' ? 'dark' : 'light';
-
-                root.setAttribute('data-theme', next);
-                localStorage.setItem('agritech-theme', next);
-
-                const themeLabel = document.querySelector('.theme-label');
-                if (themeLabel) {
-                    themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
+            window.addEventListener("scroll", () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add("show");
+                } else {
+                    scrollTopBtn.classList.remove("show");
                 }
             });
-        }
-                circle.el.style.left = circle.x + 'px';
-                circle.el.style.top = circle.y + 'px';
 
-                x = circle.x;
-                y = circle.y;
-            });
-
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        // Include navbar (UNCHANGED)
-        function includeHTML(callback) {
-            var z, i, elmnt, file, xhttp;
-            z = document.getElementsByTagName("*");
-            for (i = 0; i < z.length; i++) {
-                elmnt = z[i];
-                file = elmnt.getAttribute("w3-include-html");
-                if (file) {
-                    xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4) {
-                            if (this.status == 200) { elmnt.innerHTML = this.responseText; }
-                            if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
-                            elmnt.removeAttribute("w3-include-html");
-                            includeHTML(callback);
-                            if (callback) callback();
-                        }
-                    }
-                    xhttp.open("GET", file, true);
-                    xhttp.send();
-                    return;
-                }
-            }
-        }
-
-        // Function to fix Services Dropdown (New logic needed for functionality)
-        function initServicesDropdown() {
-            const servicesToggle = document.querySelector('.services-toggle');
-            const servicesDropdown = document.querySelector('.services-dropdown');
-            const servicesArrow = document.querySelector('.services-arrow');
-
-            if (servicesToggle && servicesDropdown) {
-                servicesToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    servicesDropdown.classList.toggle('active');
-                    if (servicesArrow) servicesArrow.classList.toggle('rotated');
+            scrollTopBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
                 });
-
-                document.addEventListener('click', (e) => {
-                    if (!servicesToggle.contains(e.target) && !servicesDropdown.contains(e.target)) {
-                        servicesDropdown.classList.remove('active');
-                        if (servicesArrow) servicesArrow.classList.remove('rotated');
-                    }
-                });
-            }
-        }
-
-        // Initialize theme toggle (UNCHANGED)
-        function initThemeToggle() {
-            const themeToggle = document.getElementById('themeToggle');
-            if (!themeToggle) return;
-
-            themeToggle.addEventListener('click', () => {
-                const root = document.documentElement;
-                const current = root.getAttribute('data-theme') || 'dark';
-                const next = current === 'light' ? 'dark' : 'light';
-
-                root.setAttribute('data-theme', next);
-                localStorage.setItem('agritech-theme', next);
-
-                const themeLabel = document.querySelector('.theme-label');
-                if (themeLabel) {
-                    themeLabel.textContent = next === 'light' ? 'Light' : 'Dark';
-                }
-            });
-    }
-
-    const savedTheme =
-        localStorage.getItem('agritech-theme') || 'light';
-
-    document.documentElement.setAttribute(
-        'data-theme',
-        savedTheme
-    );
-
-    updateThemeUI(savedTheme);
-
-    themeToggle.addEventListener('click', () => {
-
-        const currentTheme =
-            document.documentElement.getAttribute('data-theme');
-
-        const newTheme =
-            currentTheme === 'dark'
-            ? 'light'
-            : 'dark';
-
-        document.documentElement.setAttribute(
-            'data-theme',
-            newTheme
-        );
-
-        localStorage.setItem(
-            'agritech-theme',
-            newTheme
-        );
-
-        updateThemeUI(newTheme);
-    });
-}
-
-// Initialize mobile hamburger (UNCHANGED)
-function initHamburgerMenu() {
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const overlay = document.getElementById('mobileMenuOverlay');
-
-    if (!hamburgerBtn || !mobileMenu || !overlay) return;
-
-    hamburgerBtn.addEventListener('click', () => {
-        mobileMenu.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-
-    overlay.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    });
-}
-
-// Run after DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-    // Apply saved theme
-    const savedTheme = localStorage.getItem('agritech-theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-
-    // Include navbar and initialize all parts
-    includeHTML(() => {
-        initThemeToggle();
-        initHamburgerMenu();
-        initServicesDropdown(); // This starts the dropdown code
-    });
-});
-</script>
-
-<script>
-  document.getElementById("current-year").textContent =
-    new Date().getFullYear();
-</script>
-<button id="backToTopBtn" class="back-to-top-btn" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
-</button>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const backToTopBtn = document.getElementById("backToTopBtn");
-
-  if (!backToTopBtn) return;
-
-    // Monitor Scroll Position
-    window.addEventListener("scroll", function () {
-        // Show button after scrolling down 300px
-        if (window.pageYOffset > 300) {
-      backToTopBtn.classList.add("show");
-        } else {
-      backToTopBtn.classList.remove("show");
-        }
-
-        // Initialize mobile hamburger (UNCHANGED)
-        function initHamburgerMenu() {
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const overlay = document.getElementById('mobileMenuOverlay');
-
-            if (!hamburgerBtn || !mobileMenu || !overlay) return;
-
-            hamburgerBtn.addEventListener('click', () => {
-                mobileMenu.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-
-            overlay.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
             });
         }
 
-        // Run after DOM loads
+        // --- DOM Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Apply saved theme
             const savedTheme = localStorage.getItem('agritech-theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
 
-            // Include navbar and initialize all parts
+            const currentYearSpan = document.getElementById("current-year");
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
             includeHTML(() => {
                 initThemeToggle();
                 initHamburgerMenu();
-                initServicesDropdown(); // This starts the dropdown code
-            });
-        });
-    </script>
-
-    <script>
-        document.getElementById("current-year").textContent =
-            new Date().getFullYear();
-    </script>
-
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-
-    <script>
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-            if (!scrollTopBtn) return;
-
-            // Monitor Scroll Position
-            window.addEventListener("scroll", function () {
-                // Show button after scrolling down 300px
-                if (window.pageYOffset > 300) {
-                    scrollTopBtn.classList.add("show");
-                } else {
-                    scrollTopBtn.classList.remove("show");
-                }
+                initServicesDropdown();
             });
 
-            // Scroll to top on click
-            scrollTopBtn.addEventListener("click", function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            });
-        });
-    </script>
-        });
-    </script>
-
-    <script>
-        document.getElementById("current-year").textContent =
-            new Date().getFullYear();
-    </script>
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-            if (!scrollTopBtn) return;
-
-            // Smooth scroll to top
-            // Monitor Scroll Position
-            window.addEventListener("scroll", function () {
-                // Show button after scrolling down 300px
-                if (window.pageYOffset > 300) {
-                    scrollTopBtn.classList.add("show");
-                } else {
-                    scrollTopBtn.classList.remove("show");
-                }
-            });
-
-            // Scroll to top on click
-            scrollTopBtn.addEventListener("click", function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            });
-        });
-
-    </script>
-
-    // Scroll to top on click
-  backToTopBtn.addEventListener("click", function () {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+            initScrollTop();
         });
     </script>
 </body>
