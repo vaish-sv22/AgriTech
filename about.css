@@ -9,6 +9,11 @@
   --text-dark: #f0f0f0;
   --border-light: #e0e0e0;
   --border-dark: #333333;
+  --surface-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #e0e0e0;
+  --text-muted: #666666;
+  --section-bg: #f5f5f5;
 }
 
 html[data-theme="dark"] {
@@ -20,6 +25,11 @@ html[data-theme="dark"] {
   --text-dark: #333333;
   --border-light: #333333;
   --border-dark: #444444;
+  --surface-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --border-color: #333333;
+  --text-muted: #999999;
+  --section-bg: #0f0f0f;
 }
 
 /* ===== Global Styles ===== */
@@ -738,4 +748,39 @@ a {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* Scroll to Top Button */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #2ecc71;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 9999;
+}
+
+.scroll-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background: #27ae60;
+  transform: scale(1.1);
 }

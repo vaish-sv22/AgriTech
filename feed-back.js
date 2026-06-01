@@ -84,10 +84,84 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Rating Stars selection functionality
+  const stars = document.querySelectorAll('#ratingStars .star');
+  const ratingInput = document.getElementById('ratingInput');
+
+  if (stars.length > 0 && ratingInput) {
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', function () {
+        const hoverValue = parseInt(this.getAttribute('data-value'));
+        highlightStars(hoverValue);
+      });
+
+      star.addEventListener('mouseleave', function () {
+        const currentValue = parseInt(ratingInput.value) || 0;
+        highlightStars(currentValue);
+      });
+
+      star.addEventListener('click', function () {
+        const selectValue = this.getAttribute('data-value');
+        ratingInput.value = selectValue;
+        
+        stars.forEach(s => {
+          const sVal = parseInt(s.getAttribute('data-value'));
+          if (sVal <= selectValue) {
+            s.classList.remove('far');
+            s.classList.add('fas');
+            s.classList.add('selected');
+          } else {
+            s.classList.remove('fas');
+            s.classList.add('far');
+            s.classList.remove('selected');
+          }
+        });
+      });
+
+      star.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    function highlightStars(count) {
+      stars.forEach(s => {
+        const sVal = parseInt(s.getAttribute('data-value'));
+        if (sVal <= count) {
+          s.classList.add('hovered');
+          s.classList.remove('far');
+          s.classList.add('fas');
+        } else {
+          s.classList.remove('hovered');
+          if (!s.classList.contains('selected')) {
+            s.classList.remove('fas');
+            s.classList.add('far');
+          }
+        }
+      });
+    }
+  }
+
   // Feedback form submission
   feedbackForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
+    if (ratingInput && !ratingInput.value) {
+      if (window.Swal) {
+        Swal.fire({
+          title: 'Rating Required',
+          text: 'Please select a star rating (1 to 5) before submitting.',
+          icon: 'warning',
+          confirmButtonColor: '#4caf50'
+        });
+      } else {
+        alert('Please select a star rating (1 to 5) before submitting.');
+      }
+      return;
+    }
+
     const submitButton = this.querySelector('.submit-button');
     const originalText = submitButton.innerHTML;
     
@@ -99,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
         name: document.getElementById('name').value.trim(),
         email: document.getElementById('email').value.trim() || 'Not provided',
         feedback: document.getElementById('feedback').value.trim(),
+        rating: ratingInput ? parseInt(ratingInput.value, 10) : 5,
         date: new Date().toLocaleString(),
         id: Date.now() 
       };
@@ -130,6 +205,14 @@ document.addEventListener('DOMContentLoaded', function() {
       thankYouMessage.classList.remove('hidden');
       feedbackForm.reset();
       
+      if (ratingInput && stars.length > 0) {
+        ratingInput.value = '';
+        stars.forEach(s => {
+          s.classList.remove('fas', 'selected', 'hovered');
+          s.classList.add('far');
+        });
+      }
+
       if (charCountElement) {
         charCountElement.textContent = '0';
         charCountElement.style.color = '#999';
@@ -208,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="feedback-item" style="animation-delay: ${index * 0.1}s">
         <div class="feedback-header-item">
           <h4><i class="fas fa-user-circle" style="color: #4caf50; margin-right: 8px;"></i>${escapeHtml(fb.name)}</h4>
+          ${getStarsHTML(fb.rating)}
           ${fb.email !== 'Not provided' ? `<p style="color: #666; font-size: 0.9rem; margin: 5px 0;"><i class="fas fa-envelope" style="color: #4caf50; margin-right: 8px;"></i>${escapeHtml(fb.email)}</p>` : ''}
         </div>
         <div class="feedback-content">
@@ -240,6 +324,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  }
+
+  function getStarsHTML(rating) {
+    let starsHTML = '';
+    const roundedRating = Math.round(rating) || 5;
+    for (let i = 1; i <= 5; i++) {
+      if (i <= roundedRating) {
+        starsHTML += '<i class="fas fa-star" style="color: #fbbf24; margin-right: 2px;"></i>';
+      } else {
+        starsHTML += '<i class="far fa-star" style="color: #ccc; margin-right: 2px;"></i>';
+      }
+    }
+    return `<div class="feedback-rating">${starsHTML}</div>`;
   }
 
   function formatDate(dateString) {

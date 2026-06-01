@@ -3,6 +3,9 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Class labels (update if needed)
 class_names = [
@@ -42,19 +45,34 @@ class_descriptions = {
 }
 
 def load_keras_model(model_path):
-    model = load_model(model_path)
-    return model
-
-
+    try:
+        if not os.path.exists(model_path):
+            logger.error(f"Model file does not exist at path: {model_path}")
+            return None
+        model = load_model(model_path)
+        return model
+    except Exception as e:
+        logger.error(f"Failed to load Keras model from {model_path}: {str(e)}")
+        return None
 
 def predict_image_keras(model, img_path):
-    img = image.load_img(img_path, target_size=(160, 160))  # Match your training size
-    img_array = image.img_to_array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+    if model is None:
+        logger.error("Prediction failed: model is None")
+        return "Model unavailable", "The classification model is currently unavailable."
+    try:
+        if not os.path.exists(img_path):
+            logger.error(f"Image file does not exist at path: {img_path}")
+            return "Image not found", "The uploaded image file could not be found."
+        img = image.load_img(img_path, target_size=(160, 160))  # Match your training size
+        img_array = image.img_to_array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
 
-    predictions = model.predict(img_array)
-    predicted_index = np.argmax(predictions)
-    predicted_class = class_names[predicted_index]
-    description = class_descriptions.get(predicted_class, "No description available.")
+        predictions = model.predict(img_array)
+        predicted_index = np.argmax(predictions)
+        predicted_class = class_names[predicted_index]
+        description = class_descriptions.get(predicted_class, "No description available.")
 
-    return predicted_class, description
+        return predicted_class, description
+    except Exception as e:
+        logger.error(f"Error predicting image {img_path}: {str(e)}")
+        return "Model unavailable", f"An error occurred during prediction: {str(e)}"

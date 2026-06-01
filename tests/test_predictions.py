@@ -48,3 +48,41 @@ class TestDiseasePredictionRoute:
         response = client.post('/disease/predict')
         # Should redirect to home when no file
         assert response.status_code in [200, 302, 400]
+
+
+class TestMLModelErrorHandling:
+    """Test suite for ML model load and prediction error handling."""
+
+    def test_load_keras_model_missing_file(self):
+        """Test that load_keras_model returns None when file is missing."""
+        from utils import load_keras_model
+        assert load_keras_model("nonexistent_model.h5") is None
+
+    def test_predict_image_keras_none_model(self):
+        """Test that predict_image_keras returns controlled error response when model is None."""
+        from utils import predict_image_keras
+        pred, desc = predict_image_keras(None, "nonexistent_image.jpg")
+        assert pred == "Model unavailable"
+        assert "unavailable" in desc
+
+    def test_predict_image_keras_missing_image(self):
+        """Test that predict_image_keras handles missing image files gracefully when model is mocked."""
+        from utils import predict_image_keras
+        class MockModel:
+            def predict(self, x):
+                return [[0.9, 0.1]]
+        
+        pred, desc = predict_image_keras(MockModel(), "nonexistent_image.jpg")
+        assert pred == "Image not found"
+        assert "could not be found" in desc
+
+    def test_load_pytorch_model_missing_file(self):
+        """Test that load_pytorch_model returns None when file is missing."""
+        from model import load_pytorch_model
+        assert load_pytorch_model("nonexistent_model.pth") is None
+
+    def test_predict_pytorch_none_model(self):
+        """Test that predict_pytorch returns None when model is None."""
+        from model import predict_pytorch
+        assert predict_pytorch(None, None) is None
+
