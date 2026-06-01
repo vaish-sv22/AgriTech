@@ -1,4 +1,9 @@
+import torch
 import torch.nn as nn
+import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 class PlantDiseaseNet(nn.Module):
     def __init__(self, num_classes=38):  # original model had 38 classes
@@ -77,3 +82,34 @@ class PlantDiseaseNet(nn.Module):
         x = self.pool(x)
         x = self.classifier(x)
         return x
+
+def load_pytorch_model(model_path, device='cpu'):
+    try:
+        if not os.path.exists(model_path):
+            logger.error(f"PyTorch model file missing: {model_path}")
+            return None
+        # Safe loading with torch.load
+        model = torch.load(model_path, map_location=device)
+        # If it was saved as state dict rather than full model
+        if isinstance(model, dict):
+            net = PlantDiseaseNet()
+            net.load_state_dict(model)
+            model = net
+        model.eval()
+        return model
+    except Exception as e:
+        logger.error(f"Error loading PyTorch model from {model_path}: {str(e)}")
+        return None
+
+def predict_pytorch(model, input_tensor):
+    if model is None:
+        logger.error("Prediction failed: PyTorch model is not loaded (None)")
+        return None
+    try:
+        with torch.no_grad():
+            output = model(input_tensor)
+            return output
+    except Exception as e:
+        logger.error(f"Error predicting with PyTorch model: {str(e)}")
+        return None
+

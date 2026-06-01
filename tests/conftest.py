@@ -8,11 +8,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Provide lightweight stubs for optional heavy external modules so tests can import app
 import types
 if 'google.generativeai' not in sys.modules:
-    google = types.ModuleType('google')
+    if 'google' in sys.modules:
+        google = sys.modules['google']
+    else:
+        google = types.ModuleType('google')
+        google.__path__ = []
+        sys.modules['google'] = google
     genai = types.ModuleType('google.generativeai')
-    google.generativeai = genai
-    sys.modules['google'] = google
     sys.modules['google.generativeai'] = genai
+    setattr(google, 'generativeai', genai)
 
 # Import the Flask app from the project
 try:
