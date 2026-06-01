@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <title>AgriTech | Terms & Conditions</title>
 
   <style>
@@ -137,10 +139,20 @@
 
 <body>
 
-<header>
-  <h1>Terms & Conditions</h1>
-  <button onclick="toggleTheme()">Toggle Theme</button>
-</header>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="nav-title">AgriTech</span>
+  </div>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Home</a>
+    <a href="../dashboard.html" class="nav-link">Dashboard</a>
+    <a href="../blog.html" class="nav-link">Blog</a>
+    <a href="../contact.html" class="nav-link">Contact</a>
+    <button onclick="toggleTheme()" class="theme-btn">Toggle Theme</button>
+  </div>
+</nav>
+
 
 <main>
 
@@ -222,9 +234,39 @@
 
 </main>
 
-<footer>
-  © 2026 AgriTech · All rights reserved 🌱
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="../images/logo.png" alt="AgriTech logo" class="footer-logo">
+      <p>Empowering India’s Farming Future 🌱</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="../index.html">Home</a>
+      <a href="../dashboard.html">Dashboard</a>
+      <a href="../feedback.html">Feedback</a>
+      <a href="../assistant.html">AI Assistant</a>
+    </div>
+    <div class="footer-tools">
+      <h4>Tools</h4>
+      <a href="../crop-recommendation.html">Crop Recommendation</a>
+      <a href="../yield-prediction.html">Yield Prediction</a>
+      <a href="../disease-detector.html">Disease Detector</a>
+      <a href="../crop-planner.html">Crop Planner</a>
+    </div>
+    <div class="footer-social">
+      <h4>Follow Us</h4>
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 AgriTech • Made for farmers
+  </div>
 </footer>
+
 
 <script>
   function toggleTheme() {
@@ -270,6 +312,101 @@
       font-size: 20px;
     }
   }
+
+  /* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+}
+
+.nav-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--accent-color);
+}
+
+.theme-btn {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  background: var(--surface-color);
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-logo {
+  width: 40px;
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a,
+.footer-tools a,
+.footer-social a {
+  display: block;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 0.4rem;
+}
+
+.footer-links a:hover,
+.footer-tools a:hover,
+.footer-social a:hover {
+  color: var(--accent-color);
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
 </style>
 
 <button id="globalBackToTop" title="Back to Top">↑</button>
