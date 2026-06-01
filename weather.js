@@ -137,19 +137,19 @@ function updateBackground(conditionText) {
     const lowerCaseCondition = conditionText.toLowerCase();
 
     if (lowerCaseCondition.includes('sunny') || lowerCaseCondition.includes('clear') || lowerCaseCondition.includes('sun')) {
-        imageUrl = 'https://wallpapers.com/images/hd/sunny-day-wallpaper-f21ok5dhnkco3i5n.jpg';
-    } else if (lowerCaseCondition.includes('cloudy') || lowerCaseCondition.includes('overcast') || lowerCaseCondition.includes('mist') || lowerCaseCondition.includes('cloud')) {
-        imageUrl = 'https://pics.freeartbackgrounds.com/midle/Cloudy_Sky_Background-1520.jpg';
+        imageUrl = 'https://images.unsplash.com/photo-1504386106331-3e4e71712b38?q=80&w=1920';
+    } else if (lowerCaseCondition.includes('cloudy') || lowerCaseCondition.includes('overcast') || lowerCaseCondition.includes('mist') || lowerCaseCondition.includes('cloud') || lowerCaseCondition.includes('haze')) {
+        imageUrl = 'https://images.unsplash.com/photo-1483702721041-b23de737a886?q=80&w=1920';
     } else if (lowerCaseCondition.includes('rain') || lowerCaseCondition.includes('drizzle') || lowerCaseCondition.includes('shower') || lowerCaseCondition.includes('rainy')) {
-        imageUrl = 'https://static.vecteezy.com/system/resources/previews/046/982/857/non_2x/monsoon-season-rainy-season-illustration-of-heavy-rain-illustration-of-rain-cloud-vector.jpg';
+        imageUrl = 'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=1920';
     } else if (lowerCaseCondition.includes('snow') || lowerCaseCondition.includes('sleet') || lowerCaseCondition.includes('ice') || lowerCaseCondition.includes('snowy')) {
-        imageUrl = 'https://images.unsplash.com/photo-1542382441-2a6237890635?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+        imageUrl = 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?q=80&w=1920';
     } else if (lowerCaseCondition.includes('thunder') || lowerCaseCondition.includes('storm') || lowerCaseCondition.includes('thundery') || lowerCaseCondition.includes('stormy')) {
-        imageUrl = 'https://images.unsplash.com/photo-1507663249114-1e523a502626?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+        imageUrl = 'https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?q=80&w=1920';
     } else if (lowerCaseCondition.includes('fog') || lowerCaseCondition.includes('foggy') || lowerCaseCondition.includes('dew') || lowerCaseCondition.includes('dewy')) {
-        imageUrl = 'https://unsplash.com/photos/a-foggy-view-of-the-golden-gate-bridge-6tiPnI_ijuI';
+        imageUrl = 'https://images.unsplash.com/photo-1485236715568-ddc5ee6ca227?q=80&w=1920';
     } else {
-        imageUrl = 'https://www.transparenttextures.com/patterns/clean-textile.png';
+        imageUrl = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1920';
     }
 
     body.style.backgroundImage = `url('${imageUrl}')`;
@@ -174,112 +174,125 @@ locationInput.addEventListener('keypress', (event) => {
 });
 
 async function fetchWeather(location) {
-
-    // For Current Weather
-    const currentWeatherURL = `${url}/current.json?key=${key}&q=${location}`;
-
-    try {
-        const response = await fetch(currentWeatherURL);
-        if (response.ok) {
-            const data = await response.json();
-            displayWeather(data);
-            updateBackground(data.current.condition.text);
-        }
-    } catch (error) {
-        console.log("Error fetching data", error);
-    }
-
-    // For hourly data
-    const hourNow = new Date().getHours();
-    let hourDisplay = 24 - hourNow;
-    if (hourDisplay == 0) {
-        hourDisplay = 24;
-    }
-
-    let i = 1;
-    while (i < (hourDisplay + 1)) {
-        const forecastHourlyURL = `${url}/forecast.json?key=${key}&q=${location}&hour=${hourNow}+${i}`;
-        try {
-            const response = await fetch(forecastHourlyURL);
-            if (response.ok) {
-                const data = await response.json();
-                displayHourlyForecast(data);
-            }
-        } catch (error) {
-            console.log("Error fetching data", error);
-        }
-        i++;
-    }
-
-    // For 10 days data
+    // Single optimized fetch for current, hourly, and 10 days forecast data
     const forecastURL = `${url}/forecast.json?key=${key}&q=${location}&days=10`;
 
     try {
         const response = await fetch(forecastURL);
         if (response.ok) {
             const data = await response.json();
+            displayWeather(data);
+            displayHourlyForecast(data);
             displayDaywiseForecast(data);
+            updateBackground(data.current.condition.text);
+        } else {
+            console.log("Weather API returned an error:", response.status);
         }
     } catch (error) {
-        console.log("Error fetching data", error);
+        console.log("Error fetching weather data:", error);
     }
 }
 
 // General data
 function displayWeather(data) {
+    const generalContainer = document.querySelector('.general');
+    
+    // Trigger smooth fade-in animation
+    generalContainer.classList.remove('fade-in');
+    void generalContainer.offsetWidth; // trigger reflow
+    generalContainer.classList.add('fade-in');
 
-    // For Current Weather
     getCity.textContent = data.location.name;
     getRegion.textContent = data.location.region;
     getCountry.textContent = data.location.country;
-    getTemperature.textContent = `${data.current.temp_c}°C`;
+    getTemperature.innerHTML = `${data.current.temp_c}°C <img src="https:${data.current.condition.icon}" alt="${data.current.condition.text}" />`;
     getDescription.textContent = data.current.condition.text;
-
-    var imageAdd = document.createElement("img");
-    imageAdd.src = `https:${data.current.condition.icon}`;
-    imageAdd.alt = data.current.condition.text;
-    getTemperature.appendChild(imageAdd);
 }
 
 // Hourly weather data
 function displayHourlyForecast(data) {
-
     const hourlyForecastContainer = document.getElementById('hour');
     hourlyForecastContainer.innerHTML = '';
     const todayHourlyForecast = data.forecast.forecastday[0].hour;
 
     const currentHour = new Date(data.location.localtime).getHours();
+    let cardCount = 0;
 
     todayHourlyForecast.forEach(hourData => {
         const hour = new Date(hourData.time).getHours();
 
         if (hour > currentHour) {
             const hourlyCard = document.createElement('div');
-            hourlyCard.classList.add('hData-card');
+            hourlyCard.classList.add('hData-card', 'fade-in');
+            hourlyCard.style.animationDelay = `${cardCount * 0.04}s`;
+            
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
             hourlyCard.innerHTML = `
-                <p class="time">${hour}</p>
+                <p class="time">${formattedHour} ${ampm}</p>
                 <img src="https:${hourData.condition.icon}" alt="${hourData.condition.text}" />
                 <p class="temp">${hourData.temp_c}°C</p>
             `;
             hourlyForecastContainer.appendChild(hourlyCard);
+            cardCount++;
         }
     });
+
+    // Fallback if checked late at night, display next day's early hours
+    if (cardCount === 0 && data.forecast.forecastday[1]) {
+        const tomorrowHourlyForecast = data.forecast.forecastday[1].hour;
+        tomorrowHourlyForecast.slice(0, 12).forEach((hourData, idx) => {
+            const hour = new Date(hourData.time).getHours();
+            const hourlyCard = document.createElement('div');
+            hourlyCard.classList.add('hData-card', 'fade-in');
+            hourlyCard.style.animationDelay = `${idx * 0.04}s`;
+            
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
+            hourlyCard.innerHTML = `
+                <p class="time">Tom. ${formattedHour} ${ampm}</p>
+                <img src="https:${hourData.condition.icon}" alt="${hourData.condition.text}" />
+                <p class="temp">${hourData.temp_c}°C</p>
+            `;
+            hourlyForecastContainer.appendChild(hourlyCard);
+        });
+    }
 }
 
 // Daywise weather
 function displayDaywiseForecast(data) {
-
     const dayWiseForecastContainer = document.getElementById('day');
     dayWiseForecastContainer.innerHTML = '';
     const forecastCollection = data.forecast.forecastday;
 
-    forecastCollection.forEach(forecastData => {
+    forecastCollection.forEach((forecastData, index) => {
         const forecastCard = document.createElement('div');
-        forecastCard.classList.add('dayData-card');
+        forecastCard.classList.add('dayData-card', 'fade-in');
+        forecastCard.style.animationDelay = `${index * 0.04}s`;
+
+        const dateObj = new Date(forecastData.date);
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        let formattedDate = dateObj.toLocaleDateString('en-US', options);
+
+        const today = new Date().toDateString();
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        if (dateObj.toDateString() === today) {
+            formattedDate = 'Today';
+        } else if (dateObj.toDateString() === tomorrow.toDateString()) {
+            formattedDate = 'Tomorrow';
+        }
+
         forecastCard.innerHTML = `
-            <p class="date">${forecastData.date}</p>
+            <p class="date">${formattedDate}</p>
             <img src="https:${forecastData.day.condition.icon}" alt="${forecastData.day.condition.text}" />
-            <p class="temp">${forecastData.day.maxtemp_c}°C / ${forecastData.day.mintemp_c}°C </p>
+            <p class="temp">
+                <span style="font-weight: 700; color: var(--text-primary);">${forecastData.day.maxtemp_c}°C</span> 
+                <span style="font-weight: 400; color: var(--text-muted); margin-left: 8px;">${forecastData.day.mintemp_c}°C</span>
+            </p>
         `;
         dayWiseForecastContainer.appendChild(forecastCard);
     });
