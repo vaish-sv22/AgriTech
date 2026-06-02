@@ -143,33 +143,84 @@
         [data-theme="dark"] .loan-result-box strong {
             color: #e0ffe0;
         }
-        .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    background: #2e7d32;
-    color: #fff;
+  /* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #2e7d32, #43a047); /* green gradient */
+  color: #fff;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Logo + title */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: #fff;
+  object-fit: cover;
+  padding: 3px;
 }
 
 .nav-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    margin-left: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Links */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
 .nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-    text-decoration: underline;
-    color: #e0ffe0;
-    
+  color: #e0ffe0;
 }
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    gap: 0.8rem;
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 8px;
+  }
+}
+
 
         /* Floating Chatbot Button */
 #chatbotBtn {
@@ -744,14 +795,20 @@ form button:hover::before {
   <i class="fas fa-robot"></i>
 </a>
 <body>
-    <nav class="navbar">
-    <div class="nav-title">AgriTech</div>
+    <!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="images/logo.png" alt="AgriTech logo" class="nav-logo">
+    <span class="nav-title">AgriTech</span>
+  </div>
+  <div class="nav-links">
     <a href="index.html" class="nav-link">Home</a>
-     <a href="about.html" class="nav-link">About</a>
-      <a href="blog.html" class="nav-link">Blog</a>
-       <a href="contact.html" class="nav-link">Contact</a>
-
+    <a href="about.html" class="nav-link">About</a>
+    <a href="blog.html" class="nav-link">Blog</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
 </nav>
+
 
     <div class="container">
         
