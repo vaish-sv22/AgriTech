@@ -108,3 +108,37 @@ function togglePassword() {
     eyeIcon.className  = "fas fa-eye";
   }
 }
+// Lamp Toggle Feature
+document.addEventListener("DOMContentLoaded", () => {
+  const lampToggle = document.getElementById("lampToggle");
+  const darkOverlay = document.getElementById("darkOverlay");
+
+  if (!lampToggle || !darkOverlay) return;
+
+  const inputs = document.querySelectorAll(
+    'input, button[type="submit"]'
+  );
+
+  let lampOn = true;
+
+  lampToggle.addEventListener("click", () => {
+    lampOn = !lampOn;
+
+    if (lampOn) {
+      lampToggle.textContent = "💡 ON";
+      darkOverlay.classList.add("hidden");
+
+      inputs.forEach(input => {
+        input.disabled = false;
+      });
+
+    } else {
+      lampToggle.textContent = "💡 OFF";
+      darkOverlay.classList.remove("hidden");
+
+      inputs.forEach(input => {
+        input.disabled = true;
+      });
+    }
+  });
+});

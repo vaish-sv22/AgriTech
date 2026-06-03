@@ -262,3 +262,37 @@ document.addEventListener("keydown", function (e) {
 
 document.addEventListener("DOMContentLoaded", updateProgress);
 document.getElementById("password").addEventListener("input", checkPasswordStrength);
+// Lamp Toggle Feature
+document.addEventListener("DOMContentLoaded", () => {
+  const lampToggle = document.getElementById("lampToggle");
+  const darkOverlay = document.getElementById("darkOverlay");
+
+  if (!lampToggle || !darkOverlay) return;
+
+  const formInputs = document.querySelectorAll(
+    "#role, #fullname, #email, #password, #confirmPassword, #register-btn"
+  );
+
+  let lampOn = true;
+
+  lampToggle.addEventListener("click", () => {
+    lampOn = !lampOn;
+
+    if (lampOn) {
+      lampToggle.textContent = "💡 ON";
+      darkOverlay.classList.add("hidden");
+
+      formInputs.forEach(input => {
+        input.disabled = false;
+      });
+
+    } else {
+      lampToggle.textContent = "💡 OFF";
+      darkOverlay.classList.remove("hidden");
+
+      formInputs.forEach(input => {
+        input.disabled = true;
+      });
+    }
+  });
+});
