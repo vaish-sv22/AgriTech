@@ -12,3 +12,11 @@ export function getPredictions() {
 export function clearPredictions() {
   localStorage.removeItem("predictions");
 }
+export function comparePredictions(index1, index2) {
+  const history = getPredictions();
+
+  return {
+    previous: history[index1],
+    latest: history[index2]
+  };
+}
